@@ -89,9 +89,9 @@ const patch = {
 
 const audioContext = new AudioContext();
 const tuna = Tuna(audioContext);
-const synth = new Synth(audioContext, tuna, patch)
+// const synth = new Synth(audioContext, tuna, patch)
 
-console.log(synth);
+// console.log(synth);
 
 class Synthesizer extends Component {
   constructor(props) {
