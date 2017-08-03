@@ -316,7 +316,7 @@ const dispatches = {
     feedback: function(value) {
       console.log("Delay feedback: ", value);
     },
-    cuttoff: function(value) {
+    cutoff: function(value) {
       console.log("Delay cuttoff: ", value);
     },
     dry: function(value) {
