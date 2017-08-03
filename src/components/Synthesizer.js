@@ -291,8 +291,8 @@ const dispatches = {
     delay: function(value) {
       console.log("Chorus delay: ", value);
     },
-    depth: function(value) {
-      console.log("Chorus depth: ", value);
+    bypass: function(value) {
+      console.log("Chorus bypass: ", value);
     },
     rate: function(value) {
       console.log("Chorus rate: ", value);
