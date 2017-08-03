@@ -10,8 +10,8 @@ class Filter extends Component {
 	render() {
 		return(
 			<div>
-				<label for="filter"><h2>Main Filter</h2></label>
-				<label for="filter-type">Filter Type: </label>
+				<label htmlFor="filter"><h2>Main Filter</h2></label>
+				<label htmlFor="filter-type">Filter Type: </label>
 				<select className="filter-type-selection">
 					<option value="filter-type">Hi-Pass</option>
 					<option value="filter-type">Lo-Pass</option>
