@@ -18,8 +18,6 @@ function playSound() {
 }
 
 
-
-
 class Synthesizer extends Component {
   constructor(props) {
     super(props);
