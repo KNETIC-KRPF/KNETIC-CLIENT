@@ -249,11 +249,11 @@ const dispatches = {
       console.log("overdrive algorithm_index: ", value);
     }
   },
-  moog_fliter: {
+  moog_filter: {
     buffer: function(value) {
       console.log("Moog buffer: ", value);
     },
-    cuttoff: function(value) {
+    cutoff: function(value) {
       console.log("Moog cutoff: ", value);
     },
     res: function(value) {
@@ -267,8 +267,8 @@ const dispatches = {
     delay: function(value) {
       console.log("Chorus delay: ", value);
     },
-    depth: function(value) {
-      console.log("Chorus depth: ", value);
+    bypass: function(value) {
+      console.log("Chorus bypass: ", value);
     },
     rate: function(value) {
       console.log("Chorus rate: ", value);
@@ -292,7 +292,7 @@ const dispatches = {
     feedback: function(value) {
       console.log("Delay feedback: ", value);
     },
-    cuttoff: function(value) {
+    cutoff: function(value) {
       console.log("Delay cuttoff: ", value);
     },
     dry: function(value) {
