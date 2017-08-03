@@ -3,10 +3,6 @@ import Knob from '../Knob';
 import './Bitcrusher.css';
 
 class Bitcrusher extends Component {
-	constructor(props){
-		super(props);
-	}
-
 	render() {
 		return(
 			<div>

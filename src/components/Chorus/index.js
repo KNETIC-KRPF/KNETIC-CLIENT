@@ -3,10 +3,6 @@ import Knob from '../Knob';
 import './Chorus.css';
 
 class Chorus extends Component {
-    constructor(props){
-        super(props);
-    }
-
     render() {
         return(
             <div>

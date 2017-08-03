@@ -3,10 +3,6 @@ import Knob from '../Knob';
 import './Overdrive.css';
 
 class Overdrive extends Component {
-	constructor(props){
-		super(props);
-	}
-
 	render() {
 		return(
 			<div>

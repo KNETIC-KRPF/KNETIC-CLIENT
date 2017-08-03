@@ -3,10 +3,6 @@ import Knob from '../Knob';
 import './Reverb.css';
 
 class Convolver extends Component {
-	constructor(props){
-		super(props);
-	}
-
 	render() {
 		return(
 			<div>

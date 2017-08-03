@@ -3,10 +3,6 @@ import Knob from '../Knob';
 import './Compressor.css';
 
 class Compressor extends Component {
-	constructor(props){
-		super(props);
-	}
-
 	render() {
 		return(
 			<div>

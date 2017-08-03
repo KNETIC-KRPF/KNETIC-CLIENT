@@ -3,10 +3,6 @@ import Knob from '../Knob';
 import './Moog_Filter.css';
 
 class Moog_Filter extends Component {
-	constructor(props){
-		super(props);
-	}
-
 	render() {
 		return(
       <div>

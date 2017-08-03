@@ -3,10 +3,6 @@ import Knob from '../Knob';
 import './PingPongDelay.css';
 
 class PingPongDelay extends Component {
-	constructor(props){
-		super(props);
-	}
-
 	render() {
 		return(
 			<div>

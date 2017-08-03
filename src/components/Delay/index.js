@@ -3,10 +3,6 @@ import Knob from '../Knob';
 import './Delay.css';
 
 class Delay extends Component {
-	constructor(props){
-		super(props);
-	}
-
 	render() {
 		return(
 			<div>
