@@ -6,12 +6,12 @@ const Knob = (props) => {
 	return (
     <input
       type="range"
-      min="0"
-      max="100"
+      min={props.min}
+      max={props.max}
+      step={props.step}
       data-degree-range="270"
-      step="1"
       defaultValue="0"
-      onChange={(event) => props.sendDispatch('oscillator', 'gain', event.target.value)}
+      onChange={(event) => props.sendDispatch(props.type, props.property, event.target.value)}
       data-degree-offset="45"/>
 	);
 };
