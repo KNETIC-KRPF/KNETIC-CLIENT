@@ -17,7 +17,7 @@ class Oscillator extends Component {
 					property="gain"
 					min="0"
 					max="100"
-					step="1"/>
+				step="1"/>
       </div>
 		);
 	}
