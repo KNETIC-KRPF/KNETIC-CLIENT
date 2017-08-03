@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import './PatchCollection.css';
 
 class PatchCollection extends Component {
-	constructor(props){
-		super(props);
-	}
-
 	render() {
 		return(
 			<div>

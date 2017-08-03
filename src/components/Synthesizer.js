@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Layout from './Layout';
 import Tuna from 'tunajs';
-import Synth from '../synthClass';
 import patch from '../patch';
 
 
@@ -270,9 +269,6 @@ const dispatches = {
     delay: function(value) {
       console.log("Chorus delay: ", value);
     },
-    bypass: function(value) {
-      console.log("Chorus bypass: ", value);
-    },
     rate: function(value) {
       console.log("Chorus rate: ", value);
     },
@@ -330,5 +326,7 @@ function getConstrucedEffect(type, data) {
 			return new tuna.Tremolo(data);
 		case 'delay':
 			return new tuna.Delay(data);
+		default:
+			return type;
 	}
 }

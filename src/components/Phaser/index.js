@@ -3,10 +3,6 @@ import Knob from '../Knob';
 import './Phaser.css';
 
 class Phaser extends Component {
-	constructor(props){
-		super(props);
-	}
-
 	render() {
 		return(
 			<div>

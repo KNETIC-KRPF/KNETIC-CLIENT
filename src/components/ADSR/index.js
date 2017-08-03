@@ -3,10 +3,6 @@ import Knob from '../Knob';
 import './ADSR.css';
 
 class ADSR extends Component {
-	constructor(props){
-		super(props);
-	}
-
 	render() {
 		return(
 			<div>
