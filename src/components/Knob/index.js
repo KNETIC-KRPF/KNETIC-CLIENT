@@ -3,7 +3,7 @@ import React from 'react';
 import './Knob.css';
 
 const Knob = (props) => {
-  return (
+	return (
     <input
       type="range"
       min={props.min}
@@ -13,7 +13,7 @@ const Knob = (props) => {
       defaultValue="0"
       onChange={(event) => props.sendDispatch(props.type, props.property, event.target.value)}
       data-degree-offset="45"/>
-  );
-}
+	);
+};
 
 export default Knob;
