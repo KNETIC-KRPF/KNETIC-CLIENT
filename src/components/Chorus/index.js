@@ -48,6 +48,14 @@ class Chorus extends Component {
                   max="8"
                   step="0.5"
                   />
+                <label htmlFor="chorus-control">Bypass: </label>
+                <Knob sendDispatch={this.props.sendDispatch}
+                  type="chorus"
+                  property="bypass"
+                  min="0"
+                  max="1"
+                  step="1"
+                  />
             </div>
         );
     }

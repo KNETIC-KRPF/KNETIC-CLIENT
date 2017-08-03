@@ -33,13 +33,19 @@ class Overdrive extends Component {
 				step="0.05" />
 				<br/>
 				<label htmlFor="overdrive-control">Algorithm-Index: </label>
-				<Knob sendDispatch={this.props.sendDispatch} type="overdrive"
+				<Knob sendDispatch={this.props.sendDispatch}
+					type="overdrive"
 					property="algorithm_index"
 					min="0"
 					max="5"
-				step="1" />
-
-
+					step="1" />
+				<label htmlFor="overdrive-control">Bypass: </label>
+				<Knob sendDispatch={this.props.sendDispatch}
+					type="overdrive"
+					property="bypass"
+					min="0"
+					max="1"
+					step="1" />
 			</div>
 		);
 	}
