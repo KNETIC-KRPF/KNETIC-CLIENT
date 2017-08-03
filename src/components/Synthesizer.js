@@ -62,7 +62,7 @@ console.log(synth);
 
 document.addEventListener('mousedown', (event) => {
 	synth.oscillators.forEach(osc => {
-		osc.osc.start(audioContext.currentTime);
+		// osc.osc.start(audioContext.currentTime);
 	})
 })
 
@@ -127,18 +127,6 @@ const dispatches = {
     },
     gain: function(value) {
       console.log("gain: ", value);
-    },
-    attack: function(value) {
-      console.log("Filter Attack: ", value);
-    },
-    decay: function(value) {
-      console.log("Filter Decay: ", value);
-    },
-    sustain: function(value) {
-      console.log("Filter Sustain: ", value);
-    },
-    release: function(value) {
-      console.log("Filter Release: ", value);
     }
   },
   lfo: {
@@ -208,15 +196,15 @@ const dispatches = {
     wet: function(value) {
       console.log("Ping Pong wet: ", value);
     },
-    dry: function(value) {
-      console.log("Ping Pong Feedback: ", value);
-    },
     delay_left: function(value) {
       console.log("Ping Pong Feedback: ", value);
     },
     delay_right: function(value) {
       console.log("Ping Pong Feedback: ", value);
-    }
+    },
+		order: function(value) {
+			console.log("PING Order verb: ", value);
+		}
   },
   phaser: {
     rate: function(value) {
@@ -233,7 +221,13 @@ const dispatches = {
     },
     BMF: function(value) {
       console.log("Phaser BMF: ", value);
-    }
+    },
+		bypass: function(value) {
+			console.log("Phaser Bypass: ", value);
+		},
+		order: function(value) {
+			console.log("Phaser FX Order verb: ", value);
+		}
   },
   overdrive: {
     drive: function(value) {
@@ -247,7 +241,13 @@ const dispatches = {
     },
     algorithm_index: function(value) {
       console.log("overdrive algorithm_index: ", value);
-    }
+    },
+		bypass: function(value) {
+			console.log("Overdrive Bypass: ", value);
+		},
+		order: function(value) {
+			console.log("overdrive FX Order verb: ", value);
+		}
   },
   moog_filter: {
     buffer: function(value) {
@@ -258,7 +258,10 @@ const dispatches = {
     },
     res: function(value) {
       console.log("Moog res: ", value);
-    }
+    },
+		order: function(value) {
+			console.log("Moog FX Order verb: ", value);
+		}
   },
   chorus: {
     feedback: function(value) {
@@ -272,7 +275,13 @@ const dispatches = {
     },
     rate: function(value) {
       console.log("Chorus rate: ", value);
-    }
+    },
+		bypass: function(value) {
+			console.log("Chorus Bypass: ", value);
+		},
+		order: function(value) {
+			console.log("Chorus FX Order verb: ", value);
+		}
   },
   bitcrusher: {
     bits: function(value) {
@@ -298,13 +307,14 @@ const dispatches = {
     dry: function(value) {
       console.log("Delay dry: ", value);
     },
+		bypass: function(value) {
+			console.log("Delay Bypass: ", value);
+		},
     wet: function(value) {
       console.log("Delay wet: ", value);
     }
   }
 }
-
-
 
 function getConstrucedEffect(type, data) {
 	switch(type) {

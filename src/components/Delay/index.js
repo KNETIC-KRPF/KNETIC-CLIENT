@@ -60,6 +60,15 @@ class Delay extends Component {
 						max="1"
 						step="0.1"
 						/>
+					<label htmlFor="delay-control">Bypass: </label>
+					<Knob
+						sendDispatch={this.props.sendDispatch}
+						type="delay"
+						property="bypass"
+						min="0"
+						max="1"
+						step="1"
+						/>
 			</div>
 		);
 	}

@@ -11,10 +11,20 @@ class Oscillator extends Component {
           <option value="square">Square</option>
           <option value="sawtooth">Sawtooth</option>
         </select>
+				<label>Gain: </label>
         <Knob
 					sendDispatch={this.props.sendDispatch}
 					type="oscillator"
 					property="gain"
+					min="0"
+					max="100"
+				step="1"/>
+
+			<label>Detune: </label>
+				<Knob
+					sendDispatch={this.props.sendDispatch}
+					type="oscillator"
+					property="detune"
 					min="0"
 					max="100"
 				step="1"/>
