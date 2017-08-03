@@ -273,11 +273,11 @@ const dispatches = {
       console.log("overdrive algorithm_index: ", value);
     }
   },
-  moog_fliter: {
+  moog_filter: {
     buffer: function(value) {
       console.log("Moog buffer: ", value);
     },
-    cuttoff: function(value) {
+    cutoff: function(value) {
       console.log("Moog cutoff: ", value);
     },
     res: function(value) {
