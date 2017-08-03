@@ -6,8 +6,8 @@ const context = new AudioContext();
 let OSCILLATOR_1 = context.createOscillator();
 
 const GainNode = context.createGain();
-  GainNode.gain.value = 0;
-  GainNode.connect(context.destination)
+GainNode.gain.value = 0;
+GainNode.connect(context.destination)
 
 
 
@@ -23,6 +23,13 @@ function playSound() {
 class Synthesizer extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      patch: {
+        oscillator: [{}, {}, {}],
+
+      }
+    }
 
     this.receiveDispatch = this.receiveDispatch.bind(this);
   }
@@ -51,6 +58,9 @@ const dispatches = {
     gain: function(value) {
       console.log(value);
       GainNode.gain.value = value;
+    },
+    detune: function(value) {
+
     }
   }
 }
