@@ -5,7 +5,7 @@ class Oscillator extends Component {
 	render() {
 		return (
       <div>
-				<select className="waveform" onChange={(event) => this.props.sendDispatch("oscillator", "waveform", event.target.value)}>
+				<select className="waveform" onChange={(event) => this.props.sendDispatch('oscillator', 'waveform', event.target.value)}>
 					<option value="sine">Sine</option>
           <option value="triangle">Triangle</option>
           <option value="square">Square</option>
