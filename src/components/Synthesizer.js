@@ -967,6 +967,7 @@ const dispatches = {
   },
   chorus: {
     feedback: function(value, component) {
+
       let newSynths = [...component.state.synths]
     	  	newSynths.forEach(synth => {
             synth.effectBus.forEach(effect => {
@@ -985,7 +986,6 @@ const dispatches = {
       		patch: newPatch,
       		synths: newSynths
       	});
-
     },
     delay: function(value, component) {
       let newSynths = [...component.state.synths]
