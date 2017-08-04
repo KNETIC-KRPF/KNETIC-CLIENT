@@ -10,18 +10,56 @@ const tuna = Tuna(audioContext);
 
 const synths = [];
 
-let pressed = false;
+
+function initMidi(playNote, stopNote) {
+	if(navigator.requestMIDIAccess){
+		console.log('Browser Supports KNETIC');
+		navigator.requestMIDIAccess().then(success, failure);
+	}
+
+	function success(midi){
+		var inputs = midi.inputs.values();
+		console.log('We Got Fucking MIDI');
+
+		for (var input = inputs.next();
+		input && !input.done;
+		input = inputs.next()) {
+			// each time there is a midi message call the onMIDIMessage function
+			input.value.onmidimessage = onMIDIMessage;
+		}
+	}
+	function failure(){
+		console.error('No Access To MIDI');
+	}
+
+	function onMIDIMessage(message) {
+		var frequency = midiNoteToFrequency(message.data[1]);
+		console.log(frequency);
+		if(message.data[0] === 144 && message.data[2] > 0){
+			playNote(frequency);
+		}
+		if(message.data[0] === 128 || message.data[2] === 0){
+			stopNote(frequency);
+		}
+	}
+	function midiNoteToFrequency(note){
+		return Math.pow(2, ((note - 69) / 12)) * 440;
+	}
+}
 
 class Synthesizer extends Component {
   constructor(props) {
     super(props);
     this.receiveDispatch = this.receiveDispatch.bind(this);
-	this.playSound = this.playSound.bind(this)
+		this.playSound = this.playSound.bind(this)
+		this.stopSound = this.stopSound.bind(this)
     this.state = {
       		patch,
 			synths: []
 		}
 		qwertyKeyboard(this.playSound)
+		qwertyKeyboardKeyup(this.stopSound)
+		initMidi(this.playSound, this.stopSound);
   }
   receiveDispatch(type, property, value, id) {
 		if(id) {
@@ -31,7 +69,7 @@ class Synthesizer extends Component {
 		}
   }
 
-	playSound(keyFreq, keyCode) {
+	playSound(keyFreq) {
 	  let synth = {
 	    oscillators: []
 	  };
@@ -83,18 +121,24 @@ class Synthesizer extends Component {
 	    osc.osc.start(audioContext.currentTime);
 	  });
 	  this.state.synths.push(synth);
-	//   console.log(this.state.synths.length);
 	  let index = this.state.synths.length - 1;
-	//   console.log(this.state.synths);
-	  document.addEventListener('keyup', event => {
-	    if (event.code === keyCode) {
-	      synth.oscillators.forEach(oscillator => {
-	        oscillator.osc.stop();
-			this.state.synths.splice(index, 1);
-			keysPressed[event.code] = false;
-	      })
-	    }
-	  })
+		keyFreq = Math.ceil(keyFreq * 1000);
+	  keysPressed[keyFreq] = {
+			pressed: true,
+			oscillators: synth.oscillators,
+			index: index
+		}
+		console.log(keysPressed);
+	}
+
+	stopSound(keyFreq) {
+		keyFreq = Math.ceil(keyFreq * 1000);
+		keysPressed[keyFreq].pressed = false;
+		keysPressed[keyFreq].oscillators.forEach(osc => {
+			osc.osc.stop();
+		})
+		this.state.synths.splice(keyFreq.index, 1);
+		delete keysPressed[keyFreq];
 	}
 
   render() {
@@ -114,88 +158,146 @@ const keysPressed = {
 
 function qwertyKeyboard(playSound) {
 	window.addEventListener('keydown', event => {
-		if (pressed === false) {
-			switch (event.code) {
-				case 'KeyA':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.C3, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyW':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.C3Sharp, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyS':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.D3, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyE':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.D3Sharp, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyD':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.E3, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyF':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.F3, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyT':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.F3Sharp, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyG':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.G3, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyY':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.G3Sharp, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyH':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.A3, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyU':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.A3Sharp, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyJ':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.B3, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				case 'KeyK':
-					if(!keysPressed[event.code]) {
-						playSound(KeyFreqs.C4, event.code);
-						keysPressed[event.code] = true;
-					}
-					break;
-				default:
-			}
+		switch (event.code) {
+			case 'KeyA':
+				if(!keysPressed[Math.ceil(KeyFreqs.C3 * 1000)]) {
+					playSound(KeyFreqs.C3);
+				}
+				break;
+			case 'KeyW':
+				if(!keysPressed[Math.ceil(KeyFreqs.C3Sharp * 1000)]) {
+					playSound(KeyFreqs.C3Sharp);
+				}
+				break;
+			case 'KeyS':
+				if(!keysPressed[Math.ceil(KeyFreqs.D3 * 1000)]) {
+					playSound(KeyFreqs.D3);
+				}
+				break;
+			case 'KeyE':
+				if(!keysPressed[Math.ceil(KeyFreqs.D3Sharp * 1000)]) {
+					playSound(KeyFreqs.D3Sharp);
+				}
+				break;
+			case 'KeyD':
+				if(!keysPressed[Math.ceil(KeyFreqs.E3e * 1000)]) {
+					playSound(KeyFreqs.E3);
+				}
+				break;
+			case 'KeyF':
+				if(!keysPressed[Math.ceil(KeyFreqs.F3 * 1000)]) {
+					playSound(KeyFreqs.F3);
+				}
+				break;
+			case 'KeyT':
+				if(!keysPressed[Math.ceil(KeyFreqs.F3Sharp * 1000)]) {
+					playSound(KeyFreqs.F3Sharp);
+				}
+				break;
+			case 'KeyG':
+				if(!keysPressed[Math.ceil(KeyFreqs.G3e * 1000)]) {
+					playSound(KeyFreqs.G3);
+				}
+				break;
+			case 'KeyY':
+				if(!keysPressed[Math.ceil(KeyFreqs.G3Sharp * 1000)]) {
+					playSound(KeyFreqs.G3Sharp);
+				}
+				break;
+			case 'KeyH':
+				if(!keysPressed[Math.ceil(KeyFreqs.A3 * 1000)]) {
+					playSound(KeyFreqs.A3);
+				}
+				break;
+			case 'KeyU':
+				if(!keysPressed[Math.ceil(KeyFreqs.A3Sharp * 1000)]) {
+					playSound(KeyFreqs.A3Sharp);
+				}
+				break;
+			case 'KeyJ':
+				if(!keysPressed[Math.ceil(KeyFreqs.B3 * 1000)]) {
+					playSound(KeyFreqs.B3);
+				}
+				break;
+			case 'KeyK':
+				if(!keysPressed[Math.ceil(KeyFreqs.C4 * 1000)]) {
+					playSound(KeyFreqs.C4);
+				}
+				break;
+			default:
+		}
+	})
+}
+
+function qwertyKeyboardKeyup(stopSound) {
+	window.addEventListener('keyup', event => {
+		switch (event.code) {
+			case 'KeyA':
+				if(keysPressed[Math.ceil(KeyFreqs.C3 * 1000)]) {
+					stopSound(KeyFreqs.C3);
+				}
+				break;
+			case 'KeyW':
+				if(keysPressed[Math.ceil(KeyFreqs.C3Sharp * 1000)]) {
+					stopSound(KeyFreqs.C3Sharp);
+				}
+				break;
+			case 'KeyS':
+				if(keysPressed[Math.ceil(KeyFreqs.D3 * 1000)]) {
+					stopSound(KeyFreqs.D3);
+				}
+				break;
+			case 'KeyE':
+				if(keysPressed[Math.ceil(KeyFreqs.D3Sharp * 1000)]) {
+					stopSound(KeyFreqs.D3Sharp);
+				}
+				break;
+			case 'KeyD':
+				if(keysPressed[Math.ceil(KeyFreqs.E3 * 1000)]) {
+					stopSound(KeyFreqs.E3);
+				}
+				break;
+			case 'KeyF':
+				if(keysPressed[Math.ceil(KeyFreqs.F3 * 1000)]) {
+					stopSound(KeyFreqs.F3);
+				}
+				break;
+			case 'KeyT':
+				if(keysPressed[Math.ceil(KeyFreqs.F3Sharp * 1000)]) {
+					stopSound(KeyFreqs.F3Sharp);
+				}
+				break;
+			case 'KeyG':
+				if(keysPressed[Math.ceil(KeyFreqs.G3 * 1000)]) {
+					stopSound(KeyFreqs.G3);
+				}
+				break;
+			case 'KeyY':
+				if(keysPressed[Math.ceil(KeyFreqs.G3Sharp * 1000)]) {
+					stopSound(KeyFreqs.G3Sharp);
+				}
+				break;
+			case 'KeyH':
+				if(keysPressed[Math.ceil(KeyFreqs.A3 * 1000)]) {
+					stopSound(KeyFreqs.A3);
+				}
+				break;
+			case 'KeyU':
+				if(keysPressed[Math.ceil(KeyFreqs.A3Sharp * 1000)]) {
+					stopSound(KeyFreqs.A3Sharp);
+				}
+				break;
+			case 'KeyJ':
+				if(keysPressed[Math.ceil(KeyFreqs.B3 * 1000)]) {
+					stopSound(KeyFreqs.B3);
+				}
+				break;
+			case 'KeyK':
+				if(keysPressed[Math.ceil(KeyFreqs.C4 * 1000)]) {
+					stopSound(KeyFreqs.C4);
+				}
+				break;
+			default:
 		}
 	})
 }
@@ -865,6 +967,7 @@ const dispatches = {
   },
   chorus: {
     feedback: function(value, component) {
+<<<<<<< HEAD
       let newSynths = [...component.state.synths]
     	  	newSynths.forEach(synth => {
             synth.effectBus.forEach(effect => {
@@ -883,6 +986,9 @@ const dispatches = {
       		patch: newPatch,
       		synths: newSynths
       	});
+=======
+
+>>>>>>> 144fb665755f227648927203487408dee4d70bec
     },
     delay: function(value, component) {
       let newSynths = [...component.state.synths]

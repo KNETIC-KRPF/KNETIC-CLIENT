@@ -1,4 +1,19 @@
-.effect-rack{
+.container {
+	height: 100vh;
+	width: 1080px;
+	background: #33302F;
+}
+
+.grid {
+	height: 600px;
 	display: flex;
-	flex-direction: row;
+	padding: 2em;
+}
+
+.grid-cell {
+	flex: 1;
+}
+
+.middle-column {
+	overflow-y:scroll;
 }
