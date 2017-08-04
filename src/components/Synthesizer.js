@@ -486,20 +486,105 @@ const dispatches = {
     }
   },
   delay: {
-    time: function(value) {
-      console.log("Delay time: ", value);
+    time: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'delay') {
+                effect.time = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'delay') {
+            effect.delayTime = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    feedback: function(value) {
-      console.log("Delay feedback: ", value);
+    feedback: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'delay') {
+                effect.feedback = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'delay') {
+            effect.feedback = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    cutoff: function(value) {
-      console.log("Delay cuttoff: ", value);
+    cutoff: function(value, component) {
+  		let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'delay') {
+                effect.cutoff = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'delay') {
+            effect.cutoff = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    dry: function(value) {
-      console.log("Delay dry: ", value);
+    dry: function(value, component) {
+  		let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'delay') {
+                effect.dry.gain.value = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'delay') {
+            effect.drylevel = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    bypass: function(value) {
-
+    bypass: function(value, component) {
+        		let newSynths = [...component.state.synths]
+          	  	newSynths.forEach(synth => {
+                  synth.effectBus.forEach(effect => {
+                    if (effect.type === 'delay') {
+                      effect.bypass = value;
+                    }
+                  })
+          	  })
+          	  let newPatch = {...component.state.patch}
+              newPatch.effectBus.forEach(effect => {
+                if (effect.type === 'delay') {
+                  effect.wetLevel = value;
+                }
+              })
+          	  component.setState({
+            		patch: newPatch,
+            		synths: newSynths
+            	});
     },
     wet: function(value, component) {
   		let newSynths = [...component.state.synths]
