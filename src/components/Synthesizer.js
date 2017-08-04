@@ -89,6 +89,7 @@ class Synthesizer extends Component {
 	      synth.oscillators.forEach(oscillator => {
 	        oscillator.osc.stop();
 			this.state.synths.splice(index, 1);
+			keysPressed[event.code] = false;
 	      })
 	    }
 	  })
@@ -103,49 +104,92 @@ class Synthesizer extends Component {
   }
 }
 
+const keysPressed = {
+
+}
+
 
 function qwertyKeyboard(playSound) {
 	window.addEventListener('keydown', event => {
 		if (pressed === false) {
 			switch (event.code) {
 				case 'KeyA':
-					playSound(KeyFreqs.C3, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.C3, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyW':
-					playSound(KeyFreqs.C3Sharp, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.C3Sharp, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyS':
-					playSound(KeyFreqs.D3, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.D3, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyE':
-					playSound(KeyFreqs.D3Sharp, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.D3Sharp, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyD':
-					playSound(KeyFreqs.E3, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.E3, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyF':
-					playSound(KeyFreqs.F3, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.F3, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyT':
-					playSound(KeyFreqs.F3Sharp, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.F3Sharp, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyG':
-					playSound(KeyFreqs.G3, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.G3, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyY':
-					playSound(KeyFreqs.G3Sharp, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.G3Sharp, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyH':
-					playSound(KeyFreqs.A3, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.A3, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyU':
-					playSound(KeyFreqs.A3Sharp, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.A3Sharp, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyJ':
-					playSound(KeyFreqs.B3, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.B3, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				case 'KeyK':
-					playSound(KeyFreqs.C4, event.code);
+					if(!keysPressed[event.code]) {
+						playSound(KeyFreqs.C4, event.code);
+						keysPressed[event.code] = true;
+					}
 					break;
 				default:
 			}
@@ -183,12 +227,20 @@ const dispatches = {
     }
   },
   filter: {
-    type: (input) => {
-      console.log("filter type: ", input);
-	  console.log(this.state);
+    type: (value, component) => {
+		let newSynths = [...component.state.synths]
+  	  	newSynths.forEach(synth => {
+  		 synth.filter.type = value;
+  	  })
+  	  let newPatch = {...patch}
+  	  newPatch.filter = {...patch.filter}
+  	  newPatch.filter.type = value;
+  	  component.setState({
+  		patch: newPatch,
+  		synths: newSynths
+  	})
     },
     frequency(value, component) {
-      console.log("frequency: ", value);
 	  	let newSynths = [...component.state.synths]
 		newSynths.forEach(synth => {
 			synth.filter.frequency.value = value;
@@ -201,11 +253,31 @@ const dispatches = {
 		  synths: newSynths
 	  })
     },
-    Q: function(value) {
-      console.log("Q: ", value);
+    Q: function(value, component) {
+	  let newSynths = [...component.state.synths]
+	  newSynths.forEach(synth => {
+		  synth.filter.Q.value = value;
+	  })
+	  let newPatch = {...patch}
+	  newPatch.filter = {...patch.filter}
+	  newPatch.filter.Q = value;
+	  component.setState({
+		patch: newPatch,
+		synths: newSynths
+	})
     },
-    gain: function(value) {
-      console.log("gain: ", value);
+    gain: function(value, component) {
+		let newSynths = [...component.state.synths]
+  	  	newSynths.forEach(synth => {
+  		synth.filter.gain.value = value;
+  	  })
+  	  let newPatch = {...patch}
+  	  newPatch.filter = {...patch.filter}
+  	  newPatch.filter.gain = value;
+  	  component.setState({
+  		patch: newPatch,
+  		synths: newSynths
+  	})
     }
   },
   lfo: {
