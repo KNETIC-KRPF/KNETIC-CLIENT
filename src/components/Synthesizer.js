@@ -520,20 +520,106 @@ const dispatches = {
     }
   },
   overdrive: {
-    drive: function(value) {
-      console.log("overdrive drive: ", value);
+    drive: function(value, component) {
+      let newSynths = [...component.state.synths]
+          newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'overdrive') {
+                effect.inputDrive.gain.value = value;
+              }
+            })
+        })
+        let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'overdrive') {
+            effect.drive = value;
+          }
+        })
+        component.setState({
+          patch: newPatch,
+          synths: newSynths
+        });
     },
-    output_gain: function(value) {
-      console.log("overdrive output_gain: ", value);
+    output_gain: function(value, component) {
+      let newSynths = [...component.state.synths]
+          newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'overdrive') {
+                effect.outputDrive.gain.value = value;
+              }
+            })
+        })
+        let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'overdrive') {
+            effect.outputGain = value;
+          }
+        })
+        component.setState({
+          patch: newPatch,
+          synths: newSynths
+        });
     },
-    curve_amount: function(value) {
-      console.log("overdrive curve_amount: ", value);
+    curve_amount: function(value, component) {
+      let newSynths = [...component.state.synths]
+          newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'overdrive') {
+                effect._curveAmount= value;
+                console.log(effect);
+              }
+            })
+        })
+        let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'overdrive') {
+            effect.curveAmount = value;
+          }
+        })
+        component.setState({
+          patch: newPatch,
+          synths: newSynths
+        });
     },
     algorithm_index(value, component) {
-      console.log("overdrive algorithm_index: ", value);
+      let newSynths = [...component.state.synths]
+          newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'overdrive') {
+                effect._algorithmIndex= value;
+              }
+            })
+        })
+        let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'overdrive') {
+            effect.algorithmIndex = value;
+          }
+        })
+        component.setState({
+          patch: newPatch,
+          synths: newSynths
+        });
     },
     bypass(value, component) {
-      console.log("Overdrive Bypass: ", value);
+      let newSynths = [...component.state.synths]
+          newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'overdrive') {
+                effect.bypass= value;
+              }
+            })
+        })
+        let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'overdrive') {
+            effect.bypass = value;
+          }
+        })
+        component.setState({
+          patch: newPatch,
+          synths: newSynths
+        });
     },
     order(value) {
       console.log("overdrive FX Order verb: ", value);

@@ -56,19 +56,27 @@ const patch = {
   //     bypass: 0,
   //     order: 4
   //   },
-      // {
-      //   type: 'chorus',
-      //   rate: 1.5,
-      //   feedback: 0.2,
-      //   delay: 0.0045,
-      //   bypass: 0
-      // },
-      {
-        type: 'moog',
-        cutoff: 0.065,    //0 to 1
-        resonance: 0,   //0 to 4
-        bufferSize: 256
-      }
+  // {
+  //   type: 'chorus',
+  //   rate: 1.5,
+  //   feedback: 0.2,
+  //   delay: 0.0045,
+  //   bypass: 0
+  // },
+  // {
+  //   type: 'moog',
+  //   cutoff: 0.065,    //0 to 1
+  //   resonance: 0,   //0 to 4
+  //   bufferSize: 256
+  // }
+  // {
+  //   type: 'overdrive',
+  //   outputGain: 0,         //0 to 1+
+  //   drive: 0,              //0 to 1
+  //   curveAmount: 0,          //0 to 1
+  //   algorithmIndex: 0,       //0 to 5, selects one of our drive algorithms
+  //   bypass: 0
+  // }
 
 
 
