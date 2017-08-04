@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Layout from './Layout';
 import Tuna from 'tunajs';
 import {KeyFreqs} from '../keyfreqs';
+import patch from '../patch';
+
 
 const audioContext = new AudioContext();
 const tuna = Tuna(audioContext);
@@ -15,77 +17,20 @@ class Synthesizer extends Component {
     super(props);
 
     this.receiveDispatch = this.receiveDispatch.bind(this);
-		this.playSound = this.playSound.bind(this)
+	this.playSound = this.playSound.bind(this)
     this.state = {
-      patch: {
-        oscillators: [
-          {
-            type: 'sine',
-            detune: 0,
-            octave: 3,
-            gain: .5
-          }, {
-            type: 'sawtooth',
-            detune: 0,
-            octave: 3,
-            gain: .3
-          }, {
-            type: 'square',
-            detune: -.1,
-            octave: 3,
-            gain: .6
-          }
-        ],
-        filter: {
-          type: 'lowpass',
-          frequency: 10000,
-          Q: 1,
-          gain: 1,
-          attack: 1000,
-          decay: 3000,
-          sustain: .4,
-          release: 300
-        },
-        effectBus: [
-          {
-            type: 'delay',
-            feedback: 0.05, //0 to 1+
-            delayTime: 400, //1 to 10000 milliseconds
-            wetLevel: 0.25, //0 to 1+
-            dryLevel: 1, //0 to 1+
-            cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
-            bypass: 1,
-            order: 4
-          }
-        ],
-        compressor: {
-          threshold: -1, //-100 to 0
-          makeupGain: 1, //0 and up (in decibels)
-          attack: 1000, //0 to 1000
-          release: 3000, //0 to 3000
-          ratio: 20, //1 to 20
-          knee: 40, //0 to 40
-          automakeup: true, //true/false
-          bypass: 0
-        },
-        adsr: {
-          attack: 1000,
-          decay: 2000,
-          sustain: .4,
-          release: 300
-        },
-        masterGain: 1
-      },
-			dispatches: dispatches
+      		patch,
+			synths: []
 		}
 		qwertyKeyboard(this.playSound)
   }
-
   receiveDispatch(type, property, value, id) {
-    this.state.dispatches[type][property](value)
+    dispatches[type][property](value, this)
+	console.log(this.state);
   }
-	
+
 	playSound(keyFreq, keyCode) {
+		console.log(this.state.synths);
 	  let synth = {
 	    oscillators: []
 	  };
@@ -135,11 +80,15 @@ class Synthesizer extends Component {
 	  synth.oscillators.forEach(osc => {
 	    osc.osc.start(audioContext.currentTime);
 	  });
-	  synths.push(synth);
+	  this.state.synths.push(synth);
+	//   console.log(this.state.synths.length);
+	  let index = this.state.synths.length - 1;
+	//   console.log(this.state.synths);
 	  document.addEventListener('keyup', event => {
 	    if (event.code === keyCode) {
 	      synth.oscillators.forEach(oscillator => {
 	        oscillator.osc.stop();
+			this.state.synths.splice(index, 1);
 	      })
 	    }
 	  })
@@ -208,8 +157,9 @@ export default Synthesizer;
 
 const dispatches = {
   oscillator: {
-    waveform: function(input) {
+    waveform: function(input, component) {
       console.log("Oscillator waveform: ", input);
+	  console.log(component);
     },
     gain: function(value) {
       console.log("OSC Gain: ", value);
@@ -233,11 +183,23 @@ const dispatches = {
     }
   },
   filter: {
-    type: function(input) {
+    type: (input) => {
       console.log("filter type: ", input);
+	  console.log(this.state);
     },
-    frequency: function(value) {
+    frequency(value, component) {
       console.log("frequency: ", value);
+	  	let newSynths = [...component.state.synths]
+		newSynths.forEach(synth => {
+			synth.filter.frequency.value = value;
+		})
+	  	let newPatch = {...patch}
+		newPatch.filter = {...patch.filter}
+		newPatch.filter.frequency = value;
+	  	component.setState({
+		  patch: newPatch,
+		  synths: newSynths
+	  })
     },
     Q: function(value) {
       console.log("Q: ", value);
@@ -356,13 +318,13 @@ const dispatches = {
     curve_amount: function(value) {
       console.log("overdrive curve_amount: ", value);
     },
-    algorithm_index: function(value) {
+    algorithm_index(value, component) {
       console.log("overdrive algorithm_index: ", value);
     },
-    bypass: function(value) {
+    bypass(value, component) {
       console.log("Overdrive Bypass: ", value);
     },
-    order: function(value) {
+    order(value) {
       console.log("overdrive FX Order verb: ", value);
     }
   },
