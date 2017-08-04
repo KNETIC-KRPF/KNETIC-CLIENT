@@ -24,8 +24,11 @@ class Synthesizer extends Component {
 		qwertyKeyboard(this.playSound)
   }
   receiveDispatch(type, property, value, id) {
-    dispatches[type][property](value, this)
-	console.log(this.state);
+		if(id) {
+			dispatches[type][property](value, this, id)
+		} else {
+			dispatches[type][property](value, this)
+		}
   }
 
 	playSound(keyFreq, keyCode) {
@@ -60,6 +63,7 @@ class Synthesizer extends Component {
 	  synth.effectBus = []
 	  sortedBus.forEach(effect => {
 	    let nextEffect = getConstrucedEffect(effect.type, effect);
+			nextEffect.type = effect.type;
 
 	    lastConnection.connect(nextEffect);
 	    lastConnection = nextEffect;
@@ -201,11 +205,23 @@ export default Synthesizer;
 
 const dispatches = {
   oscillator: {
-    waveform: function(input, component) {
-      console.log("Oscillator waveform: ", input);
-	  console.log(component);
+    waveform(value, component, id) {
+			console.log(id);
+			let newSynths = [...component.state.synths]
+			newSynths.forEach(synth => {
+				synth.oscillators[id - 1].type = value;
+			})
+		  let newPatch = {...patch}
+			newPatch.oscillators = [...patch.oscillators]
+			newPatch.oscillators[id - 1].type = value;
+			console.log(newPatch);
+		  	component.setState({
+			  patch: newPatch,
+			  synths: newSynths
+		  	})
+			console.log(component.state);
     },
-    gain: function(value) {
+    gain(value, component, id) {
       console.log("OSC Gain: ", value);
     },
     detune: function(value) {

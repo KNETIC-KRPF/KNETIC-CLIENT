@@ -23,11 +23,11 @@ class Layout extends Component {
           <h2>Oscillators</h2>
         </label>
         <label htmlFor="oscillator-one">Oscillator 1</label>
-        <Oscillator sendDispatch={this.props.sendDispatch}/>
+        <Oscillator sendDispatch={this.props.sendDispatch} id={1}/>
         <label htmlFor="oscillator-two">Oscillator 2</label>
-        <Oscillator sendDispatch={this.props.sendDispatch}/>
+        <Oscillator sendDispatch={this.props.sendDispatch} id={2}/>
         <label htmlFor="oscillator-three">Oscillator 3</label>
-        <Oscillator sendDispatch={this.props.sendDispatch}/>
+        <Oscillator sendDispatch={this.props.sendDispatch} id={3}/>
         <Filter sendDispatch={this.props.sendDispatch}/>
         <ADSR sendDispatch={this.props.sendDispatch}/>
         <Compressor sendDispatch={this.props.sendDispatch}/>
