@@ -555,25 +555,6 @@ const dispatches = {
   },
   chorus: {
     feedback: function(value) {
-      time: function(value, component) {
-        let newSynths = [...component.state.synths]
-      	  	newSynths.forEach(synth => {
-              synth.effectBus.forEach(effect => {
-                if (effect.type === 'delay') {
-                  effect.time = value;
-                }
-              })
-      	  })
-      	  let newPatch = {...component.state.patch}
-          newPatch.effectBus.forEach(effect => {
-            if (effect.type === 'delay') {
-              effect.delayTime = value;
-            }
-          })
-      	  component.setState({
-        		patch: newPatch,
-        		synths: newSynths
-        	});
     },
     delay: function(value) {
       console.log("Chorus delay: ", value);
