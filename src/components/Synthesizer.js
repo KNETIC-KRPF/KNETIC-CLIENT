@@ -497,23 +497,127 @@ const dispatches = {
     }
   },
   phaser: {
-    rate: function(value) {
-      console.log("Phaser rate: ", value);
+    rate: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'phaser') {
+                effect._rate = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'phaser') {
+            effect.rate = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    depth: function(value) {
-      console.log("Phaser depth: ", value);
+    depth: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'phaser') {
+                effect._depth = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'phaser') {
+            effect.depth = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    feedback: function(value) {
-      console.log("Phaser feedback: ", value);
+    feedback: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'phaser') {
+                effect._feedback = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'phaser') {
+            effect.feedback = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    stereo_phase: function(value) {
-      console.log("Phaser stereo_phase: ", value);
+    stereo_phase: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'phaser') {
+                effect._stereoPhase = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'phaser') {
+            effect.stereoPhase = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    BMF: function(value) {
-      console.log("Phaser BMF: ", value);
-    },
-    bypass: function(value) {
-      console.log("Phaser Bypass: ", value);
+    // BMF: function(value, component) {
+    //   let newSynths = [...component.state.synths]
+    // 	  	newSynths.forEach(synth => {
+    //         synth.effectBus.forEach(effect => {
+    //           if (effect.type === 'phaser') {
+    //             effect.baseModulationFrequency = value;
+    //             console.log(effect);
+    //           }
+    //         })
+    // 	  })
+    // 	  let newPatch = {...component.state.patch}
+    //     newPatch.effectBus.forEach(effect => {
+    //       if (effect.type === 'phaser') {
+    //         effect.baseModulationFrequency = value;
+    //       }
+    //     })
+    // 	  component.setState({
+    //   		patch: newPatch,
+    //   		synths: newSynths
+    //   	});
+    // },
+    bypass: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'phaser') {
+                effect._bypass = value;
+                console.log(effect);
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'phaser') {
+            effect.bypass = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
     order: function(value) {
       console.log("Phaser FX Order verb: ", value);
@@ -757,13 +861,14 @@ const dispatches = {
             synth.effectBus.forEach(effect => {
               if (effect.type === 'chorus') {
                 effect.bypass = value;
+                console.log(effect);
               }
             })
     	  })
     	  let newPatch = {...component.state.patch}
         newPatch.effectBus.forEach(effect => {
           if (effect.type === 'chorus') {
-            effect.bypass = value;
+            effect._bypass = value;
           }
         })
     	  component.setState({
@@ -980,6 +1085,8 @@ function getConstrucedEffect(type, data) {
       return new tuna.Chorus(data);
     case 'moog':
       return new tuna.MoogFilter(data);
+    case 'phaser':
+      return new tuna.Phaser(data);
     default:
       return type;
   }

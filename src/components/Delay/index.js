@@ -8,13 +8,13 @@ class Delay extends Component {
 			<div>
 				<h2>Delay</h2>
 				<label htmlFor="delay-control">Time: </label>
-					<Knob
-							sendDispatch={this.props.sendDispatch}
-							type="delay"
-							property="time"
-							min="0"
-							max="10000"
-							step="500"
+				<Knob
+					sendDispatch={this.props.sendDispatch}
+					type="delay"
+					property="time"
+					min="1"
+					max="2000"
+					step="25"
 							/>
 				<br/>
 				<label htmlFor="delay-control">Feedback: </label>

@@ -50,36 +50,34 @@ const patch = {
   //     type: 'delay',
   //     feedback: 0.05, //0 to 1+
   //     delayTime: 400, //1 to 10000 milliseconds
-  //     wetLevel: 0.25, //0 to 1+
+  //     wetLevel: 0.5, //0 to 1+
   //     dryLevel: 1, //0 to 1+
   //     cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
   //     bypass: 0,
   //     order: 4
   //   },
-  // {
-  //   type: 'chorus',
-  //   rate: 1.5,
-  //   feedback: 0.2,
-  //   delay: 0.0045,
-  //   bypass: 0
-  // },
-  // {
-  //   type: 'moog',
-  //   cutoff: 0.065,    //0 to 1
-  //   resonance: 0,   //0 to 4
-  //   bufferSize: 256
-  // }
-  // {
-  //   type: 'overdrive',
-  //   outputGain: 0,         //0 to 1+
-  //   drive: 0,              //0 to 1
-  //   curveAmount: 0,          //0 to 1
-  //   algorithmIndex: 0,       //0 to 5, selects one of our drive algorithms
-  //   bypass: 0
-  // }
-
-
-
+  //     {
+  //       type: 'chorus',
+  //       rate: 1.5,
+  //       feedback: 0.2,
+  //       delay: 0.0045,
+  //       bypass: 0
+  //     }
+      // {
+      //   type: 'moog',
+      //   cutoff: 0.065,    //0 to 1
+      //   resonance: 0,   //0 to 4
+      //   bufferSize: 256
+      // },
+      {
+        type: 'phaser',
+        rate: 1.2,                     //0.01 to 8 is a decent range, but higher values are possible
+        depth: 0.3,                    //0 to 1
+        feedback: 0.2,                 //0 to 1+
+        stereoPhase: 30,               //0 to 180
+        baseModulationFrequency: 700,  //500 to 1500
+        bypass: 0
+      }
   ],
   compressor: {
     threshold: -1, //-100 to 0
