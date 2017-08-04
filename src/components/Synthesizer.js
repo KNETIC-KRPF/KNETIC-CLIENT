@@ -540,14 +540,65 @@ const dispatches = {
     }
   },
   moog_filter: {
-    buffer: function(value) {
-      console.log("Moog buffer: ", value);
+    buffer: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'moog') {
+                effect.buffer = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'moog') {
+            effect.buffer = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    cutoff: function(value) {
-      console.log("Moog cutoff: ", value);
+    cutoff: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'moog') {
+                effect.cutoff = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'moog') {
+            effect.cutoff = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    res: function(value) {
-      console.log("Moog res: ", value);
+    res: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'moog') {
+                effect.res = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'moog') {
+            effect.res = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
     order: function(value) {
       console.log("Moog FX Order verb: ", value);
@@ -633,6 +684,9 @@ const dispatches = {
       		patch: newPatch,
       		synths: newSynths
       	});
+    },
+    order: function(value) {
+
     }
   },
   bitcrusher: {
@@ -838,6 +892,8 @@ function getConstrucedEffect(type, data) {
       return new tuna.Delay(data);
     case 'chorus':
       return new tuna.Chorus(data);
+    case 'moog':
+      return new tuna.MoogFilter(data);
     default:
       return type;
   }
