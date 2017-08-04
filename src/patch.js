@@ -46,7 +46,6 @@ const patch = {
     //   bufferSize: 256, //256 to 16384
     //   order: 2
     // },
-<<<<<<< HEAD
 	  // {
     //   type: 'delay',
     //   feedback: 0.05, //0 to 1+
@@ -78,7 +77,7 @@ const patch = {
       stereoPhase: 30,               //0 to 180
       baseModulationFrequency: 700,  //500 to 1500
       bypass: 0
-    }
+    },
     // {
     //   type: 'ping_pong',
     //   wetLevel: 0, //0 to 1
@@ -95,8 +94,6 @@ const patch = {
     //   level: 1,                               //0 to 1+, adjusts total output of both wet and dry   //the path to your impulse response
     //   bypass: 1
     // }
-
-=======
 	// {
   //     type: 'bitcrusher',
   //     bits: 1, //1 to 16
@@ -114,7 +111,6 @@ const patch = {
       bypass: 0,
       order: 4
     }
->>>>>>> 144fb665755f227648927203487408dee4d70bec
   ],
   compressor: {
     threshold: -1, //-100 to 0
