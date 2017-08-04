@@ -15,7 +15,6 @@ let pressed = false;
 class Synthesizer extends Component {
   constructor(props) {
     super(props);
-
     this.receiveDispatch = this.receiveDispatch.bind(this);
 	this.playSound = this.playSound.bind(this)
     this.state = {
@@ -110,6 +109,7 @@ class Synthesizer extends Component {
 const keysPressed = {
 
 }
+
 
 
 function qwertyKeyboard(playSound) {
@@ -554,7 +554,8 @@ const dispatches = {
     }
   },
   chorus: {
-    feedback: function(value) {
+    feedback: function(value, component) {
+
     },
     delay: function(value) {
       console.log("Chorus delay: ", value);
