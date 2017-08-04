@@ -1,0 +1,11 @@
+.header{
+  display: flex;
+  flex-direction: row;
+  background: #1F1C1B;
+  padding: 2em;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+}

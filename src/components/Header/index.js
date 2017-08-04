@@ -6,8 +6,8 @@ import './Header.css';
 class Header extends Component {
 	render() {
 		return(
-			<div>
-				<h1>Header</h1>
+			<div className="header">
+				<h1>KNETIC</h1>
 				<label htmlFor="login-info">Login/Account Info</label>
 				<Account />
 				<label htmlFor="patch-collection">Patches</label>
