@@ -15,7 +15,6 @@ let pressed = false;
 class Synthesizer extends Component {
   constructor(props) {
     super(props);
-
     this.receiveDispatch = this.receiveDispatch.bind(this);
 	this.playSound = this.playSound.bind(this)
     this.state = {
@@ -110,6 +109,7 @@ class Synthesizer extends Component {
 const keysPressed = {
 
 }
+
 
 
 function qwertyKeyboard(playSound) {
@@ -554,26 +554,8 @@ const dispatches = {
     }
   },
   chorus: {
-    feedback: function(value) {
-      time: function(value, component) {
-        let newSynths = [...component.state.synths]
-      	  	newSynths.forEach(synth => {
-              synth.effectBus.forEach(effect => {
-                if (effect.type === 'delay') {
-                  effect.time = value;
-                }
-              })
-      	  })
-      	  let newPatch = {...component.state.patch}
-          newPatch.effectBus.forEach(effect => {
-            if (effect.type === 'delay') {
-              effect.delayTime = value;
-            }
-          })
-      	  component.setState({
-        		patch: newPatch,
-        		synths: newSynths
-        	});
+    feedback: function(value, component) {
+      
     },
     delay: function(value) {
       console.log("Chorus delay: ", value);

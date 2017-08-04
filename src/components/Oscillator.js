@@ -17,9 +17,9 @@ class Oscillator extends Component {
 					sendDispatch={this.props.sendDispatch}
 					type="oscillator"
 					property="gain"
-					min="0"
-					max="100"
-				step="1"/>
+					min={0}
+					max={100}
+				step={1}/>
 
 			<label>Detune: </label>
 				<OscillatorKnob
@@ -27,9 +27,9 @@ class Oscillator extends Component {
 					sendDispatch={this.props.sendDispatch}
 					type="oscillator"
 					property="detune"
-					min="0"
-					max="100"
-				step="1"/>
+					min={0}
+					max={100}
+				step={1}/>
       </div>
 		);
 	}
