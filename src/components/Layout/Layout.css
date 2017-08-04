@@ -5,6 +5,7 @@
 }
 
 .grid {
+	height: 600px;
 	display: flex;
 	padding: 2em;
 }
