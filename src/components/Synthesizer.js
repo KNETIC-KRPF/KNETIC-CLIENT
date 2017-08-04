@@ -2,69 +2,80 @@ import React, {Component} from 'react';
 import Layout from './Layout';
 import Tuna from 'tunajs';
 import patch from '../patch';
-
+import { KeyFreqs } from '../keyfreqs';
 
 
 const audioContext = new AudioContext();
 const tuna = Tuna(audioContext);
-const synth = {
-	oscillators: []
-};
 
+const synths = [];
 
-synth.filter = audioContext.createBiquadFilter();
-synth.filter.type = patch.filter.type;
-synth.filter.frequency.value = patch.filter.frequency;
-synth.filter.Q.value = patch.filter.Q;
-synth.filter.gain.value = patch.filter.gain;
+let pressed = false;
 
-patch.oscillators.forEach(osc => {
-	let newOsc = audioContext.createOscillator()
-	newOsc.type = osc.type;
-	newOsc.detune.value = osc.detune;
-	newOsc.octave = osc.octave;
-	let newGain = audioContext.createGain()
-	newGain.value = osc.gain;
-	newOsc.connect(newGain);
-	newGain.connect(synth.filter);
-	synth.oscillators.push({
-		osc: newOsc,
-		gain: newGain
+function playSound(keyFreq, keyCode) {
+	let synth = {
+		oscillators: []
+	};
+	synth.filter = audioContext.createBiquadFilter();
+	synth.filter.type = patch.filter.type;
+	synth.filter.frequency.value = patch.filter.frequency;
+	synth.filter.Q.value = patch.filter.Q;
+	synth.filter.gain.value = patch.filter.gain;
+
+	patch.oscillators.forEach(osc => {
+		let newOsc = audioContext.createOscillator()
+		newOsc.type = osc.type;
+		newOsc.frequency.value = keyFreq;
+		newOsc.detune.value = osc.detune;
+		newOsc.octave = osc.octave;
+		let newGain = audioContext.createGain()
+		newGain.value = osc.gain;
+		newOsc.connect(newGain);
+		newGain.connect(synth.filter);
+		synth.oscillators.push({
+			osc: newOsc,
+			gain: newGain
+		});
 	});
-})
 
-let sortedBus = patch.effectBus.slice().sort((a,b) => {
-	return a.order - b.order;
-})
+	let sortedBus = patch.effectBus.slice().sort((a,b) => {
+		return a.order - b.order;
+	});
 
-let lastConnection = synth.filter;
-synth.effectBus = []
-sortedBus.forEach(effect => {
-	let nextEffect = getConstrucedEffect(effect.type, effect);
-	console.log(nextEffect);
-	lastConnection.connect(nextEffect);
-	lastConnection = nextEffect;
-	synth.effectBus.push(nextEffect)
-})
-let newCompressor = patch.compressor
-synth.compressor = new tuna.Compressor({
-	newCompressor
-})
-lastConnection.connect(synth.compressor);
-synth.masterGain = audioContext.createGain();
-synth.masterGain.gain.value = patch.masterGain
-synth.compressor.connect(synth.masterGain);
+	let lastConnection = synth.filter;
+	synth.effectBus = []
+	sortedBus.forEach(effect => {
+		let nextEffect = getConstrucedEffect(effect.type, effect);
+		// console.log(nextEffect);
+		lastConnection.connect(nextEffect);
+		lastConnection = nextEffect;
+		synth.effectBus.push(nextEffect)
+	});
 
-synth.masterGain.connect(audioContext.destination);
+	let newCompressor = patch.compressor
+	synth.compressor = new tuna.Compressor({
+		newCompressor
+	});
 
-console.log(synth);
+	lastConnection.connect(synth.compressor);
+	synth.masterGain = audioContext.createGain();
+	synth.masterGain.gain.value = patch.masterGain
+	synth.compressor.connect(synth.masterGain);
 
-document.addEventListener('mousedown', (event) => {
+	synth.masterGain.connect(audioContext.destination);
+
 	synth.oscillators.forEach(osc => {
-		// osc.osc.start(audioContext.currentTime);
+		osc.osc.start(audioContext.currentTime);
+	});
+	synths.push(synth);
+	document.addEventListener('keyup', event => {
+		if(event.code === keyCode) {
+			synth.oscillators.forEach(oscillator => {
+				oscillator.osc.stop();
+			})
+		}
 	})
-})
-
+}
 
 class Synthesizer extends Component {
   constructor(props) {
@@ -330,3 +341,60 @@ function getConstrucedEffect(type, data) {
 			return type;
 	}
 }
+
+// Add Keyboard Functionality
+window.addEventListener('keydown', event => {
+	if (pressed === false) {
+		switch (event.code) {
+			case 'KeyA':
+				playSound(KeyFreqs.C3, event.code);
+				break;
+			case 'KeyW':
+				playSound(KeyFreqs.C3Sharp, event.code);
+				break;
+			case 'KeyS':
+				playSound(KeyFreqs.D3, event.code);
+				break;
+			case 'KeyE':
+				playSound(KeyFreqs.D3Sharp, event.code);
+				break;
+			case 'KeyD':
+				playSound(KeyFreqs.E3, event.code);
+				break;
+	    case 'KeyF':
+	      playSound(KeyFreqs.F3, event.code);
+	      break;
+	    case 'KeyT':
+	      playSound(KeyFreqs.F3Sharp, event.code);
+	      break;
+	    case 'KeyG':
+	      playSound(KeyFreqs.G3, event.code);
+	      break;
+	    case 'KeyY':
+	      playSound(KeyFreqs.G3Sharp, event.code);
+	      break;
+	    case 'KeyH':
+	      playSound(KeyFreqs.A3, event.code);
+	      break;
+	    case 'KeyU':
+	      playSound(KeyFreqs.A3Sharp, event.code);
+	      break;
+	    case 'KeyJ':
+	      playSound(KeyFreqs.B3, event.code);
+	      break;
+	    case 'KeyK':
+	      playSound(KeyFreqs.C4, event.code);
+	      break;
+	    default:
+		}
+	}
+
+	// window.addEventListener('keyup', event => {
+	// 	pressed = false;
+	// 	console.log(synth.oscillators);
+	// 	synth.oscillators.forEach(osc => {
+	// 		osc.osc.stop();
+	// 	})
+	// })
+
+})
