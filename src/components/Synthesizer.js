@@ -480,17 +480,87 @@ const dispatches = {
     }
   },
   ping_pong: {
-    feedback: function(value) {
-      console.log("Ping Pong Feedback: ", value);
+    feedback: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'ping_pong') {
+                effect.feedback = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'ping_pong') {
+            effect.feedback = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    wet: function(value) {
-      console.log("Ping Pong wet: ", value);
+    wet: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'ping_pong') {
+                effect.wetLevel.gain.value = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'ping_pong') {
+            effect.feedback = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    delay_left: function(value) {
-      console.log("Ping Pong Feedback: ", value);
+    delay_left: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'ping_pong') {
+                effect.delayTimeLeft = value;
+                console.log(effect);
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'ping_pong') {
+            effect.delayTimeLeft = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    delay_right: function(value) {
-      console.log("Ping Pong Feedback: ", value);
+    delay_right: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'ping_pong') {
+                effect.delayTimeRight = value;
+                console.log(effect);
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'ping_pong') {
+            effect.delayTimRight = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
     order: function(value) {
       console.log("PING Order verb: ", value);
@@ -604,7 +674,6 @@ const dispatches = {
             synth.effectBus.forEach(effect => {
               if (effect.type === 'phaser') {
                 effect._bypass = value;
-                console.log(effect);
               }
             })
     	  })
@@ -1087,6 +1156,8 @@ function getConstrucedEffect(type, data) {
       return new tuna.MoogFilter(data);
     case 'phaser':
       return new tuna.Phaser(data);
+    case 'ping_pong':
+      return new tuna.PingPongDelay(data);
     default:
       return type;
   }

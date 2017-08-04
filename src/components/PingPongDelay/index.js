@@ -25,15 +25,15 @@ class PingPongDelay extends Component {
 				<Knob sendDispatch={this.props.sendDispatch} type="ping_pong"
 					property="delay_left"
 					min="1"
-					max="10000"
-				step="100" />
+					max="2000"
+				step="50" />
 				<br/>
 				<label htmlFor="ping-pong-control">Delay Right: </label>
 				<Knob sendDispatch={this.props.sendDispatch} type="ping_pong"
 					property="delay_right"
 					min="1"
-					max="10000"
-				step="100" />
+					max="200"
+				step="50" />
 			</div>
 		);
 	}
