@@ -13,7 +13,6 @@ let pressed = false;
 class Synthesizer extends Component {
   constructor(props) {
     super(props);
-
     this.receiveDispatch = this.receiveDispatch.bind(this);
 		this.playSound = this.playSound.bind(this)
     this.state = {
@@ -84,7 +83,7 @@ class Synthesizer extends Component {
   receiveDispatch(type, property, value, id) {
     this.state.dispatches[type][property](value)
   }
-	
+
 	playSound(keyFreq, keyCode) {
 	  let synth = {
 	    oscillators: []
@@ -153,6 +152,7 @@ class Synthesizer extends Component {
     );
   }
 }
+
 
 
 function qwertyKeyboard(playSound) {

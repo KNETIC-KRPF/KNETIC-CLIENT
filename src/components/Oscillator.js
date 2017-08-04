@@ -16,8 +16,8 @@ class Oscillator extends Component {
 					sendDispatch={this.props.sendDispatch}
 					type="oscillator"
 					property="gain"
-					min="0"
-					max="100"
+					min="5"
+					max="50"
 				step="1"/>
 
 			<label>Detune: </label>
