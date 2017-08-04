@@ -465,24 +465,65 @@ const dispatches = {
   },
   bitcrusher: {
     bits: function(value, component) {
-  		let newSynths = [...component.state.synths]
+      let newSynths = [...component.state.synths]
     	  	newSynths.forEach(synth => {
-            console.log(synth);
-    		    // synth.effectBus[0].wet.gain.value = value;
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'bitcrusher') {
+                effect.bits = value;
+              }
+            })
     	  })
-    	  let newPatch = {...patch}
-    	  newPatch.bitcrusher = {...patch.bitcrusher}
-    	  newPatch.bitcrusher.bits = value;
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'bitcrusher') {
+            effect.bits = value;
+          }
+        })
     	  component.setState({
       		patch: newPatch,
       		synths: newSynths
       	});
     },
-    buffer: function(value) {
-      console.log("Bits buffer: ", value);
+    buffer: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'bitcrusher') {
+                effect.buffer = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'bitcrusher') {
+            effect.bufferSize = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    norm_freq: function(value) {
-      console.log("Bits norm_freq: ", value);
+    norm_freq: function(value, component) {
+      // let newSynths = [...component.state.synths]
+    	//   	newSynths.forEach(synth => {
+      //       synth.effectBus.forEach(effect => {
+      //         if (effect.type === 'bitcrusher') {
+      //           effect.norm_freq = value;
+      //         }
+      //       })
+    	//   })
+      //   console.log(newSynths);
+    	//   let newPatch = {...component.state.patch}
+      //   newPatch.effectBus.forEach(effect => {
+      //     if (effect.type === 'bitcrusher') {
+      //       effect.normfreq = value;
+      //     }
+      //   })
+    	//   component.setState({
+      // 		patch: newPatch,
+      // 		synths: newSynths
+      // 	});
     }
   },
   delay: {
