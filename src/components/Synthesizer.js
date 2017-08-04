@@ -555,19 +555,84 @@ const dispatches = {
   },
   chorus: {
     feedback: function(value, component) {
-
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'chorus') {
+                effect.feedback = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'chorus') {
+            effect.feeback = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    delay: function(value) {
-      console.log("Chorus delay: ", value);
+    delay: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'chorus') {
+                effect.delay = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'chorus') {
+            effect.delay = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    rate: function(value) {
-      console.log("Chorus rate: ", value);
+    rate: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'chorus') {
+                effect.rate = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'chorus') {
+            effect.rate = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
-    bypass: function(value) {
-      console.log("Chorus Bypass: ", value);
-    },
-    order: function(value) {
-      console.log("Chorus FX Order verb: ", value);
+    bypass: function(value, component) {
+      let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'chorus') {
+                effect.bypass = value;
+              }
+            })
+    	  })
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'chorus') {
+            effect.bypass = value;
+          }
+        })
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     }
   },
   bitcrusher: {
@@ -771,6 +836,8 @@ function getConstrucedEffect(type, data) {
       return new tuna.Tremolo(data);
     case 'delay':
       return new tuna.Delay(data);
+    case 'chorus':
+      return new tuna.Chorus(data);
     default:
       return type;
   }

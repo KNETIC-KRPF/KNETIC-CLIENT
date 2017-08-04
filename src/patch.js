@@ -39,13 +39,13 @@ const patch = {
     //   bypass: 0,
     //   order: 5
     // },
-	{
-      type: 'bitcrusher',
-      bits: 1, //1 to 16
-      normfreq: 0.1, //0 to 1
-      bufferSize: 256, //256 to 16384
-      order: 2
-    },
+	// {
+  //     type: 'bitcrusher',
+  //     bits: 1, //1 to 16
+  //     normfreq: 0.1, //0 to 1
+  //     bufferSize: 256, //256 to 16384
+  //     order: 2
+  //   },
 	// {
   //     type: 'delay',
   //     feedback: 0.05, //0 to 1+
@@ -55,7 +55,16 @@ const patch = {
   //     cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
   //     bypass: 0,
   //     order: 4
-  //   }
+  //   },
+    {
+      type: 'chorus',
+      rate: 1.5,
+      feedback: 0.2,
+      delay: 0.0045,
+      bypass: 0
+    }
+
+
   ],
   compressor: {
     threshold: -1, //-100 to 0
