@@ -39,13 +39,13 @@ const patch = {
     //   bypass: 0,
     //   order: 5
     // },
-	// {
-  //     type: 'bitcrusher',
-  //     bits: 1, //1 to 16
-  //     normfreq: 0.1, //0 to 1
-  //     bufferSize: 256, //256 to 16384
-  //     order: 2
-  //   },
+	{
+      type: 'bitcrusher',
+      bits: 1, //1 to 16
+      normfreq: 0.1, //0 to 1
+      bufferSize: 256, //256 to 16384
+      order: 2
+    },
 	{
       type: 'delay',
       feedback: 0.05, //0 to 1+

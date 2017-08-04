@@ -26,7 +26,6 @@ class Synthesizer extends Component {
   }
   receiveDispatch(type, property, value, id) {
     dispatches[type][property](value, this)
-	console.log(this.state);
   }
 
 	playSound(keyFreq, keyCode) {
@@ -432,8 +431,19 @@ const dispatches = {
     }
   },
   bitcrusher: {
-    bits: function(value) {
-      console.log("Bit bits: ", value);
+    bits: function(value, component) {
+  		let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            console.log(synth);
+    		    // synth.effectBus[0].wet.gain.value = value;
+    	  })
+    	  let newPatch = {...patch}
+    	  newPatch.bitcrusher = {...patch.bitcrusher}
+    	  newPatch.bitcrusher.bits = value;
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     },
     buffer: function(value) {
       console.log("Bits buffer: ", value);
@@ -456,10 +466,21 @@ const dispatches = {
       console.log("Delay dry: ", value);
     },
     bypass: function(value) {
-      console.log("Delay Bypass: ", value);
+
     },
-    wet: function(value) {
-      console.log("Delay wet: ", value);
+    wet: function(value, component) {
+  		let newSynths = [...component.state.synths]
+    	  	newSynths.forEach(synth => {
+            console.log(synth);
+    		    synth.effectBus[0].wet.gain.value = value;
+    	  })
+    	  let newPatch = {...patch}
+    	  newPatch.delay = {...patch.delay}
+    	  newPatch.delay.wet = value;
+    	  component.setState({
+      		patch: newPatch,
+      		synths: newSynths
+      	});
     }
   }
 }
