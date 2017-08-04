@@ -1,7 +1,7 @@
 const patch = {
   oscillators: [
     {
-      type: 'sawtooth',
+      type: 'sine',
       detune: 0,
       octave: 3,
       gain: .5
@@ -11,7 +11,7 @@ const patch = {
       octave: 3,
       gain: .3
     }, {
-      type: 'sawtooth',
+      type: 'square',
       detune: -.1,
       octave: 3,
       gain: .6
@@ -19,7 +19,7 @@ const patch = {
   ],
   filter: {
     type: 'lowpass',
-    frequency: 600,
+    frequency: 10000,
     Q: 1,
     gain: 1,
     attack: 1000,
@@ -39,13 +39,13 @@ const patch = {
     //   bypass: 0,
     //   order: 5
     // },
-	{
-      type: 'bitcrusher',
-      bits: 10, //1 to 16
-      normfreq: 0.1, //0 to 1
-      bufferSize: 256, //256 to 16384
-      order: 2
-    },
+	// {
+  //     type: 'bitcrusher',
+  //     bits: 1, //1 to 16
+  //     normfreq: 0.1, //0 to 1
+  //     bufferSize: 256, //256 to 16384
+  //     order: 2
+  //   },
 	{
       type: 'delay',
       feedback: 0.05, //0 to 1+
@@ -53,7 +53,7 @@ const patch = {
       wetLevel: 0.25, //0 to 1+
       dryLevel: 1, //0 to 1+
       cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
-      bypass: 0,
+      bypass: 1,
       order: 4
     }
   ],
