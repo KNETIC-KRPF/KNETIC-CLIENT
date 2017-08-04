@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
-import Knob from './Knob';
+import OscillatorKnob from './OscillatorKnob';
 
 class Oscillator extends Component {
 	render() {
 		return (
       <div>
-				<select className="waveform" onChange={(event) => this.props.sendDispatch('oscillator', 'waveform', event.target.value)}>
+				<select className="waveform" onChange={(event) => this.props.sendDispatch('oscillator', 'waveform', event.target.value, this.props.id)}>
 					<option value="sine">Sine</option>
           <option value="triangle">Triangle</option>
           <option value="square">Square</option>
           <option value="sawtooth">Sawtooth</option>
         </select>
 				<label>Gain: </label>
-        <Knob
+        <OscillatorKnob
+					id={this.props.id}
 					sendDispatch={this.props.sendDispatch}
 					type="oscillator"
 					property="gain"
@@ -21,7 +22,8 @@ class Oscillator extends Component {
 				step="1"/>
 
 			<label>Detune: </label>
-				<Knob
+				<OscillatorKnob
+					id={this.props.id}
 					sendDispatch={this.props.sendDispatch}
 					type="oscillator"
 					property="detune"
