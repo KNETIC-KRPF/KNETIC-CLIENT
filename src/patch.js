@@ -39,23 +39,23 @@ const patch = {
     //   bypass: 0,
     //   order: 5
     // },
-	// {
-  //     type: 'bitcrusher',
-  //     bits: 1, //1 to 16
-  //     normfreq: 0.1, //0 to 1
-  //     bufferSize: 256, //256 to 16384
-  //     order: 2
-  //   },
 	{
-      type: 'delay',
-      feedback: 0.05, //0 to 1+
-      delayTime: 400, //1 to 10000 milliseconds
-      wetLevel: 0.25, //0 to 1+
-      dryLevel: 1, //0 to 1+
-      cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
-      bypass: 0,
-      order: 4
-    }
+      type: 'bitcrusher',
+      bits: 1, //1 to 16
+      normfreq: 0.1, //0 to 1
+      bufferSize: 256, //256 to 16384
+      order: 2
+    },
+	// {
+  //     type: 'delay',
+  //     feedback: 0.05, //0 to 1+
+  //     delayTime: 400, //1 to 10000 milliseconds
+  //     wetLevel: 0.25, //0 to 1+
+  //     dryLevel: 1, //0 to 1+
+  //     cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
+  //     bypass: 0,
+  //     order: 4
+  //   }
   ],
   compressor: {
     threshold: -1, //-100 to 0
