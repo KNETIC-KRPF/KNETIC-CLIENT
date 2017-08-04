@@ -33,7 +33,6 @@ class Synthesizer extends Component {
   }
 
 	playSound(keyFreq, keyCode) {
-		console.log(this.state.synths);
 	  let synth = {
 	    oscillators: []
 	  };
@@ -488,12 +487,18 @@ const dispatches = {
     wet: function(value, component) {
   		let newSynths = [...component.state.synths]
     	  	newSynths.forEach(synth => {
-            console.log(synth);
-    		    synth.effectBus[0].wet.gain.value = value;
+            synth.effectBus.forEach(effect => {
+              if (effect.type === 'delay') {
+                effect.wet.gain.value = value;
+              }
+            })
     	  })
-    	  let newPatch = {...patch}
-    	  newPatch.delay = {...patch.delay}
-    	  newPatch.delay.wet = value;
+    	  let newPatch = {...component.state.patch}
+        newPatch.effectBus.forEach(effect => {
+          if (effect.type === 'delay') {
+            effect.wetLevel = value;
+          }
+        })
     	  component.setState({
       		patch: newPatch,
       		synths: newSynths

@@ -53,7 +53,7 @@ const patch = {
       wetLevel: 0.25, //0 to 1+
       dryLevel: 1, //0 to 1+
       cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
-      bypass: 1,
+      bypass: 0,
       order: 4
     }
   ],
