@@ -15,8 +15,7 @@ class Delay extends Component {
 					min="1"
 					max="2000"
 					step="25"
-							/>
-				<br/>
+					/>
 				<label htmlFor="delay-control">Feedback: </label>
 					<Knob
 						sendDispatch={this.props.sendDispatch}
@@ -26,7 +25,6 @@ class Delay extends Component {
 						max="1"
 						step="0.1"
 						/>
-				<br/>
 				<label htmlFor="delay-control">Cutoff: </label>
 					<Knob
 						sendDispatch={this.props.sendDispatch}
@@ -36,7 +34,6 @@ class Delay extends Component {
 						max="22050"
 						step=""
 						/>
-				<br/>
 				<label htmlFor="delay-control">Dry: </label>
 					<Knob
 						sendDispatch={this.props.sendDispatch}
@@ -46,7 +43,6 @@ class Delay extends Component {
 						max="1"
 						step="0.1"
 						/>
-				<br/>
 				<label htmlFor="delay-control">Wet: </label>
 					<Knob
 						sendDispatch={this.props.sendDispatch}

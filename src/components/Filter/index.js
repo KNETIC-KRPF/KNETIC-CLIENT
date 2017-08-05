@@ -23,7 +23,7 @@ class Filter extends Component {
 					type="filter"
 					property="frequency"
 					min="20"
-					max="9999"
+					max="19999"
 					step="20"
 					/>
 

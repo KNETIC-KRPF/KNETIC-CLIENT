@@ -13,14 +13,12 @@ class Moog_Filter extends Component {
 					min="256"
 					max="16384"
 				step="256" />
-				<br/>
 				<label htmlFor="moog-filter-control">Cutoff: </label>
 				<Knob sendDispatch={this.props.sendDispatch} type="moog_filter"
 					property="cutoff"
 					min="0"
 					max="1"
 				step="0.05" />
-				<br/>
 				<label htmlFor="moog-filter-control">Res: </label>
 				<Knob sendDispatch={this.props.sendDispatch} type="moog_filter"
 					property="res"

@@ -13,21 +13,18 @@ class Overdrive extends Component {
 					min="0"
 					max="1"
 				step="0.05" />
-				<br/>
 				<label htmlFor="overdrive-control">Output Gain: </label>
 				<Knob sendDispatch={this.props.sendDispatch} type="overdrive"
 					property="output_gain"
 					min="0"
 					max="1"
 				step="0.05" />
-				<br/>
 				<label htmlFor="overdrive-control">Curve Amount: </label>
 				<Knob sendDispatch={this.props.sendDispatch} type="overdrive"
 					property="curve_amount"
 					min="0"
 					max="1"
 				step="0.05" />
-				<br/>
 				<label htmlFor="overdrive-control">Algorithm-Index: </label>
 				<Knob sendDispatch={this.props.sendDispatch}
 					type="overdrive"

@@ -13,35 +13,30 @@ class Convolver extends Component {
 					min="20"
 					max="22050"
 				step="50" />
-				<br/>
 				<label htmlFor="reverb-control">Low Cut: </label>
 				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
 					property="lowcut"
 					min="20"
 					max="22050"
 				step="50" />
-				<br/>
 				<label htmlFor="reverb-control">Dry Level: </label>
 				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
 					property="dryLevel"
 					min="0"
 					max="1"
 				step="0.05" />
-				<br/>
 				<label htmlFor="reverb-control">Wet Level: </label>
 				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
 					property="wetLevel"
 					min="0"
 					max="1"
 				step="0.05" />
-				<br/>
 				<label htmlFor="reverb-control">Level: </label>
 				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
 					property="level"
 					min="0"
 					max="1"
 				step="0.1" />
-				<br/>
 				<label htmlFor="reverb-control">Bypass: </label>
 				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
 					property="bypass"
