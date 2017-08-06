@@ -21,19 +21,19 @@ class Layout extends Component {
           <Header/>
           <div className="grid">
           <div className="left-column grid-cell">
-            <label htmlFor="oscillator-one">Oscillator 1</label>
+            <label htmlFor="oscillator-one">OSC</label>
             <Oscillator
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               id={1}
               />
-            <label htmlFor="oscillator-two">Oscillator 2</label>
+            <label htmlFor="oscillator-two">OSC</label>
             <Oscillator
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               id={2}
               />
-            <label htmlFor="oscillator-three">Oscillator 3</label>
+            <label htmlFor="oscillator-three">OSC</label>
             <Oscillator
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
@@ -55,18 +55,23 @@ class Layout extends Component {
               sendDispatch={this.props.sendDispatch}
               />
             <PingPongDelay
+              patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               />
             <Phaser
+              patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               />
             <Overdrive
+              patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               />
             <MoogFilter
+              patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               />
             <Chorus
+              patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               />
             <Bitcrusher

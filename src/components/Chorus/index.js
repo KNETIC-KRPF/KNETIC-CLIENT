@@ -4,6 +4,9 @@ import './Chorus.css';
 
 class Chorus extends Component {
   render() {
+    const efxProp = this.props.patch.effectBus;
+		const findChorus = efx => efx.type === "chorus";
+		const chorus = efxProp.find(findChorus);
     return (
       <div>
         <h2>Chorus</h2>
@@ -11,6 +14,7 @@ class Chorus extends Component {
 
           <div className="controller">
             <Knob
+              patchState={chorus.feedback}
               sendDispatch={this.props.sendDispatch}
               type="chorus"
               property="feedback"
@@ -23,6 +27,7 @@ class Chorus extends Component {
 
           <div className="controller">
             <Knob
+              patchState={chorus.delay}
               sendDispatch={this.props.sendDispatch}
               type="chorus"
               property="delay"
@@ -35,6 +40,7 @@ class Chorus extends Component {
 
           <div className="controller">
             <Knob
+              patchState={chorus.rate}
               sendDispatch={this.props.sendDispatch}
               type="chorus"
               property="rate"
@@ -47,6 +53,7 @@ class Chorus extends Component {
 
           <div className="controller">
             <Knob
+              patchState={chorus.bypass}
               sendDispatch={this.props.sendDispatch}
               type="chorus"
               property="bypass"

@@ -88,6 +88,14 @@ const patch = {
       feedback: 0.3, //0 to 1
       delayTimeLeft: 200, //1 to 10000 (milliseconds)
       delayTimeRight: 200 //1 to 10000 (milliseconds)
+    },
+    {
+      type: 'overdrive',
+      outputGain: 0.5,         //0 to 1+
+      drive: 0.7,              //0 to 1
+      curveAmount: 1,          //0 to 1
+      algorithmIndex: 0,       //0 to 5, selects one of our drive algorithms
+      bypass: 1
     }
   ],
   compressor: {
