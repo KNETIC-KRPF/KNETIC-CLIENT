@@ -12,14 +12,16 @@ import MoogFilter from '../Moog_Filter';
 import Chorus from '../Chorus';
 import Bitcrusher from '../Bitcrusher';
 import Delay from '../Delay';
+import Sidebar from '../Sidebar';
 import './Layout.css';
 
 class Layout extends Component {
   render() {
     return (
-        <div className="container">
-          <Header/>
-          <div className="grid">
+      <div className="container">
+        <Header/>
+        <div className="grid">
+          <Sidebar/>
           <div className="left-column grid-cell">
             <label htmlFor="oscillator-one">OSC</label>
             <Oscillator
@@ -75,6 +77,7 @@ class Layout extends Component {
               sendDispatch={this.props.sendDispatch}
               />
             <Bitcrusher
+              patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               />
           </div>
@@ -88,6 +91,7 @@ class Layout extends Component {
               sendDispatch={this.props.sendDispatch}
               />
           </div>
+          <Sidebar/>
         </div>
       </div>
     );
