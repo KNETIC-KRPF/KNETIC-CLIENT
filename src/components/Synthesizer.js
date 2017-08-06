@@ -128,7 +128,7 @@ class Synthesizer extends Component {
 			oscillators: synth.oscillators,
 			index: index
 		}
-		console.log(keysPressed);
+		// console.log(keysPressed);
 	}
 
 	stopSound(keyFreq) {
@@ -144,7 +144,7 @@ class Synthesizer extends Component {
   render() {
     return (
       <div>
-        <Layout sendDispatch={this.receiveDispatch}/>
+        <Layout patch={this.state.patch} sendDispatch={this.receiveDispatch}/>
       </div>
     );
   }

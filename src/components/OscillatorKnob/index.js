@@ -5,7 +5,7 @@ class Knob extends Component {
   constructor(props) {
     super(props);
     this.state = {
-			value: 0
+			value: this.props.patchState
 		};
 		this.handleChange = this.handleChange.bind(this);
   }
@@ -25,7 +25,7 @@ class Knob extends Component {
         value={this.state.value}
         onChange={this.handleChange}
         onChangeEnd={this.handleChangeEnd}
-        thickness={0.25}
+        thickness={0.5}
         width={50}
         height={50}
         stopper={true}
@@ -33,6 +33,7 @@ class Knob extends Component {
         angleOffset={-135}
         disableMouseWheel={true}
         fgColor="#94E4C2"
+        bgColor=""
         inputColor="#94E4C2"
         min={this.props.min}
         max={this.props.max}
