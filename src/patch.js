@@ -102,8 +102,8 @@ const patch = {
   },
   adsr: {
     attack: 30,
-    decay: 750,
-    sustain: 0.5,
+    decay: 100,
+    sustain: 0,
     release: 300
   },
   masterGain: 1
