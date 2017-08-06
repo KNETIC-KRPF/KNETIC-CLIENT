@@ -6,8 +6,11 @@ import patch from '../patch';
 
 
 const audioContext = new AudioContext();
+const analyser = audioContext.createAnalyser();
+
 const tuna = Tuna(audioContext);
 let KN_SYNTH = false;
+
 
 const synths = [];
 
@@ -56,7 +59,8 @@ class Synthesizer extends Component {
 		this.stopSound = this.stopSound.bind(this)
     this.state = {
       		patch,
-			synths: []
+			synths: [],
+			analyserData: []
 		}
 		qwertyKeyboard(this.playSound)
 		qwertyKeyboardKeyup(this.stopSound)
@@ -74,6 +78,9 @@ class Synthesizer extends Component {
 		if(!KN_SYNTH) {
 			KN_SYNTH = getConstructedSynthChain(this)
 		}
+
+
+
 		let oscillators = []
 	  this.state.patch.oscillators.forEach(osc => {
 	    let newOsc = audioContext.createOscillator()
@@ -87,11 +94,49 @@ class Synthesizer extends Component {
 	    newGain.connect(KN_SYNTH.filter);
 			newOsc.start(audioContext.currentTime);
 	    oscillators.push(newOsc)
+
+			//analyser logic
+
+			analyser.fftSize = 256;
+			const bufferLength = analyser.frequencyBinCount;
+			const dataArray = new Uint8Array(analyser.frequencyBinCount);
+			analyser.getByteFrequencyData(dataArray);
+
+			this.setState({
+				analyserData: dataArray
+			})
+
+			const canvas = document.getElementById("canvas");
+			const ctx = canvas.getContext("2d");
+			ctx.clearRect(0, 0, 1000, 300);
+
+		  ctx.fillStyle = 'rgb(0, 0, 0)';
+		  ctx.fillRect(0, 0, 1000, 300);
+
+		  var barWidth = (1000 / bufferLength) * 2.5;
+		  var barHeight;
+		  var x = 0;
+
+		  for(var i = 0; i < bufferLength; i++) {
+		    barHeight = this.state.analyserData[i];
+
+		    ctx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
+		    ctx.fillRect(x,300-barHeight/2,barWidth,barHeight/2);
+
+		    x += barWidth + 1;
+		  }
+
+			this.setState({
+				analyserData: []
+			})
+
+
 	  });
 
 
 
-	  KN_SYNTH.masterGain.connect(audioContext.destination);
+	  KN_SYNTH.masterGain.connect(analyser);
+		analyser.connect(audioContext.destination);
 
 		keyFreq = Math.ceil(keyFreq * 1000);
 	  keysPressed[keyFreq] = {
@@ -110,6 +155,7 @@ class Synthesizer extends Component {
   render() {
     return (
       <div>
+				<canvas id="canvas" width="1000" height="300"/>
         <Layout patch={this.state.patch} sendDispatch={this.receiveDispatch}/>
       </div>
     );
@@ -1165,7 +1211,7 @@ const dispatches = {
           effect.wetLevel = value;
         }
       })
-			
+
   	  component.setState({
     		patch: newPatch
     	});
