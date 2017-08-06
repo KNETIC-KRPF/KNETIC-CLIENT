@@ -36,6 +36,7 @@ class Synthesizer extends Component {
 
 	playSound(keyFreq) {
 		let oscillators = []
+		let gains = []
 	  this.state.patch.oscillators.forEach(osc => {
 	    let newOsc = audioContext.createOscillator()
 	    newOsc.type = osc.type;
@@ -45,10 +46,19 @@ class Synthesizer extends Component {
 	    let newGain = audioContext.createGain()
 	    newGain.gain.value = osc.gain;
 	    newOsc.connect(newGain);
-	    newGain.connect(KN_SYNTH.filter);
-			newOsc.start(audioContext.currentTime);
 	    oscillators.push(newOsc)
+			gains.push(newGain);
 	  });
+		let gainEnvelope = audioContext.createGain();
+		gains.forEach(gain => {
+			gain.connect(gainEnvelope)
+		})
+
+		gainEnvelope.connect(KN_SYNTH.filter);
+		setGainEnvelope(gainEnvelope, this.state.patch)
+		oscillators.forEach(osc => {
+			osc.start();
+		})
 
 		keyFreq = Math.ceil(keyFreq * 1000);
 	  keysPressed[keyFreq] = {
@@ -1137,6 +1147,23 @@ function getConstrucedEffect(type, data) {
   }
 }
 
+function setGainEnvelope(gain, patch) {
+	let now = audioContext.currentTime;
+	let attackTime = now + patch.adsr.attack;
+	let decayTime = attackTime + patch.adsr.decay;
+
+	gain.gain.cancelScheduledValues(0)
+	gain.gain.setValueAtTime(0.0, now);
+	gain.gain.linearRampToValueAtTime(1.0, attackTime);
+	// gain.gain.setValueAtTime(1.0, attackTime)
+	// gain.gain.setTargetAtTime(patch.masterGain, audioContext.currentTime, audioContext.currentTime + patch.adsr.attack)
+	// gain.gain.linearRampToValueAtTime(0.0, decayTime);
+	gain.gain.setValueAtTime(0.0, decayTime)
+	// gain.gain.setTargetAtTime(0.0, attackTime, decayTime);
+
+	console.log(gain);
+
+}
 
 
 function initMidi(playNote, stopNote) {
