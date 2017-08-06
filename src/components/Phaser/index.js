@@ -4,6 +4,9 @@ import './Phaser.css';
 
 class Phaser extends Component {
 	render() {
+		const efxProp = this.props.patch.effectBus;
+		const findPhaser = efx => efx.type === "phaser";
+		const phaser = efxProp.find(findPhaser);
 		return(
 			<div>
 				<h2>Phaser</h2>
@@ -11,6 +14,7 @@ class Phaser extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={phaser.rate}
 							sendDispatch={this.props.sendDispatch}
 							type="phaser"
 							property="rate"
@@ -23,6 +27,7 @@ class Phaser extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={phaser.depth}
 							sendDispatch={this.props.sendDispatch}
 							type="phaser"
 							property="depth"
@@ -35,6 +40,7 @@ class Phaser extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={phaser.feedback}
 							sendDispatch={this.props.sendDispatch}
 							type="phaser"
 							property="feedback"
@@ -47,6 +53,7 @@ class Phaser extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={phaser.stereoPhase}
 							sendDispatch={this.props.sendDispatch}
 							type="phaser"
 							property="stereo_phase"
@@ -57,16 +64,22 @@ class Phaser extends Component {
 						<label htmlFor="phaser-control">STEREO PHASE</label>
 					</div>
 
-					{/* <label htmlFor="phaser-control">BMF: </label>
-					<Knob sendDispatch={this.props.sendDispatch}
-					type="phaser"
-					property="BMF"
-					min="500"
-					max="1500"
-					step="10" /> */}
+					{/*<div className="controller">
+						<Knob
+							patchState={phaser.BMF}
+							sendDispatch={this.props.sendDispatch}
+							type="phaser"
+							property="BMF"
+							min="500"
+							max="1500"
+							step="10"
+							/>
+					 <label htmlFor="phaser-control">BMF</label>
+					</div>*/}
 
 					<div className="controller">
 						<Knob
+							patchState={phaser.bypass}
 							sendDispatch={this.props.sendDispatch}
 							type="phaser"
 							property="bypass"

@@ -4,6 +4,9 @@ import './PingPongDelay.css';
 
 class PingPongDelay extends Component {
 	render() {
+		const efxProp = this.props.patch.effectBus;
+		const findPingPong = efx => efx.type === "ping_pong";
+		const pingPong = efxProp.find(findPingPong);
 		return(
 			<div>
 				<h2>Ping Pong Delay</h2>
@@ -11,6 +14,7 @@ class PingPongDelay extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={pingPong.feedback}
 							sendDispatch={this.props.sendDispatch}
 							type="ping_pong"
 							property="feedback"
@@ -23,6 +27,7 @@ class PingPongDelay extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={pingPong.wetLevel}
 							sendDispatch={this.props.sendDispatch}
 							type="ping_pong"
 							property="wet"
@@ -35,6 +40,7 @@ class PingPongDelay extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={pingPong.delayTimeLeft}
 							sendDispatch={this.props.sendDispatch}
 							type="ping_pong"
 							property="delay_left"
@@ -47,6 +53,7 @@ class PingPongDelay extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={pingPong.delayTimeRight}
 							sendDispatch={this.props.sendDispatch}
 							type="ping_pong"
 							property="delay_right"

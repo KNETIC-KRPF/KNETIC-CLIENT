@@ -81,7 +81,7 @@ class Compressor extends Component {
 							type="compressor"
 							property="makeUpGain"
 							min={0}
-							max={1}
+							max={10}
 							step={0.1}
 							/>
 						<label htmlFor="compressor-control">GAIN</label>

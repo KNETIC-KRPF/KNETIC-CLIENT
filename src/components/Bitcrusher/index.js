@@ -4,17 +4,21 @@ import './Bitcrusher.css';
 
 class Bitcrusher extends Component {
   render() {
+    const efxProp = this.props.patch.effectBus;
+    const findBitcrusher = efx => efx.type === "bitcrusher";
+    const bitcrusher = efxProp.find(findBitcrusher);
     return (
       <div>
         <h2>Bitcrusher</h2>
         <div className="bitcrusher-grid">
 
-          <div className="controller">
+          {/*<div className="controller">
             <Knob
+              patchState={bitcrusher.bits}
               sendDispatch={this.props.sendDispatch}
               type="bitcrusher"
               property="bits"
-              min={1}
+              min={0}
               max={16}
               step={1}
               />
@@ -23,6 +27,7 @@ class Bitcrusher extends Component {
 
           <div className="controller">
             <Knob
+              patchState={bitcrusher.buffer}
               sendDispatch={this.props.sendDispatch}
               type="bitcrusher"
               property="buffer"
@@ -35,6 +40,7 @@ class Bitcrusher extends Component {
 
           <div className="controller">
             <Knob
+              patchState={bitcrusher.norm_freq}
               sendDispatch={this.props.sendDispatch}
               type="bitcrusher"
               property="norm_freq"
@@ -43,7 +49,7 @@ class Bitcrusher extends Component {
               step={0.1}
               />
             <label htmlFor="bitcrusher-control">NORM FREQ</label>
-          </div>
+          </div>*/}
         </div>
       </div>
     );
