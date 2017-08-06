@@ -7,46 +7,9 @@ import patch from '../patch';
 
 const audioContext = new AudioContext();
 const tuna = Tuna(audioContext);
-let KN_SYNTH = false;
+let KN_SYNTH;
 
 const synths = [];
-
-
-function initMidi(playNote, stopNote) {
-	if(navigator.requestMIDIAccess){
-		console.log('Browser Supports KNETIC');
-		navigator.requestMIDIAccess().then(success, failure);
-	}
-
-	function success(midi){
-		var inputs = midi.inputs.values();
-		console.log('We Got Fucking MIDI');
-
-		for (var input = inputs.next();
-		input && !input.done;
-		input = inputs.next()) {
-			// each time there is a midi message call the onMIDIMessage function
-			input.value.onmidimessage = onMIDIMessage;
-		}
-	}
-	function failure(){
-		console.error('No Access To MIDI');
-	}
-
-	function onMIDIMessage(message) {
-		var frequency = midiNoteToFrequency(message.data[1]);
-		console.log(frequency);
-		if(message.data[0] === 144 && message.data[2] > 0){
-			playNote(frequency);
-		}
-		if(message.data[0] === 128 || message.data[2] === 0){
-			stopNote(frequency);
-		}
-	}
-	function midiNoteToFrequency(note){
-		return Math.pow(2, ((note - 69) / 12)) * 440;
-	}
-}
 
 class Synthesizer extends Component {
   constructor(props) {
@@ -55,13 +18,14 @@ class Synthesizer extends Component {
 		this.playSound = this.playSound.bind(this)
 		this.stopSound = this.stopSound.bind(this)
     this.state = {
-      		patch,
-			synths: []
+      		patch
 		}
-		qwertyKeyboard(this.playSound)
-		qwertyKeyboardKeyup(this.stopSound)
+		initQwertyKeyboardKeydown(this.playSound)
+		initQwertyKeyboardKeyup(this.stopSound)
 		initMidi(this.playSound, this.stopSound);
+		KN_SYNTH = getConstructedSynthChain(this)
   }
+
   receiveDispatch(type, property, value, id) {
 		if(id) {
 			dispatches[type][property](value, this, id)
@@ -71,9 +35,6 @@ class Synthesizer extends Component {
   }
 
 	playSound(keyFreq) {
-		if(!KN_SYNTH) {
-			KN_SYNTH = getConstructedSynthChain(this)
-		}
 		let oscillators = []
 	  this.state.patch.oscillators.forEach(osc => {
 	    let newOsc = audioContext.createOscillator()
@@ -82,16 +43,12 @@ class Synthesizer extends Component {
 	    newOsc.detune.value = osc.detune;
 	    newOsc.octave = osc.octave;
 	    let newGain = audioContext.createGain()
-	    newGain.value = osc.gain;
+	    newGain.gain.value = osc.gain;
 	    newOsc.connect(newGain);
 	    newGain.connect(KN_SYNTH.filter);
 			newOsc.start(audioContext.currentTime);
 	    oscillators.push(newOsc)
 	  });
-
-
-
-	  KN_SYNTH.masterGain.connect(audioContext.destination);
 
 		keyFreq = Math.ceil(keyFreq * 1000);
 	  keysPressed[keyFreq] = {
@@ -153,10 +110,11 @@ function getConstructedSynthChain(component) {
 	synth.masterGain = audioContext.createGain();
 	synth.masterGain.gain.value = component.state.patch.masterGain
 	synth.compressor.connect(synth.masterGain);
+	synth.masterGain.connect(audioContext.destination);
 	return synth;
 }
 
-function qwertyKeyboard(playSound) {
+function initQwertyKeyboardKeydown(playSound) {
 	window.addEventListener('keydown', event => {
 		switch (event.code) {
 			case 'KeyA':
@@ -229,7 +187,7 @@ function qwertyKeyboard(playSound) {
 	})
 }
 
-function qwertyKeyboardKeyup(stopSound) {
+function initQwertyKeyboardKeyup(stopSound) {
 	window.addEventListener('keyup', event => {
 		switch (event.code) {
 			case 'KeyA':
@@ -307,10 +265,7 @@ export default Synthesizer;
 const dispatches = {
   oscillator: {
     waveform(value, component, id) {
-			// let newSynths = [...component.state.synths]
-			// newSynths.forEach(synth => {
-			// 	synth.oscillators[id - 1].type = value;
-			// })
+
 		  let newPatch = {...component.state.patch}
 			newPatch.oscillators = [...patch.oscillators]
 			newPatch.oscillators[id - 1].type = value;
@@ -319,10 +274,7 @@ const dispatches = {
 		  })
     },
     gain(value, component, id) {
-			// let newSynths = [...component.state.synths]
-			// newSynths.forEach(synth => {
-			// 	synth.oscillators[id - 1].gain.gain.value = value;
-			// })
+
 		  let newPatch = {...component.state.patch}
 			newPatch.oscillators = [...patch.oscillators]
 			newPatch.oscillators[id - 1].gain = value;
@@ -331,13 +283,10 @@ const dispatches = {
 		  })
     },
     detune(value, component, id) {
-			// let newSynths = [...component.state.synths]
-			// newSynths.forEach(synth => {
-			// 	synth.oscillators[id - 1].osc.detune.value = value;
-			// })
+
 		  let newPatch = {...component.state.patch}
 			newPatch.oscillators = [...patch.oscillators]
-			newPatch.oscillators[id - 1].gain = value;
+			newPatch.oscillators[id - 1].detune = value;
 		  	component.setState({
 			  patch: newPatch
 		  })
@@ -345,10 +294,7 @@ const dispatches = {
   },
   adsr: {
     attack(value, component) {
-			// let newSynths = [...component.state.synths]
-	  	//   	newSynths.forEach(synth => {
-	  	// 	 	synth.adsr.attack = value;
-	  	//   })
+
 	  	  let newPatch = {...component.state.patch}
 	  	  newPatch.adsr.attack = value;
 	  	  component.setState({
@@ -356,10 +302,7 @@ const dispatches = {
 	  	})
     },
     decay(value, component) {
-			// let newSynths = [...component.state.synths]
-	  	//   	newSynths.forEach(synth => {
-	  	// 	 	synth.adsr.decay = value;
-	  	//   })
+
 	  	  let newPatch = {...component.state.patch}
 	  	  newPatch.adsr.decay = value;
 	  	  component.setState({
@@ -367,10 +310,7 @@ const dispatches = {
 	  	})
     },
     sustain(value, component) {
-			// let newSynths = [...component.state.synths]
-	  	//   	newSynths.forEach(synth => {
-	  	// 	 	synth.adsr.sustain = value;
-	  	//   })
+
 	  	  let newPatch = {...component.state.patch}
 	  	  newPatch.adsr.sustain = value;
 	  	  component.setState({
@@ -378,23 +318,17 @@ const dispatches = {
 	  	})
     },
     release(value, component) {
-			// let newSynths = [...component.state.synths]
-	  	//   	newSynths.forEach(synth => {
-	  	// 	 	synth.adsr.release = value;
-	  	//   })
-	  	  let newPatch = {...component.state.patch}
-	  	  newPatch.adsr.release = value;
-	  	  component.setState({
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.adsr.release = value;
+  	  component.setState({
 	  		patch: newPatch
 	  	})
     }
   },
   filter: {
     type: (value, component) => {
-		// let newSynths = [...component.state.synths]
-  	//   	newSynths.forEach(synth => {
-  	// 	 synth.filter.type = value;
-  	//   })
+
 			KN_SYNTH.filter.type = value
 
   	  let newPatch = {...component.state.patch}
@@ -405,8 +339,10 @@ const dispatches = {
   		})
     },
     frequency(value, component) {
+			console.log(KN_SYNTH.filter);
 
-			KN_SYNTH.filter.frequency.value = value;
+			// KN_SYNTH.filter.frequency.cancelScheduledValues(audioContext.currentTime)
+			KN_SYNTH.filter.frequency.setValueAtTime(value, audioContext.currentTime)
 
 	  	let newPatch = {...component.state.patch}
 			newPatch.filter = {...patch.filter}
@@ -1064,7 +1000,7 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'delay') {
-					effect.time = value;
+					effect.delayTime = value;
 				}
 			});
 
@@ -1083,7 +1019,7 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'delay') {
-					effect.feedback = value;
+					effect.feedbackNode.gain.value = value;
 				}
 			})
 
@@ -1101,6 +1037,7 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'delay') {
+					console.log(effect);
 					effect.cutoff = value;
 				}
 			})
@@ -1165,7 +1102,7 @@ const dispatches = {
           effect.wetLevel = value;
         }
       })
-			
+
   	  component.setState({
     		patch: newPatch
     	});
@@ -1198,4 +1135,42 @@ function getConstrucedEffect(type, data) {
     default:
       return type;
   }
+}
+
+
+
+function initMidi(playNote, stopNote) {
+	if(navigator.requestMIDIAccess){
+		console.log('Browser Supports KNETIC');
+		navigator.requestMIDIAccess().then(success, failure);
+	}
+
+	function success(midi){
+		var inputs = midi.inputs.values();
+		console.log('We Got Fucking MIDI');
+
+		for (var input = inputs.next();
+		input && !input.done;
+		input = inputs.next()) {
+			// each time there is a midi message call the onMIDIMessage function
+			input.value.onmidimessage = onMIDIMessage;
+		}
+	}
+	function failure(){
+		console.error('No Access To MIDI');
+	}
+
+	function onMIDIMessage(message) {
+		var frequency = midiNoteToFrequency(message.data[1]);
+		console.log(frequency);
+		if(message.data[0] === 144 && message.data[2] > 0){
+			playNote(frequency);
+		}
+		if(message.data[0] === 128 || message.data[2] === 0){
+			stopNote(frequency);
+		}
+	}
+	function midiNoteToFrequency(note){
+		return Math.pow(2, ((note - 69) / 12)) * 440;
+	}
 }
