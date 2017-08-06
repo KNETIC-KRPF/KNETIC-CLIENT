@@ -13,7 +13,7 @@ let KN_SYNTH = false;
 
 
 const synths = [];
-
+let hasLoaded = false;
 
 function initMidi(playNote, stopNote) {
 	if(navigator.requestMIDIAccess){
@@ -95,42 +95,6 @@ class Synthesizer extends Component {
 			newOsc.start(audioContext.currentTime);
 	    oscillators.push(newOsc)
 
-			//analyser logic
-
-			analyser.fftSize = 256;
-			const bufferLength = analyser.frequencyBinCount;
-			const dataArray = new Uint8Array(analyser.frequencyBinCount);
-			analyser.getByteFrequencyData(dataArray);
-
-			this.setState({
-				analyserData: dataArray
-			})
-
-			const canvas = document.getElementById("canvas");
-			const ctx = canvas.getContext("2d");
-			ctx.clearRect(0, 0, 1000, 300);
-
-		  ctx.fillStyle = 'rgb(0, 0, 0)';
-		  ctx.fillRect(0, 0, 1000, 300);
-
-		  var barWidth = (1000 / bufferLength) * 2.5;
-		  var barHeight;
-		  var x = 0;
-
-		  for(var i = 0; i < bufferLength; i++) {
-		    barHeight = this.state.analyserData[i];
-
-		    ctx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
-		    ctx.fillRect(x,300-barHeight/2,barWidth,barHeight/2);
-
-		    x += barWidth + 1;
-		  }
-
-			this.setState({
-				analyserData: []
-			})
-
-
 	  });
 
 
@@ -150,6 +114,34 @@ class Synthesizer extends Component {
 			osc.stop();
 		})
 		delete keysPressed[keyFreq];
+	}
+
+	componentDidMount() {
+							//analyser logic
+
+		setInterval( function() {
+					analyser.fftSize = 1024;
+					const bufferLength = analyser.frequencyBinCount;
+					const dataArray = new Uint8Array(analyser.frequencyBinCount);
+					analyser.getByteFrequencyData(dataArray);
+					const canvas = document.getElementById("canvas");
+					const ctx = canvas.getContext("2d");
+					ctx.clearRect(0, 0, 1000, 300);
+
+				  ctx.fillStyle = 'rgb(0, 0, 0)';
+				  ctx.fillRect(0, 0, 1000, 300);
+
+				  var barWidth = (1000 / bufferLength) * 2.5;
+				  var barHeight;
+				  var x = 0;
+				  for(var i = 0; i < bufferLength; i++) {
+				    barHeight = dataArray[i];
+
+				    ctx.fillStyle = '#27e8e4';
+				    ctx.fillRect(x,300-barHeight/2,barWidth,barHeight/2);
+				    x += barWidth + 1;
+				  }
+				}, 1);
 	}
 
   render() {
