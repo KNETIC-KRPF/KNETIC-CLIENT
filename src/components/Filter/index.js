@@ -6,7 +6,10 @@ class Filter extends Component {
 	render() {
 		return(
 			<div>
-				<label htmlFor="filter"><h2>Main Filter</h2></label>
+				<label htmlFor="filter">
+					<h2>Main Filter</h2>
+
+					</label>
 				<div className="filter-grid">
 
 				<div className="controller">

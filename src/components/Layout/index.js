@@ -3,6 +3,7 @@ import Header from '../Header';
 import Oscillator from '../Oscillator';
 import Filter from '../Filter';
 import ADSR from '../ADSR';
+import FilterADSR from '../FilterADSR';
 import Compressor from '../Compressor';
 import Reverb from '../Reverb';
 import PingPongDelay from '../PingPongDelay';
@@ -83,6 +84,10 @@ class Layout extends Component {
           </div>
           <div className="right-column grid-cell">
             <Filter
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+              />
+            <FilterADSR
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               />
