@@ -9,7 +9,7 @@ class Delay extends Component {
 		const delay = efxProp.find(findDelay);
 		return(
 			<div>
-				<h2>Delay</h2>
+				<h3>DELAY</h3>
 				<div className="delay-grid">
 
 					<div className="controller">

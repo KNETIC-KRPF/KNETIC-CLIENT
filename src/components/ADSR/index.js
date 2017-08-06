@@ -28,10 +28,10 @@ class ADSR extends Component {
 							type="adsr"
 							property="decay"
 							min={0}
-							max={1}
+							max={1000}
 							step={0.1}
 							/>
-						<label htmlFor="adsr-control">DELAY</label>
+						<label htmlFor="adsr-control">DECAY</label>
 					</div>
 
 					<div className="controller">
