@@ -1,63 +1,63 @@
 import React, { Component } from 'react';
 import Knob from '../Knob';
-import './ADSR.css';
+import './FilterADSR.css';
 
-class ADSR extends Component {
+class FilterADSR extends Component {
 	render() {
 		return(
 			<div>
-				<h3>ADSR</h3>
-				<div className="adsr-grid">
+				<h3>FILTER ENV</h3>
+				<div className="filter-grid">
 					<div className="controller">
 						<Knob
-							patchState={this.props.patch.adsr.attack}
+							patchState={this.props.patch.filter.attack}
 							sendDispatch={this.props.sendDispatch}
-							type="adsr"
+							type="filter"
 							property="attack"
 							min={0}
 							max={3000}
 							step={10}
 							/>
-						<label htmlFor="adsr-control">ATTACK</label>
+						<label htmlFor="filter-control">ATTACK</label>
 					</div>
 
 					<div className="controller">
 						<Knob
-							patchState={this.props.patch.adsr.decay}
+							patchState={this.props.patch.filter.decay}
 							sendDispatch={this.props.sendDispatch}
-							type="adsr"
+							type="filter"
 							property="decay"
 							min={0}
 							max={1}
 							step={0.1}
 							/>
-						<label htmlFor="adsr-control">DELAY</label>
+						<label htmlFor="filter-control">DELAY</label>
 					</div>
 
 					<div className="controller">
 						<Knob
-							patchState={this.props.patch.adsr.sustain}
+							patchState={this.props.patch.filter.sustain}
 							sendDispatch={this.props.sendDispatch}
-							type="adsr"
+							type="filter"
 							property="sustain"
 							min={0}
 							max={1}
 							step={0.1}
 							/>
-						<label htmlFor="adsr-control">SUSTAIN</label>
+						<label htmlFor="filter-control">SUSTAIN</label>
 					</div>
 
 					<div className="controller">
 						<Knob
-							patchState={this.props.patch.adsr.release}
+							patchState={this.props.patch.filter.release}
 							sendDispatch={this.props.sendDispatch}
-							type="adsr"
+							type="filter"
 							property="release"
 							min={0}
 							max={3000}
 							step={10}
 							/>
-						<label htmlFor="adsr-control">RELEASE</label>
+						<label htmlFor="filter-control">RELEASE</label>
 					</div>
 				</div>
 
@@ -66,4 +66,4 @@ class ADSR extends Component {
 	}
 }
 
-export default ADSR;
+export default FilterADSR;
