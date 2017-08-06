@@ -93,11 +93,7 @@ const patch = {
     //   wetLevel: 1,                            //0 to 1+
     //   level: 1,                               //0 to 1+, adjusts total output of both wet and dry   //the path to your impulse response
     //   bypass: 1
-<<<<<<< HEAD
-    // },
-=======
     // }
->>>>>>> a93f56fbd23c3a15baa3d25d71b0811c9d43ea39
 	// {
   //     type: 'bitcrusher',
   //     bits: 1, //1 to 16
