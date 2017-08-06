@@ -8,7 +8,7 @@ class ADSR extends Component {
 			<div>
 				<h2>ADSR</h2>
 				<div className="adsr-grid">
-					<div className="knob">
+					<div className="controller">
 						<Knob
 							patchState={this.props.patch.adsr.attack}
 							sendDispatch={this.props.sendDispatch}
@@ -21,7 +21,7 @@ class ADSR extends Component {
 						<label htmlFor="adsr-control">ATTACK</label>
 					</div>
 
-					<div className="knob">
+					<div className="controller">
 						<Knob
 							patchState={this.props.patch.adsr.decay}
 							sendDispatch={this.props.sendDispatch}
@@ -34,7 +34,7 @@ class ADSR extends Component {
 						<label htmlFor="adsr-control">DELAY</label>
 					</div>
 
-					<div className="knob">
+					<div className="controller">
 						<Knob
 							patchState={this.props.patch.adsr.sustain}
 							sendDispatch={this.props.sendDispatch}
@@ -47,7 +47,7 @@ class ADSR extends Component {
 						<label htmlFor="adsr-control">SUSTAIN</label>
 					</div>
 
-					<div className="knob">
+					<div className="controller">
 						<Knob
 							patchState={this.props.patch.adsr.release}
 							sendDispatch={this.props.sendDispatch}

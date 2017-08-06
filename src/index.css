@@ -6,3 +6,22 @@ body {
   font-family: sans-serif;
   color: #EFF5ED;
 }
+
+.osc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 1px;
+  justify-content: center;
+  align-content: center;
+  font-size: 0.75em;
+  text-align: center;
+}
+
+.osc-controller {
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}

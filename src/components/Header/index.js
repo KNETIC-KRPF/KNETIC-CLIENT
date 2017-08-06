@@ -8,7 +8,6 @@ class Header extends Component {
 		return(
 			<div className="header">
 				<h1>KNETIC</h1>
-				<label htmlFor="patch-collection">Patches</label>
 				<PatchCollection />
 				<Account />
 			</div>
