@@ -29,7 +29,7 @@ const patch = {
     gain: 1,
     attack: 1000,
     decay: 3000,
-    sustain: .4,
+    sustain: 1000,
     release: 300
   },
   effectBus: [{
