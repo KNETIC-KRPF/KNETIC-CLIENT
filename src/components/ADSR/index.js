@@ -12,36 +12,36 @@ class ADSR extends Component {
 					sendDispatch={this.props.sendDispatch}
 					type="adsr"
 					property="attack"
-					min="0"
-					max="100"
-					step="1"
+					min={0}
+					max={3000}
+					step={10}
 					/>
 				<label htmlFor="adsr-control">Delay: </label>
 				<Knob
 					sendDispatch={this.props.sendDispatch}
 					type="adsr"
 					property="decay"
-					min="0"
-					max="100"
-					step="1"
+					min={0}
+					max={1000}
+					step={10}
 					/>
 				<label htmlFor="adsr-control">Sustain: </label>
 				<Knob
 					sendDispatch={this.props.sendDispatch}
 					type="adsr"
 					property="sustain"
-					min="0"
-					max="100"
-					step="1"
+					min={0}
+					max={100}
+					step={1}
 					/>
 				<label htmlFor="adsr-control">Release: </label>
 				<Knob
 					sendDispatch={this.props.sendDispatch}
 					type="adsr"
 					property="release"
-					min="0"
-					max="100"
-					step="1"
+					min={0}
+					max={3000}
+					step={10}
 					/>
 			</div>
 		);

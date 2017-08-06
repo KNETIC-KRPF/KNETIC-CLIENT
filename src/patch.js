@@ -1,22 +1,20 @@
 const patch = {
-  oscillators: [
-    {
-      type: 'sawtooth',
-      detune: 0,
-      octave: 3,
-      gain: 0
-    }, {
-      type: 'sawtooth',
-      detune: 0,
-      octave: 3,
-      gain: 0
-    }, {
-      type: 'sawtooth',
-      detune: -.1,
-      octave: 3,
-      gain: 0
-    }
-  ],
+  oscillators: [{
+    type: 'sawtooth',
+    detune: 0,
+    octave: 3,
+    gain: 0
+  }, {
+    type: 'sawtooth',
+    detune: 0,
+    octave: 3,
+    gain: 0
+  }, {
+    type: 'sawtooth',
+    detune: -.1,
+    octave: 3,
+    gain: 0
+  }],
   filter: {
     type: 'lowpass',
     frequency: 10000,
@@ -27,34 +25,33 @@ const patch = {
     sustain: .4,
     release: 300
   },
-  effectBus: [
+  effectBus: [{
+      type: 'delay',
+      feedback: 0.05, //0 to 1+
+      delayTime: 10, //1 to 10000 milliseconds
+      wetLevel: 0.25, //0 to 1+
+      dryLevel: 1, //0 to 1+
+      cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
+      bypass: 0,
+      order: 4
+    },
     // {
     //   type: 'convolver',
-    //   highCut: 22050, //20 to 22050
-    //   lowCut: 20, //20 to 22050
-    //   dryLevel: 1, //0 to 1+
-    //   wetLevel: 1, //0 to 1+
+    //   highcut: 22050, //20 to 22050
+    //   lowcut: 20, //20 to 22050
+    //   dryLevel: 0, //0 to 1+
+    //   wetLevel: 0, //0 to 1+
     //   level: 1, //0 to 1+, adjusts total output of both wet and dry
-    //   impulse: "impulses/impulse_rev.wav", //the path to your impulse response
+    //   // impulse: "impulses/impulse_rev.wav", //the path to your impulse response
     //   bypass: 1,
     //   order: 5
-    //  },
-	  //  {
+    // },
+    //  {
     //   type: 'bitcrusher',
     //   bits: 1, //1 to 16
     //   normfreq: 0.1, //0 to 1
     //   bufferSize: 256, //256 to 16384
     //   order: 2
-    // },
-	  // {
-    //   type: 'delay',
-    //   feedback: 0.05, //0 to 1+
-    //   delayTime: 400, //1 to 10000 milliseconds
-    //   wetLevel: 0.5, //0 to 1+
-    //   dryLevel: 1, //0 to 1+
-    //   cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
-    //   bypass: 1,
-    //   order: 4
     // },
     // {
     //   type: 'chorus',
@@ -71,11 +68,11 @@ const patch = {
     // },
     // {
     //   type: 'phaser',
-    //   rate: 1.2,                     //0.01 to 8 is a decent range, but higher values are possible
-    //   depth: 0.3,                    //0 to 1
-    //   feedback: 0.2,                 //0 to 1+
-    //   stereoPhase: 30,               //0 to 180
-    //   baseModulationFrequency: 700,  //500 to 1500
+    //   rate: 1.2, //0.01 to 8 is a decent range, but higher values are possible
+    //   depth: 0.3, //0 to 1
+    //   feedback: 0.2, //0 to 1+
+    //   stereoPhase: 30, //0 to 180
+    //   baseModulationFrequency: 700, //500 to 1500
     //   bypass: 0
     // },
     // {
@@ -84,33 +81,7 @@ const patch = {
     //   feedback: 0.3, //0 to 1
     //   delayTimeLeft: 200, //1 to 10000 (milliseconds)
     //   delayTimeRight: 200 //1 to 10000 (milliseconds)
-    // },
-    // {
-    //   type: 'convolver',
-    //   highCut: 20000,                         //20 to 22050
-    //   lowCut: 20,                             //20 to 22050
-    //   dryLevel: 1,                            //0 to 1+
-    //   wetLevel: 1,                            //0 to 1+
-    //   level: 1,                               //0 to 1+, adjusts total output of both wet and dry   //the path to your impulse response
-    //   bypass: 1
     // }
-	// {
-  //     type: 'bitcrusher',
-  //     bits: 1, //1 to 16
-  //     normfreq: 0.1, //0 to 1
-  //     bufferSize: 256, //256 to 16384
-  //     order: 2
-  //   },
-	{
-      type: 'delay',
-      feedback: 0.05, //0 to 1+
-      delayTime: 400, //1 to 10000 milliseconds
-      wetLevel: 0.25, //0 to 1+
-      dryLevel: 1, //0 to 1+
-      cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
-      bypass: 0,
-      order: 4
-    }
   ],
   compressor: {
     threshold: -1, //-100 to 0

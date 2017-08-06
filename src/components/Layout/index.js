@@ -32,19 +32,19 @@ class Layout extends Component {
           </div>
 
           <div className="middle-column grid-cell">
-            <Reverb sendDispatch={this.props.sendDispatch}/>
+            <Delay patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
+            <Reverb patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <PingPongDelay sendDispatch={this.props.sendDispatch}/>
             <Phaser sendDispatch={this.props.sendDispatch}/>
             <Overdrive sendDispatch={this.props.sendDispatch}/>
             <MoogFilter sendDispatch={this.props.sendDispatch}/>
             <Chorus sendDispatch={this.props.sendDispatch}/>
             <Bitcrusher sendDispatch={this.props.sendDispatch}/>
-            <Delay sendDispatch={this.props.sendDispatch}/>
           </div>
 
           <div className="right-column grid-cell">
-            <Filter sendDispatch={this.props.sendDispatch}/>
-            <Compressor sendDispatch={this.props.sendDispatch}/>
+            <Filter patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
+            <Compressor patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
           </div>
 
         </div>

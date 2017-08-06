@@ -33,6 +33,7 @@ class Knob extends Component {
         angleOffset={-135}
         disableMouseWheel={true}
         fgColor="#94E4C2"
+        bgColor=""
         inputColor="#94E4C2"
         min={this.props.min}
         max={this.props.max}

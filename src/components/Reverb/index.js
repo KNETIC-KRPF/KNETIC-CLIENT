@@ -4,45 +4,73 @@ import './Reverb.css';
 
 class Convolver extends Component {
 	render() {
+		const efxProp = this.props.patch.effectBus;
+		const findReverb = efx => efx.type === "convolver";
+		const reverb = efxProp.find(findReverb);
 		return(
 			<div>
 				<h2>Convolver</h2>
+				{/*
 				<label htmlFor="reverb-control">High Cut: </label>
-				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
+				<Knob
+					sendDispatch={this.props.sendDispatch}
+					type="convolver"
 					property="highcut"
-					min="20"
-					max="22050"
-				step="50" />
+					min={20}
+					max={22050}
+					step={50}
+					/>
 				<label htmlFor="reverb-control">Low Cut: </label>
-				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
+				<Knob
+					patchState={reverb.lowcut}
+					sendDispatch={this.props.sendDispatch}
+					type="convolver"
 					property="lowcut"
-					min="20"
-					max="22050"
-				step="50" />
+					min={20}
+					max={22050}
+					step={50}
+					/>
 				<label htmlFor="reverb-control">Dry Level: </label>
-				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
+				<Knob
+					patchState={reverb.dryLevel}
+					sendDispatch={this.props.sendDispatch}
+					type="convolver"
 					property="dryLevel"
-					min="0"
-					max="1"
-				step="0.05" />
+					min={0}
+					max={1}
+					step={0.1}
+					/>
 				<label htmlFor="reverb-control">Wet Level: </label>
-				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
+				<Knob
+					patchState={reverb.wetLevel}
+					sendDispatch={this.props.sendDispatch}
+					type="convolver"
 					property="wetLevel"
-					min="0"
-					max="1"
-				step="0.05" />
+					min={0}
+					max={1}
+					step={0.1}
+					/>
 				<label htmlFor="reverb-control">Level: </label>
-				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
+				<Knob
+					patchState={reverb.level}
+					sendDispatch={this.props.sendDispatch}
+					type="convolver"
 					property="level"
-					min="0"
-					max="1"
-				step="0.1" />
+					min={0}
+					max={1}
+					step={0.1}
+					/>
 				<label htmlFor="reverb-control">Bypass: </label>
-				<Knob sendDispatch={this.props.sendDispatch} type="convolver"
+				<Knob
+					patchState={reverb.bypass}
+					sendDispatch={this.props.sendDispatch}
+					type="convolver"
 					property="bypass"
-					min="0"
-					max="1"
-				step="1" />
+					min={0}
+					max={1}
+					step={1}
+					/>
+					*/}
 			</div>
 		);
 	}

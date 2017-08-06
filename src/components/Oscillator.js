@@ -19,8 +19,8 @@ class Oscillator extends Component {
 					property="gain"
 					min={0}
 					max={100}
-				step={1}/>
-
+					step={1}
+					/>
 			<label>Detune: </label>
 				<OscillatorKnob
 					id={this.props.id}
@@ -29,7 +29,8 @@ class Oscillator extends Component {
 					property="detune"
 					min={0}
 					max={100}
-				step={1}/>
+					step={1}
+					/>
       </div>
 		);
 	}

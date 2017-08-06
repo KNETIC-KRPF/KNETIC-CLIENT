@@ -1,15 +1,3 @@
-// import React from 'react';
-//
-// import './Knob.css';
-//
-// const Knob = (props) => {
-//   return (<input id="knob" type="range" min={props.min} max={props.max} step={props.step} data-degree-range="270" defaultValue="0"
-//   onChange={(event) => props.sendDispatch(props.type, props.property, event.target.value)} data-degree-offset="45"/>);
-// };
-//
-// export default Knob;
-
-
 import React, { Component } from 'react';
 import KnobComp from 'react-canvas-knob';
 
@@ -17,7 +5,7 @@ class Knob extends Component {
   constructor(props) {
     super(props);
     this.state = {
-			value: 0
+			value: this.props.patchState
 		};
 		this.handleChange = this.handleChange.bind(this);
   }
@@ -37,7 +25,7 @@ class Knob extends Component {
         value={this.state.value}
         onChange={this.handleChange}
         onChangeEnd={this.handleChangeEnd}
-        thickness={0.25}
+        thickness={0.3}
         width={50}
         height={50}
         stopper={true}
@@ -46,6 +34,7 @@ class Knob extends Component {
         disableMouseWheel={true}
         displayInput={false}
         fgColor="#94E4C2"
+        bgColor=""
         inputColor="#94E4C2"
         min={this.props.min}
         max={this.props.max}

@@ -19,32 +19,35 @@ class Filter extends Component {
 				</select>
 				<label htmlFor="frequency">Frequency: </label>
 				<Knob
+					patchState={this.props.patch.filter.frequency}
 					sendDispatch={this.props.sendDispatch}
 					type="filter"
 					property="frequency"
-					min="20"
-					max="19999"
-					step="20"
+					min={20}
+					max={19999}
+					step={20}
 					/>
 
 				<label htmlFor="q-factor">QFactor: </label>
 				<Knob
+					patchState={this.props.patch.filter.Q}
 					sendDispatch={this.props.sendDispatch}
 					type="filter"
 					property="Q"
-					min="0"
-					max="100"
-					step="1"
+					min={0}
+					max={20}
+					step={1}
 					/>
 
 				<label htmlFor="filter-gain">Gain: </label>
 				<Knob
+					patchState={this.props.patch.filter.gain}
 					sendDispatch={this.props.sendDispatch}
 					type="filter"
 					property="gain"
-					min="0"
-					max="100"
-					step="10"
+					min={0}
+					max={100}
+					step={10}
 					/>
 			</div>
 		);
