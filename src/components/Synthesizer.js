@@ -384,6 +384,50 @@ const dispatches = {
   	  component.setState({
   			patch: newPatch
   		})
+    },
+		attack: function(value, component) {
+
+			// KN_SYNTH.filter.gain.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.filter = {...patch.filter}
+  	  newPatch.filter.attack = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
+    },
+		decay: function(value, component) {
+
+			// KN_SYNTH.filter.gain.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.filter = {...patch.filter}
+  	  newPatch.filter.decay = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
+    },
+		sustain: function(value, component) {
+
+			// KN_SYNTH.filter.gain.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.filter = {...patch.filter}
+  	  newPatch.filter.sustain = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
+    },
+		release: function(value, component) {
+
+			// KN_SYNTH.filter.gain.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.filter = {...patch.filter}
+  	  newPatch.filter.release = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
     }
   },
   lfo: {
