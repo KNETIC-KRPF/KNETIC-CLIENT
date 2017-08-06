@@ -6,11 +6,11 @@ class Filter extends Component {
 	render() {
 		return(
 			<div>
-				<label htmlFor="filter"><h2>Main Filter</h2></label>
+				<h3>FILTER</h3>
 				<div className="filter-grid">
 
 				<div className="controller">
-					<select className="filter-type-selection" defaultValue={this.props.patch.filter.type} onChange={(event) => this.props.sendDispatch('filter', 'type', event.target.value)}>
+					<select className="" defaultValue={this.props.patch.filter.type} onChange={(event) => this.props.sendDispatch('filter', 'type', event.target.value)}>
 						<option value="lowpass">Low Pass</option>
 						<option value="highpass">High Pass</option>
 						<option value="bandpass">Band Pass</option>
@@ -30,7 +30,7 @@ class Filter extends Component {
 						property="frequency"
 						min={20}
 						max={19999}
-						step={20}
+						step={100}
 						/>
 					<label htmlFor="frequency">FREQUENCY</label>
 				</div>

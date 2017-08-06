@@ -9,9 +9,10 @@ const audioContext = new AudioContext();
 const analyser = audioContext.createAnalyser();
 
 const tuna = Tuna(audioContext);
-let KN_SYNTH = false;
+let KN_SYNTH;
 
 
+<<<<<<< HEAD
 const synths = [];
 
 function initMidi(playNote, stopNote) {
@@ -50,6 +51,8 @@ function initMidi(playNote, stopNote) {
 	}
 }
 
+=======
+>>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
 class Synthesizer extends Component {
   constructor(props) {
     super(props);
@@ -57,13 +60,14 @@ class Synthesizer extends Component {
 		this.playSound = this.playSound.bind(this)
 		this.stopSound = this.stopSound.bind(this)
     this.state = {
-      		patch,
-			synths: []
+      		patch
 		}
-		qwertyKeyboard(this.playSound)
-		qwertyKeyboardKeyup(this.stopSound)
+		initQwertyKeyboardKeydown(this.playSound)
+		initQwertyKeyboardKeyup(this.stopSound)
 		initMidi(this.playSound, this.stopSound);
+		KN_SYNTH = getConstructedSynthChain(this)
   }
+
   receiveDispatch(type, property, value, id) {
 		if(id) {
 			dispatches[type][property](value, this, id)
@@ -73,11 +77,15 @@ class Synthesizer extends Component {
   }
 
 	playSound(keyFreq) {
+<<<<<<< HEAD
 		if(!KN_SYNTH) {
 			KN_SYNTH = getConstructedSynthChain(this)
 		}
 
+=======
+>>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
 		let oscillators = []
+		let gains = []
 	  this.state.patch.oscillators.forEach(osc => {
 	    let newOsc = audioContext.createOscillator()
 	    newOsc.type = osc.type;
@@ -85,29 +93,48 @@ class Synthesizer extends Component {
 	    newOsc.detune.value = osc.detune;
 	    newOsc.octave = osc.octave;
 	    let newGain = audioContext.createGain()
-	    newGain.value = osc.gain;
+	    newGain.gain.value = osc.gain;
 	    newOsc.connect(newGain);
-	    newGain.connect(KN_SYNTH.filter);
-			newOsc.start(audioContext.currentTime);
 	    oscillators.push(newOsc)
+<<<<<<< HEAD
 
+=======
+			gains.push(newGain);
+>>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
 	  });
+		let gainEnvelope = setGainEnvelope(this.state.patch)
+		gains.forEach(gain => {
+			gain.connect(gainEnvelope)
+		})
+		let filterEnvelope = setFilterEnvelope(this.state.patch);
 
+<<<<<<< HEAD
 
 
 	  KN_SYNTH.masterGain.connect(analyser);
 		analyser.connect(audioContext.destination);
+=======
+		gainEnvelope.connect(filterEnvelope);
+		console.log(KN_SYNTH);
+		filterEnvelope.connect(KN_SYNTH.effectBus[0]);
+		oscillators.forEach(osc => {
+			osc.start();
+		})
+>>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
 
 		keyFreq = Math.ceil(keyFreq * 1000);
 	  keysPressed[keyFreq] = {
-			oscillators: oscillators
+			oscillators,
+			gainEnvelope
 		}
 	}
 
 	stopSound(keyFreq) {
 		keyFreq = Math.ceil(keyFreq * 1000);
+		// keysPressed[keyFreq].gainEnvelope.gain.cancelScheduledValues(0);
+		// keysPressed[keyFreq].gainEnvelope.gain.linearRampToValueAtTime(0, audioContext.currentTime + this.state.patch.adsr.release / 1000)
 		keysPressed[keyFreq].oscillators.forEach(osc => {
-			osc.stop();
+			osc.stop(this.state.patch.adsr.release / 1000);
 		})
 		delete keysPressed[keyFreq];
 	}
@@ -130,23 +157,20 @@ function getConstructedSynthChain(component) {
 	let synth = {
 		oscillators: []
 	};
-	synth.filter = audioContext.createBiquadFilter();
-	synth.filter.type = component.state.patch.filter.type;
-	synth.filter.frequency.value = component.state.patch.filter.frequency;
-	synth.filter.Q.value = component.state.patch.filter.Q;
-	synth.filter.gain.value = component.state.patch.filter.gain;
+
 
 	let sortedBus = component.state.patch.effectBus.slice().sort((a, b) => {
 		return a.order - b.order;
 	});
 
-	let lastConnection = synth.filter;
+	let lastConnection;
 	synth.effectBus = []
 	sortedBus.forEach(effect => {
 		let nextEffect = getConstrucedEffect(effect.type, effect);
 		nextEffect.type = effect.type;
-
-		lastConnection.connect(nextEffect);
+		if(lastConnection) {
+			lastConnection.connect(nextEffect);
+		}
 		lastConnection = nextEffect;
 		synth.effectBus.push(nextEffect)
 	});
@@ -158,10 +182,11 @@ function getConstructedSynthChain(component) {
 	synth.masterGain = audioContext.createGain();
 	synth.masterGain.gain.value = component.state.patch.masterGain
 	synth.compressor.connect(synth.masterGain);
+	synth.masterGain.connect(audioContext.destination);
 	return synth;
 }
 
-function qwertyKeyboard(playSound) {
+function initQwertyKeyboardKeydown(playSound) {
 	window.addEventListener('keydown', event => {
 		switch (event.code) {
 			case 'KeyA':
@@ -234,7 +259,7 @@ function qwertyKeyboard(playSound) {
 	})
 }
 
-function qwertyKeyboardKeyup(stopSound) {
+function initQwertyKeyboardKeyup(stopSound) {
 	window.addEventListener('keyup', event => {
 		switch (event.code) {
 			case 'KeyA':
@@ -312,10 +337,7 @@ export default Synthesizer;
 const dispatches = {
   oscillator: {
     waveform(value, component, id) {
-			// let newSynths = [...component.state.synths]
-			// newSynths.forEach(synth => {
-			// 	synth.oscillators[id - 1].type = value;
-			// })
+
 		  let newPatch = {...component.state.patch}
 			newPatch.oscillators = [...patch.oscillators]
 			newPatch.oscillators[id - 1].type = value;
@@ -324,10 +346,7 @@ const dispatches = {
 		  })
     },
     gain(value, component, id) {
-			// let newSynths = [...component.state.synths]
-			// newSynths.forEach(synth => {
-			// 	synth.oscillators[id - 1].gain.gain.value = value;
-			// })
+
 		  let newPatch = {...component.state.patch}
 			newPatch.oscillators = [...patch.oscillators]
 			newPatch.oscillators[id - 1].gain = value;
@@ -336,13 +355,10 @@ const dispatches = {
 		  })
     },
     detune(value, component, id) {
-			// let newSynths = [...component.state.synths]
-			// newSynths.forEach(synth => {
-			// 	synth.oscillators[id - 1].osc.detune.value = value;
-			// })
+
 		  let newPatch = {...component.state.patch}
 			newPatch.oscillators = [...patch.oscillators]
-			newPatch.oscillators[id - 1].gain = value;
+			newPatch.oscillators[id - 1].detune = value;
 		  	component.setState({
 			  patch: newPatch
 		  })
@@ -350,10 +366,7 @@ const dispatches = {
   },
   adsr: {
     attack(value, component) {
-			// let newSynths = [...component.state.synths]
-	  	//   	newSynths.forEach(synth => {
-	  	// 	 	synth.adsr.attack = value;
-	  	//   })
+
 	  	  let newPatch = {...component.state.patch}
 	  	  newPatch.adsr.attack = value;
 	  	  component.setState({
@@ -361,10 +374,7 @@ const dispatches = {
 	  	})
     },
     decay(value, component) {
-			// let newSynths = [...component.state.synths]
-	  	//   	newSynths.forEach(synth => {
-	  	// 	 	synth.adsr.decay = value;
-	  	//   })
+
 	  	  let newPatch = {...component.state.patch}
 	  	  newPatch.adsr.decay = value;
 	  	  component.setState({
@@ -372,10 +382,7 @@ const dispatches = {
 	  	})
     },
     sustain(value, component) {
-			// let newSynths = [...component.state.synths]
-	  	//   	newSynths.forEach(synth => {
-	  	// 	 	synth.adsr.sustain = value;
-	  	//   })
+
 	  	  let newPatch = {...component.state.patch}
 	  	  newPatch.adsr.sustain = value;
 	  	  component.setState({
@@ -383,24 +390,18 @@ const dispatches = {
 	  	})
     },
     release(value, component) {
-			// let newSynths = [...component.state.synths]
-	  	//   	newSynths.forEach(synth => {
-	  	// 	 	synth.adsr.release = value;
-	  	//   })
-	  	  let newPatch = {...component.state.patch}
-	  	  newPatch.adsr.release = value;
-	  	  component.setState({
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.adsr.release = value;
+  	  component.setState({
 	  		patch: newPatch
 	  	})
     }
   },
   filter: {
     type: (value, component) => {
-		// let newSynths = [...component.state.synths]
-  	//   	newSynths.forEach(synth => {
-  	// 	 synth.filter.type = value;
-  	//   })
-			KN_SYNTH.filter.type = value
+
+			// KN_SYNTH.filter.type = value
 
   	  let newPatch = {...component.state.patch}
   	  newPatch.filter = {...newPatch.filter}
@@ -410,8 +411,10 @@ const dispatches = {
   		})
     },
     frequency(value, component) {
+			console.log(KN_SYNTH.filter);
 
-			KN_SYNTH.filter.frequency.value = value;
+			// KN_SYNTH.filter.frequency.cancelScheduledValues(audioContext.currentTime)
+			// KN_SYNTH.filter.frequency.setValueAtTime(value, audioContext.currentTime)
 
 	  	let newPatch = {...component.state.patch}
 			newPatch.filter = {...patch.filter}
@@ -422,7 +425,7 @@ const dispatches = {
     },
     Q: function(value, component) {
 
-			KN_SYNTH.filter.Q.value = value;
+			// KN_SYNTH.filter.Q.value = value;
 
 		  let newPatch = {...component.state.patch}
 		  newPatch.filter = {...patch.filter}
@@ -433,11 +436,55 @@ const dispatches = {
     },
     gain: function(value, component) {
 
-			KN_SYNTH.filter.gain.value = value;
+			// KN_SYNTH.filter.gain.value = value;
 
   	  let newPatch = {...component.state.patch}
   	  newPatch.filter = {...patch.filter}
   	  newPatch.filter.gain = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
+    },
+		attack: function(value, component) {
+
+			// KN_SYNTH.filter.gain.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.filter = {...patch.filter}
+  	  newPatch.filter.attack = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
+    },
+		decay: function(value, component) {
+
+			// KN_SYNTH.filter.gain.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.filter = {...patch.filter}
+  	  newPatch.filter.decay = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
+    },
+		sustain: function(value, component) {
+
+			// KN_SYNTH.filter.gain.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.filter = {...patch.filter}
+  	  newPatch.filter.sustain = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
+    },
+		release: function(value, component) {
+
+			// KN_SYNTH.filter.gain.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.filter = {...patch.filter}
+  	  newPatch.filter.release = value;
   	  component.setState({
   			patch: newPatch
   		})
@@ -467,7 +514,7 @@ const dispatches = {
     },
     makeUpGain(value, component) {
 
-			KN_SYNTH.compressor.makeupGaub.value = value;
+			KN_SYNTH.compressor.makeupGain.value = value;
 
   	  let newPatch = {...component.state.patch}
   	  newPatch.compressor.makeupGain = value;
@@ -1069,7 +1116,7 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'delay') {
-					effect.time = value;
+					effect.delayTime = value;
 				}
 			});
 
@@ -1088,7 +1135,7 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'delay') {
-					effect.feedback = value;
+					effect.feedbackNode.gain.value = value;
 				}
 			})
 
@@ -1106,6 +1153,7 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'delay') {
+					console.log(effect);
 					effect.cutoff = value;
 				}
 			})
@@ -1203,4 +1251,83 @@ function getConstrucedEffect(type, data) {
     default:
       return type;
   }
+}
+
+function setGainEnvelope(patch) {
+	let gain = audioContext.createGain();
+	let now = audioContext.currentTime;
+	let attackTime = now + patch.adsr.attack / 1000;
+	let decayTime = attackTime + patch.adsr.decay / 1000;
+
+	gain.gain.cancelScheduledValues(0)
+	gain.gain.setValueAtTime(0.0, now);
+	gain.gain.linearRampToValueAtTime(1.0, attackTime);
+	// gain.gain.setValueAtTime(1.0, attackTime)
+	// gain.gain.setTargetAtTime(patch.masterGain, audioContext.currentTime, audioContext.currentTime + patch.adsr.attack)
+	gain.gain.linearRampToValueAtTime(patch.adsr.sustain, decayTime);
+	gain.gain.setValueAtTime(patch.adsr.sustain, decayTime)
+	// gain.gain.setTargetAtTime(0.0, attackTime, decayTime);
+	return gain;
+	console.log(gain);
+
+}
+
+function setFilterEnvelope(patch) {
+	let filter = audioContext.createBiquadFilter();
+	filter.type = patch.filter.type;
+	filter.frequency.value = 0; //patch.filter.frequency.value;
+	filter.Q.value = patch.filter.Q;
+	filter.gain.value = patch.filter.gain;
+
+	let now = audioContext.currentTime;
+	let attackTime = now + patch.filter.attack / 1000;
+	let decayTime = attackTime + patch.filter.decay / 1000;
+	console.log(filter);
+	filter.frequency.cancelScheduledValues(0)
+	filter.frequency.setValueAtTime(0.0, now);
+	filter.frequency.linearRampToValueAtTime(patch.filter.frequency, attackTime);
+	// gain.gain.setValueAtTime(1.0, attackTime)
+	// gain.gain.setTargetAtTime(patch.masterGain, audioContext.currentTime, audioContext.currentTime + patch.adsr.attack)
+	filter.frequency.linearRampToValueAtTime(patch.filter.sustain, decayTime);
+	filter.frequency.setValueAtTime(patch.filter.sustain, decayTime)
+	// gain.gain.setTargetAtTime(0.0, attackTime, decayTime);
+	return filter;
+
+}
+
+
+function initMidi(playNote, stopNote) {
+	if(navigator.requestMIDIAccess){
+		console.log('Browser Supports KNETIC');
+		navigator.requestMIDIAccess().then(success, failure);
+	}
+
+	function success(midi){
+		var inputs = midi.inputs.values();
+		console.log('We Got Fucking MIDI');
+
+		for (var input = inputs.next();
+		input && !input.done;
+		input = inputs.next()) {
+			// each time there is a midi message call the onMIDIMessage function
+			input.value.onmidimessage = onMIDIMessage;
+		}
+	}
+	function failure(){
+		console.error('No Access To MIDI');
+	}
+
+	function onMIDIMessage(message) {
+		var frequency = midiNoteToFrequency(message.data[1]);
+		console.log(frequency);
+		if(message.data[0] === 144 && message.data[2] > 0){
+			playNote(frequency);
+		}
+		if(message.data[0] === 128 || message.data[2] === 0){
+			stopNote(frequency);
+		}
+	}
+	function midiNoteToFrequency(note){
+		return Math.pow(2, ((note - 69) / 12)) * 440;
+	}
 }

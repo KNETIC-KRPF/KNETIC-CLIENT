@@ -1,23 +1,27 @@
 const patch = {
-  oscillators: [{
-    id: 1,
-    type: 'sawtooth',
-    detune: 0,
-    octave: 3,
-    gain: 0
-  }, {
-    id: 2,
-    type: 'sawtooth',
-    detune: 0,
-    octave: 3,
-    gain: 0
-  }, {
-    id: 3,
-    type: 'sawtooth',
-    detune: 0,
-    octave: 3,
-    gain: 0
-  }],
+  oscillators: [
+		{
+	    id: 1,
+	    type: 'sawtooth',
+	    detune: 0,
+	    octave: 3,
+	    gain: 100
+		},
+		{
+	    id: 2,
+	    type: 'sawtooth',
+	    detune: 0,
+	    octave: 3,
+	    gain: 100
+  	},
+		{
+	    id: 3,
+	    type: 'sawtooth',
+	    detune: 0,
+	    octave: 3,
+	    gain: 100
+  	}
+	],
   filter: {
     type: 'lowpass',
     frequency: 10000,
@@ -25,7 +29,7 @@ const patch = {
     gain: 1,
     attack: 1000,
     decay: 3000,
-    sustain: .4,
+    sustain: 1000,
     release: 300
   },
   effectBus: [{
@@ -36,7 +40,7 @@ const patch = {
       dryLevel: 1, //0 to 1+
       cutoff: 2000, //cutoff frequency of the built in lowpass-filter. 20 to 22050
       bypass: 0,
-      order: 4
+      order: 6
     },
     // {
     //   type: 'convolver',
@@ -51,23 +55,25 @@ const patch = {
     // },
     //  {
     //   type: 'bitcrusher',
-    //   bits: 1, //1 to 16
+    //   bits: 0, //1 to 16
     //   normfreq: 0.1, //0 to 1
     //   bufferSize: 256, //256 to 16384
-    //   order: 2
+    //   order: 10
     // },
     {
       type: 'chorus',
       rate: 1.5,
       feedback: 0.2,
       delay: 0.0045,
-      bypass: 1
+      bypass: 1,
+      order: 1
     },
     {
       type: 'moog',
       cutoff: 0.9,    //0 to 1
       resonance: 1,   //0 to 4
-      bufferSize: 256
+      bufferSize: 256,
+      order: 2
     },
     {
       type: 'phaser',
@@ -76,19 +82,30 @@ const patch = {
       feedback: 0.2, //0 to 1+
       stereoPhase: 30, //0 to 180
       baseModulationFrequency: 700, //500 to 1500
-      bypass: 0
+      bypass: 0,
+      order: 3
     },
     {
       type: 'ping_pong',
       wetLevel: 0, //0 to 1
       feedback: 0.3, //0 to 1
       delayTimeLeft: 200, //1 to 10000 (milliseconds)
-      delayTimeRight: 200 //1 to 10000 (milliseconds)
+      delayTimeRight: 200, //1 to 10000 (milliseconds)
+      order: 4
+    },
+    {
+      type: 'overdrive',
+      outputGain: 0.5,         //0 to 1+
+      drive: 0.7,              //0 to 1
+      curveAmount: 1,          //0 to 1
+      algorithmIndex: 0,       //0 to 5, selects one of our drive algorithms
+      bypass: 1,
+      order: 5
     }
   ],
   compressor: {
     threshold: 0, //-100 to 0
-    makeupGain: 1, //0 and up (in decibels)
+    makeupGain: 0, //0 and up (in decibels)
     attack: 20, //0 to 1000
     release: 200, //0 to 3000
     ratio: 3, //1 to 20
@@ -98,9 +115,9 @@ const patch = {
   },
   adsr: {
     attack: 30,
-    decay: 750,
-    sustain: 0.5,
-    release: 300
+    decay: 100,
+    sustain: .3,
+    release: 3000
   },
   masterGain: 1
 }

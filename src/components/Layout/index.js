@@ -3,6 +3,7 @@ import Header from '../Header';
 import Oscillator from '../Oscillator';
 import Filter from '../Filter';
 import ADSR from '../ADSR';
+import FilterADSR from '../FilterADSR';
 import Compressor from '../Compressor';
 import Reverb from '../Reverb';
 import PingPongDelay from '../PingPongDelay';
@@ -12,11 +13,13 @@ import MoogFilter from '../Moog_Filter';
 import Chorus from '../Chorus';
 import Bitcrusher from '../Bitcrusher';
 import Delay from '../Delay';
+import Sidebar from '../Sidebar';
 import './Layout.css';
 
 class Layout extends Component {
   render() {
     return (
+<<<<<<< HEAD
         <div className="container">
           <Header/>
           <div className="grid">
@@ -38,6 +41,30 @@ class Layout extends Component {
                 patch={this.props.patch}
                 sendDispatch={this.props.sendDispatch}
                 id={3}
+=======
+      <div className="container">
+        <Header/>
+        <div className="grid">
+          <Sidebar/>
+          <div className="left-column grid-cell">
+            <label htmlFor="oscillator-one">OSC</label>
+            <Oscillator
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+              id={1}
+              />
+            <label htmlFor="oscillator-two">OSC</label>
+            <Oscillator
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+              id={2}
+              />
+            <label htmlFor="oscillator-three">OSC</label>
+            <Oscillator
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+              id={3}
+>>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
               />
               <ADSR
                 patch={this.props.patch}
@@ -54,6 +81,7 @@ class Layout extends Component {
                 patch={this.props.patch}
                 sendDispatch={this.props.sendDispatch}
               />
+<<<<<<< HEAD
               <PingPongDelay
                 sendDispatch={this.props.sendDispatch}
               />
@@ -71,6 +99,31 @@ class Layout extends Component {
               />
               <Bitcrusher
                 sendDispatch={this.props.sendDispatch}
+=======
+            <PingPongDelay
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+              />
+            <Phaser
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+              />
+            <Overdrive
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+              />
+            <MoogFilter
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+              />
+            <Chorus
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+              />
+            <Bitcrusher
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+>>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
               />
             </div>
             <div className="right-column grid-cell">
@@ -78,11 +131,22 @@ class Layout extends Component {
                 patch={this.props.patch}
                 sendDispatch={this.props.sendDispatch}
               />
+<<<<<<< HEAD
               <Compressor
                 patch={this.props.patch}
                 sendDispatch={this.props.sendDispatch}
+=======
+            <FilterADSR
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+              />
+            <Compressor
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+>>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
               />
           </div>
+          <Sidebar/>
         </div>
       </div>
     );

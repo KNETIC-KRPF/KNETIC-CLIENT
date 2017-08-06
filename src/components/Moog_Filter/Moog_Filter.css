@@ -1,0 +1,28 @@
+.moog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 5px;
+  justify-content: center;
+  align-content: center;
+  font-size: 0.75em;
+  text-align: center;
+}
+
+.controller {
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+div.controller > div {
+  margin: 0 auto;
+  padding: 0;
+}
+
+label {
+  margin: 0;
+  padding: 0;
+}
