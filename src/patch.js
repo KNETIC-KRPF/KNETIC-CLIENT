@@ -1,23 +1,27 @@
 const patch = {
-  oscillators: [{
-    id: 1,
-    type: 'sawtooth',
-    detune: 0,
-    octave: 3,
-    gain: 0
-  }, {
-    id: 2,
-    type: 'sawtooth',
-    detune: 0,
-    octave: 3,
-    gain: 0
-  }, {
-    id: 3,
-    type: 'sawtooth',
-    detune: 0,
-    octave: 3,
-    gain: 0
-  }],
+  oscillators: [
+		{
+	    id: 1,
+	    type: 'sawtooth',
+	    detune: 0,
+	    octave: 3,
+	    gain: 100
+		},
+		{
+	    id: 2,
+	    type: 'sawtooth',
+	    detune: 0,
+	    octave: 3,
+	    gain: 100
+  	},
+		{
+	    id: 3,
+	    type: 'sawtooth',
+	    detune: 0,
+	    octave: 3,
+	    gain: 100
+  	}
+	],
   filter: {
     type: 'lowpass',
     frequency: 10000,
