@@ -32,7 +32,7 @@ class Knob extends Component {
         angleArc={270}
         angleOffset={-135}
         disableMouseWheel={true}
-        displayInput={true}
+        displayInput={false}
         fgColor="#94E4C2"
         bgColor="#999797"
         inputColor="#94E4C2"

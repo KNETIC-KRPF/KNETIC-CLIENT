@@ -6,10 +6,7 @@ class Filter extends Component {
 	render() {
 		return(
 			<div>
-				<label htmlFor="filter">
-					<h2>Main Filter</h2>
-
-					</label>
+				<h3>FILTER</h3>
 				<div className="filter-grid">
 
 				<div className="controller">
@@ -33,7 +30,7 @@ class Filter extends Component {
 						property="frequency"
 						min={20}
 						max={19999}
-						step={20}
+						step={100}
 						/>
 					<label htmlFor="frequency">FREQUENCY</label>
 				</div>

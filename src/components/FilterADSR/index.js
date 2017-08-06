@@ -28,10 +28,10 @@ class FilterADSR extends Component {
 							type="filter"
 							property="decay"
 							min={0}
-							max={1}
-							step={0.1}
+							max={1000}
+							step={10}
 							/>
-						<label htmlFor="filter-control">DELAY</label>
+						<label htmlFor="filter-control">DECAY</label>
 					</div>
 
 					<div className="controller">
@@ -40,9 +40,9 @@ class FilterADSR extends Component {
 							sendDispatch={this.props.sendDispatch}
 							type="filter"
 							property="sustain"
-							min={0}
-							max={1}
-							step={0.1}
+							min={20}
+							max={20000}
+							step={100}
 							/>
 						<label htmlFor="filter-control">SUSTAIN</label>
 					</div>
