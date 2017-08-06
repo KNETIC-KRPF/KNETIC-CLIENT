@@ -19,29 +19,6 @@ import './Layout.css';
 class Layout extends Component {
   render() {
     return (
-<<<<<<< HEAD
-        <div className="container">
-          <Header/>
-          <div className="grid">
-            <div className="left-column grid-cell">
-              <label htmlFor="oscillator-one">Oscillator 1</label>
-              <Oscillator
-                patch={this.props.patch}
-                sendDispatch={this.props.sendDispatch}
-                id={1}
-              />
-              <label htmlFor="oscillator-two">Oscillator 2</label>
-              <Oscillator
-                patch={this.props.patch}
-                sendDispatch={this.props.sendDispatch}
-                id={2}
-              />
-              <label htmlFor="oscillator-three">Oscillator 3</label>
-              <Oscillator
-                patch={this.props.patch}
-                sendDispatch={this.props.sendDispatch}
-                id={3}
-=======
       <div className="container">
         <Header/>
         <div className="grid">
@@ -64,42 +41,22 @@ class Layout extends Component {
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               id={3}
->>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
               />
-              <ADSR
-                patch={this.props.patch}
-                sendDispatch={this.props.sendDispatch}
+            <ADSR
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
               />
-            </div>
+          </div>
 
-            <div className="middle-column grid-cell">
-              <Delay
-                patch={this.props.patch}
-                sendDispatch={this.props.sendDispatch}
+          <div className="middle-column grid-cell">
+            <Delay
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
               />
-              <Reverb
-                patch={this.props.patch}
-                sendDispatch={this.props.sendDispatch}
+            <Reverb
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
               />
-<<<<<<< HEAD
-              <PingPongDelay
-                sendDispatch={this.props.sendDispatch}
-              />
-              <Phaser
-                sendDispatch={this.props.sendDispatch}
-              />
-              <Overdrive
-                sendDispatch={this.props.sendDispatch}
-              />
-              <MoogFilter
-                sendDispatch={this.props.sendDispatch}
-              />
-              <Chorus
-                sendDispatch={this.props.sendDispatch}
-              />
-              <Bitcrusher
-                sendDispatch={this.props.sendDispatch}
-=======
             <PingPongDelay
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
@@ -123,19 +80,13 @@ class Layout extends Component {
             <Bitcrusher
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
->>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
               />
-            </div>
-            <div className="right-column grid-cell">
-              <Filter
-                patch={this.props.patch}
-                sendDispatch={this.props.sendDispatch}
+          </div>
+          <div className="right-column grid-cell">
+            <Filter
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
               />
-<<<<<<< HEAD
-              <Compressor
-                patch={this.props.patch}
-                sendDispatch={this.props.sendDispatch}
-=======
             <FilterADSR
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
@@ -143,7 +94,6 @@ class Layout extends Component {
             <Compressor
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
->>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
               />
           </div>
           <Sidebar/>

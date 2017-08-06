@@ -10,7 +10,7 @@ class Analyser extends Component {
   }
 
 	componentDidMount() {
-							//analyser logic
+	   //analyser logic
 
 		setInterval( function() {
 					analyser.fftSize = 1024;

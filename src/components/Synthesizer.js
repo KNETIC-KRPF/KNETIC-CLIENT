@@ -12,47 +12,6 @@ const tuna = Tuna(audioContext);
 let KN_SYNTH;
 
 
-<<<<<<< HEAD
-const synths = [];
-
-function initMidi(playNote, stopNote) {
-	if(navigator.requestMIDIAccess){
-		console.log('Browser Supports KNETIC');
-		navigator.requestMIDIAccess().then(success, failure);
-	}
-
-	function success(midi){
-		var inputs = midi.inputs.values();
-		console.log('We Got Fucking MIDI');
-
-		for (var input = inputs.next();
-		input && !input.done;
-		input = inputs.next()) {
-			// each time there is a midi message call the onMIDIMessage function
-			input.value.onmidimessage = onMIDIMessage;
-		}
-	}
-	function failure(){
-		console.error('No Access To MIDI');
-	}
-
-	function onMIDIMessage(message) {
-		var frequency = midiNoteToFrequency(message.data[1]);
-		console.log(frequency);
-		if(message.data[0] === 144 && message.data[2] > 0){
-			playNote(frequency);
-		}
-		if(message.data[0] === 128 || message.data[2] === 0){
-			stopNote(frequency);
-		}
-	}
-	function midiNoteToFrequency(note){
-		return Math.pow(2, ((note - 69) / 12)) * 440;
-	}
-}
-
-=======
->>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
 class Synthesizer extends Component {
   constructor(props) {
     super(props);
@@ -77,13 +36,6 @@ class Synthesizer extends Component {
   }
 
 	playSound(keyFreq) {
-<<<<<<< HEAD
-		if(!KN_SYNTH) {
-			KN_SYNTH = getConstructedSynthChain(this)
-		}
-
-=======
->>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
 		let oscillators = []
 		let gains = []
 	  this.state.patch.oscillators.forEach(osc => {
@@ -96,11 +48,7 @@ class Synthesizer extends Component {
 	    newGain.gain.value = osc.gain;
 	    newOsc.connect(newGain);
 	    oscillators.push(newOsc)
-<<<<<<< HEAD
-
-=======
 			gains.push(newGain);
->>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
 	  });
 		let gainEnvelope = setGainEnvelope(this.state.patch)
 		gains.forEach(gain => {
@@ -108,19 +56,12 @@ class Synthesizer extends Component {
 		})
 		let filterEnvelope = setFilterEnvelope(this.state.patch);
 
-<<<<<<< HEAD
-
-
-	  KN_SYNTH.masterGain.connect(analyser);
-		analyser.connect(audioContext.destination);
-=======
 		gainEnvelope.connect(filterEnvelope);
 		console.log(KN_SYNTH);
 		filterEnvelope.connect(KN_SYNTH.effectBus[0]);
 		oscillators.forEach(osc => {
 			osc.start();
 		})
->>>>>>> 2a20db6521b697d96b4008042b3a09c3adfd63c0
 
 		keyFreq = Math.ceil(keyFreq * 1000);
 	  keysPressed[keyFreq] = {
