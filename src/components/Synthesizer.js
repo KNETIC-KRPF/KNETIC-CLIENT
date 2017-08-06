@@ -7,6 +7,7 @@ import patch from '../patch';
 
 const audioContext = new AudioContext();
 const tuna = Tuna(audioContext);
+let KN_SYNTH = false;
 
 const synths = [];
 
@@ -70,15 +71,10 @@ class Synthesizer extends Component {
   }
 
 	playSound(keyFreq) {
-	  let synth = {
-	    oscillators: []
-	  };
-	  synth.filter = audioContext.createBiquadFilter();
-	  synth.filter.type = this.state.patch.filter.type;
-	  synth.filter.frequency.value = this.state.patch.filter.frequency;
-	  synth.filter.Q.value = this.state.patch.filter.Q;
-	  synth.filter.gain.value = this.state.patch.filter.gain;
-
+		if(!KN_SYNTH) {
+			KN_SYNTH = getConstructedSynthChain(this)
+		}
+		let oscillators = []
 	  this.state.patch.oscillators.forEach(osc => {
 	    let newOsc = audioContext.createOscillator()
 	    newOsc.type = osc.type;
@@ -88,56 +84,26 @@ class Synthesizer extends Component {
 	    let newGain = audioContext.createGain()
 	    newGain.value = osc.gain;
 	    newOsc.connect(newGain);
-	    newGain.connect(synth.filter);
-	    synth.oscillators.push({osc: newOsc, gain: newGain});
+	    newGain.connect(KN_SYNTH.filter);
+			newOsc.start(audioContext.currentTime);
+	    oscillators.push(newOsc)
 	  });
 
-	  let sortedBus = this.state.patch.effectBus.slice().sort((a, b) => {
-	    return a.order - b.order;
-	  });
 
-	  let lastConnection = synth.filter;
-	  synth.effectBus = []
-	  sortedBus.forEach(effect => {
-	    let nextEffect = getConstrucedEffect(effect.type, effect);
-			nextEffect.type = effect.type;
 
-	    lastConnection.connect(nextEffect);
-	    lastConnection = nextEffect;
-	    synth.effectBus.push(nextEffect)
-	  });
+	  KN_SYNTH.masterGain.connect(audioContext.destination);
 
-	  let newCompressor = this.state.patch.compressor
-	  synth.compressor = new tuna.Compressor({newCompressor});
-
-	  lastConnection.connect(synth.compressor);
-	  synth.masterGain = audioContext.createGain();
-	  synth.masterGain.gain.value = this.state.patch.masterGain
-	  synth.compressor.connect(synth.masterGain);
-
-	  synth.masterGain.connect(audioContext.destination);
-
-	  synth.oscillators.forEach(osc => {
-	    osc.osc.start(audioContext.currentTime);
-	  });
-	  this.state.synths.push(synth);
-	  let index = this.state.synths.length - 1;
 		keyFreq = Math.ceil(keyFreq * 1000);
 	  keysPressed[keyFreq] = {
-			pressed: true,
-			oscillators: synth.oscillators,
-			index: index
+			oscillators: oscillators
 		}
-		// console.log(keysPressed);
 	}
 
 	stopSound(keyFreq) {
 		keyFreq = Math.ceil(keyFreq * 1000);
-		keysPressed[keyFreq].pressed = false;
 		keysPressed[keyFreq].oscillators.forEach(osc => {
-			osc.osc.stop();
+			osc.stop();
 		})
-		this.state.synths.splice(keyFreq.index, 1);
 		delete keysPressed[keyFreq];
 	}
 
@@ -155,6 +121,40 @@ const keysPressed = {
 }
 
 
+function getConstructedSynthChain(component) {
+	let synth = {
+		oscillators: []
+	};
+	synth.filter = audioContext.createBiquadFilter();
+	synth.filter.type = component.state.patch.filter.type;
+	synth.filter.frequency.value = component.state.patch.filter.frequency;
+	synth.filter.Q.value = component.state.patch.filter.Q;
+	synth.filter.gain.value = component.state.patch.filter.gain;
+
+	let sortedBus = component.state.patch.effectBus.slice().sort((a, b) => {
+		return a.order - b.order;
+	});
+
+	let lastConnection = synth.filter;
+	synth.effectBus = []
+	sortedBus.forEach(effect => {
+		let nextEffect = getConstrucedEffect(effect.type, effect);
+		nextEffect.type = effect.type;
+
+		lastConnection.connect(nextEffect);
+		lastConnection = nextEffect;
+		synth.effectBus.push(nextEffect)
+	});
+
+	let newCompressor = component.state.patch.compressor
+	synth.compressor = new tuna.Compressor({newCompressor});
+
+	lastConnection.connect(synth.compressor);
+	synth.masterGain = audioContext.createGain();
+	synth.masterGain.gain.value = component.state.patch.masterGain
+	synth.compressor.connect(synth.masterGain);
+	return synth;
+}
 
 function qwertyKeyboard(playSound) {
 	window.addEventListener('keydown', event => {
@@ -180,7 +180,7 @@ function qwertyKeyboard(playSound) {
 				}
 				break;
 			case 'KeyD':
-				if(!keysPressed[Math.ceil(KeyFreqs.E3e * 1000)]) {
+				if(!keysPressed[Math.ceil(KeyFreqs.E3 * 1000)]) {
 					playSound(KeyFreqs.E3);
 				}
 				break;
@@ -195,7 +195,7 @@ function qwertyKeyboard(playSound) {
 				}
 				break;
 			case 'KeyG':
-				if(!keysPressed[Math.ceil(KeyFreqs.G3e * 1000)]) {
+				if(!keysPressed[Math.ceil(KeyFreqs.G3 * 1000)]) {
 					playSound(KeyFreqs.G3);
 				}
 				break;
@@ -307,147 +307,135 @@ export default Synthesizer;
 const dispatches = {
   oscillator: {
     waveform(value, component, id) {
-			let newSynths = [...component.state.synths]
-			newSynths.forEach(synth => {
-				synth.oscillators[id - 1].type = value;
-			})
+			// let newSynths = [...component.state.synths]
+			// newSynths.forEach(synth => {
+			// 	synth.oscillators[id - 1].type = value;
+			// })
 		  let newPatch = {...component.state.patch}
 			newPatch.oscillators = [...patch.oscillators]
 			newPatch.oscillators[id - 1].type = value;
 		  	component.setState({
-			  patch: newPatch,
-			  synths: newSynths
+			  patch: newPatch
 		  })
     },
     gain(value, component, id) {
-			let newSynths = [...component.state.synths]
-			newSynths.forEach(synth => {
-				synth.oscillators[id - 1].gain.gain.value = value;
-			})
+			// let newSynths = [...component.state.synths]
+			// newSynths.forEach(synth => {
+			// 	synth.oscillators[id - 1].gain.gain.value = value;
+			// })
 		  let newPatch = {...component.state.patch}
 			newPatch.oscillators = [...patch.oscillators]
 			newPatch.oscillators[id - 1].gain = value;
 		  	component.setState({
-			  patch: newPatch,
-			  synths: newSynths
+			  patch: newPatch
 		  })
     },
     detune(value, component, id) {
-			let newSynths = [...component.state.synths]
-			newSynths.forEach(synth => {
-				synth.oscillators[id - 1].osc.detune.value = value;
-			})
+			// let newSynths = [...component.state.synths]
+			// newSynths.forEach(synth => {
+			// 	synth.oscillators[id - 1].osc.detune.value = value;
+			// })
 		  let newPatch = {...component.state.patch}
 			newPatch.oscillators = [...patch.oscillators]
 			newPatch.oscillators[id - 1].gain = value;
 		  	component.setState({
-			  patch: newPatch,
-			  synths: newSynths
+			  patch: newPatch
 		  })
     }
   },
   adsr: {
     attack(value, component) {
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.adsr.attack = value;
-	  	  })
+			// let newSynths = [...component.state.synths]
+	  	//   	newSynths.forEach(synth => {
+	  	// 	 	synth.adsr.attack = value;
+	  	//   })
 	  	  let newPatch = {...component.state.patch}
 	  	  newPatch.adsr.attack = value;
 	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
+	  		patch: newPatch
 	  	})
     },
     decay(value, component) {
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.adsr.decay = value;
-	  	  })
+			// let newSynths = [...component.state.synths]
+	  	//   	newSynths.forEach(synth => {
+	  	// 	 	synth.adsr.decay = value;
+	  	//   })
 	  	  let newPatch = {...component.state.patch}
 	  	  newPatch.adsr.decay = value;
 	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
+	  		patch: newPatch
 	  	})
     },
     sustain(value, component) {
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.adsr.sustain = value;
-	  	  })
+			// let newSynths = [...component.state.synths]
+	  	//   	newSynths.forEach(synth => {
+	  	// 	 	synth.adsr.sustain = value;
+	  	//   })
 	  	  let newPatch = {...component.state.patch}
 	  	  newPatch.adsr.sustain = value;
 	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
+	  		patch: newPatch
 	  	})
     },
     release(value, component) {
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.adsr.release = value;
-	  	  })
+			// let newSynths = [...component.state.synths]
+	  	//   	newSynths.forEach(synth => {
+	  	// 	 	synth.adsr.release = value;
+	  	//   })
 	  	  let newPatch = {...component.state.patch}
 	  	  newPatch.adsr.release = value;
 	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
+	  		patch: newPatch
 	  	})
     }
   },
   filter: {
     type: (value, component) => {
-		let newSynths = [...component.state.synths]
-  	  	newSynths.forEach(synth => {
-  		 synth.filter.type = value;
-  	  })
+		// let newSynths = [...component.state.synths]
+  	//   	newSynths.forEach(synth => {
+  	// 	 synth.filter.type = value;
+  	//   })
+			KN_SYNTH.filter.type = value
+
   	  let newPatch = {...component.state.patch}
   	  newPatch.filter = {...newPatch.filter}
   	  newPatch.filter.type = value;
   	  component.setState({
-  		patch: newPatch,
-  		synths: newSynths
-  	})
+  			patch: newPatch
+  		})
     },
     frequency(value, component) {
-	  	let newSynths = [...component.state.synths]
-		newSynths.forEach(synth => {
-			synth.filter.frequency.value = value;
-		})
+
+			KN_SYNTH.filter.frequency.value = value;
+
 	  	let newPatch = {...component.state.patch}
-		newPatch.filter = {...patch.filter}
-		newPatch.filter.frequency = value;
+			newPatch.filter = {...patch.filter}
+			newPatch.filter.frequency = value;
 	  	component.setState({
-		  patch: newPatch,
-		  synths: newSynths
-	  })
+		  	patch: newPatch
+	  	})
     },
     Q: function(value, component) {
-	  let newSynths = [...component.state.synths]
-	  newSynths.forEach(synth => {
-		  synth.filter.Q.value = value;
-	  })
-	  let newPatch = {...component.state.patch}
-	  newPatch.filter = {...patch.filter}
-	  newPatch.filter.Q = value;
-	  component.setState({
-			patch: newPatch,
-			synths: newSynths
-		})
+
+			KN_SYNTH.filter.Q.value = value;
+
+		  let newPatch = {...component.state.patch}
+		  newPatch.filter = {...patch.filter}
+		  newPatch.filter.Q = value;
+		  component.setState({
+				patch: newPatch
+			})
     },
     gain: function(value, component) {
-		let newSynths = [...component.state.synths]
-  	  	newSynths.forEach(synth => {
-  		synth.filter.gain.value = value;
-  	  })
+
+			KN_SYNTH.filter.gain.value = value;
+
   	  let newPatch = {...component.state.patch}
   	  newPatch.filter = {...patch.filter}
   	  newPatch.filter.gain = value;
   	  component.setState({
-  		patch: newPatch,
-  		synths: newSynths
-  	})
+  			patch: newPatch
+  		})
     }
   },
   lfo: {
@@ -463,91 +451,76 @@ const dispatches = {
   },
   compressor: {
     threshold(value, component) {
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.compressor.threshold = value;
-	  	  })
-	  	  let newPatch = {...component.state.patch}
-	  	  newPatch.compressor.threshold = value;
-	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
-	  	})
+
+			KN_SYNTH.compressor.threshold = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.compressor.threshold = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
     },
     makeUpGain(value, component) {
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.compressor.makeupGain.value = value;
-	  	  })
-	  	  let newPatch = {...component.state.patch}
-	  	  newPatch.compressor.makeupGain = value;
-	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
-	  	})
+
+			KN_SYNTH.compressor.makeupGaub.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.compressor.makeupGain = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
     },
     attack(value, component) {
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.compressor.attack.value = value;
-	  	  })
-	  	  let newPatch = {...component.state.patch}
-	  	  newPatch.compressor.attack = value;
-	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
-	  	})
+
+			KN_SYNTH.compressor.attack.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.compressor.attack = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
     },
     release(value, component) {
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.compressor.release.value = value;
-	  	  })
-	  	  let newPatch = {...component.state.patch}
-	  	  newPatch.compressor.release = value;
-	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
-	  	})
+
+			KN_SYNTH.compressor.release.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.compressor.release = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
     },
     ratio(value, component) {
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.compressor.ratio.value = value;
-	  	  })
-	  	  let newPatch = {...component.state.patch}
-	  	  newPatch.compressor.ratio = value;
-	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
-	  	})
+
+			KN_SYNTH.compressor.ratio.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.compressor.ratio = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
     },
     knee(value, component) {
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.compressor.knee.value = value;
-	  	  })
-	  	  let newPatch = {...component.state.patch}
-	  	  newPatch.compressor.knee = value;
-	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
-	  	})
+
+			KN_SYNTH.compressor.knee.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.compressor.knee = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
     },
 
 		//////////// THIS ONE IS MISSING FROM COMPONENT
     autoMakeUp(value, component) {
-			console.log(component.state);
-			let newSynths = [...component.state.synths]
-	  	  	newSynths.forEach(synth => {
-	  		 	synth.compressor.autoMakeUp.value = value;
-	  	  })
-	  	  let newPatch = {...component.state.patch}
-	  	  newPatch.compressor.autoMakeUp = value;
-	  	  component.setState({
-	  		patch: newPatch,
-	  		synths: newSynths
-	  	})
+
+			KN_SYNTH.compressor.autoMakeUp.value = value;
+
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.compressor.autoMakeUp = value;
+  	  component.setState({
+  			patch: newPatch
+  		})
 
 		//////////////
     },
@@ -583,14 +556,19 @@ const dispatches = {
   },
   ping_pong: {
     feedback: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'ping_pong') {
-                effect.feedback = value;
-              }
-            })
-    	  })
+      // let newSynths = [...component.state.synths]
+    	//   	newSynths.forEach(synth => {
+      //       synth.effectBus.forEach(effect => {
+      //         if (effect.type === 'ping_pong') {
+      //           effect.feedback = value;
+      //         }
+      //       })
+    	//   })
+				KN_SYNTH.effectBus.forEach(effect => {
+					if (effect.type === 'ping_pong') {
+						effect.feedback = value;
+					}
+				})
     	  let newPatch = {...component.state.patch}
         newPatch.effectBus.forEach(effect => {
           if (effect.type === 'ping_pong') {
@@ -598,19 +576,17 @@ const dispatches = {
           }
         })
     	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
+      		patch: newPatch
       	});
     },
     wet: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'ping_pong') {
-                effect.wetLevel.gain.value = value;
-              }
-            })
-    	  })
+
+				KN_SYNTH.effectBus.forEach(effect => {
+					if (effect.type === 'ping_pong') {
+						effect.wetLevel.gain.value = value;
+					}
+				})
+
     	  let newPatch = {...component.state.patch}
         newPatch.effectBus.forEach(effect => {
           if (effect.type === 'ping_pong') {
@@ -618,20 +594,17 @@ const dispatches = {
           }
         })
     	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
+      		patch: newPatch
       	});
     },
     delay_left: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'ping_pong') {
-                effect.delayTimeLeft = value;
-                console.log(effect);
-              }
-            })
-    	  })
+
+				KN_SYNTH.effectBus.forEach(effect => {
+					if (effect.type === 'ping_pong') {
+						effect.delayTimeLeft = value;
+					}
+				})
+
     	  let newPatch = {...component.state.patch}
         newPatch.effectBus.forEach(effect => {
           if (effect.type === 'ping_pong') {
@@ -639,30 +612,27 @@ const dispatches = {
           }
         })
     	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
+      		patch: newPatch
       	});
     },
     delay_right: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'ping_pong') {
-                effect.delayTimeRight = value;
-                console.log(effect);
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'ping_pong') {
-            effect.delayTimRight = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'ping_pong') {
+					effect.delayTimeRight = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'ping_pong') {
+          effect.delayTimRight = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     order: function(value) {
       console.log("PING Order verb: ", value);
@@ -670,84 +640,80 @@ const dispatches = {
   },
   phaser: {
     rate: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'phaser') {
-                effect._rate = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'phaser') {
-            effect.rate = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'phaser') {
+					effect._rate = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'phaser') {
+          effect.rate = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     depth: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'phaser') {
-                effect._depth = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'phaser') {
-            effect.depth = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'phaser') {
+					effect._depth = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'phaser') {
+          effect.depth = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     feedback: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'phaser') {
-                effect._feedback = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'phaser') {
-            effect.feedback = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'phaser') {
+					effect._feedback = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'phaser') {
+          effect.feedback = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     stereo_phase: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'phaser') {
-                effect._stereoPhase = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'phaser') {
-            effect.stereoPhase = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'phaser') {
+					effect._stereoPhase = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'phaser') {
+          effect.stereoPhase = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     // BMF: function(value, component) {
     //   let newSynths = [...component.state.synths]
@@ -771,24 +737,22 @@ const dispatches = {
     //   	});
     // },
     bypass: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'phaser') {
-                effect._bypass = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'phaser') {
-            effect.bypass = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'phaser') {
+					effect._bypass = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'phaser') {
+          effect.bypass = value;
+        }
+      })
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     order: function(value) {
       console.log("Phaser FX Order verb: ", value);
@@ -796,105 +760,99 @@ const dispatches = {
   },
   overdrive: {
     drive: function(value, component) {
-      let newSynths = [...component.state.synths]
-          newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'overdrive') {
-                effect.inputDrive.gain.value = value;
-              }
-            })
-        })
-        let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'overdrive') {
-            effect.drive = value;
-          }
-        })
-        component.setState({
-          patch: newPatch,
-          synths: newSynths
-        });
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'overdrive') {
+					effect.inputDrive.gain.value = value;
+				}
+			})
+
+      let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'overdrive') {
+          effect.drive = value;
+        }
+      })
+
+      component.setState({
+        patch: newPatch
+      });
     },
     output_gain: function(value, component) {
-      let newSynths = [...component.state.synths]
-          newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'overdrive') {
-                effect.outputDrive.gain.value = value;
-              }
-            })
-        })
-        let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'overdrive') {
-            effect.outputGain = value;
-          }
-        })
-        component.setState({
-          patch: newPatch,
-          synths: newSynths
-        });
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'overdrive') {
+					effect.outputDrive.gain.value = value;
+				}
+			})
+
+      let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'overdrive') {
+          effect.outputGain = value;
+        }
+      })
+
+      component.setState({
+        patch: newPatch
+      });
     },
     curve_amount: function(value, component) {
-      let newSynths = [...component.state.synths]
-          newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'overdrive') {
-                effect._curveAmount= value;
-                console.log(effect);
-              }
-            })
-        })
-        let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'overdrive') {
-            effect.curveAmount = value;
-          }
-        })
-        component.setState({
-          patch: newPatch,
-          synths: newSynths
-        });
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'overdrive') {
+					effect._curveAmount = value;
+				}
+			})
+
+      let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'overdrive') {
+          effect.curveAmount = value;
+        }
+      })
+
+      component.setState({
+        patch: newPatch
+      });
     },
     algorithm_index(value, component) {
-      let newSynths = [...component.state.synths]
-          newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'overdrive') {
-                effect._algorithmIndex= value;
-              }
-            })
-        })
-        let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'overdrive') {
-            effect.algorithmIndex = value;
-          }
-        })
-        component.setState({
-          patch: newPatch,
-          synths: newSynths
-        });
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'overdrive') {
+					effect._algorithmIndex= value;
+				}
+			})
+
+      let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'overdrive') {
+          effect.algorithmIndex = value;
+        }
+      })
+
+      component.setState({
+        patch: newPatch
+      });
     },
     bypass(value, component) {
-      let newSynths = [...component.state.synths]
-          newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'overdrive') {
-                effect.bypass= value;
-              }
-            })
-        })
-        let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'overdrive') {
-            effect.bypass = value;
-          }
-        })
-        component.setState({
-          patch: newPatch,
-          synths: newSynths
-        });
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'overdrive') {
+					effect.bypass= value;
+				}
+			})
+
+      let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'overdrive') {
+          effect.bypass = value;
+        }
+      })
+
+      component.setState({
+        patch: newPatch
+      });
     },
     order(value) {
       console.log("overdrive FX Order verb: ", value);
@@ -902,64 +860,61 @@ const dispatches = {
   },
   moog_filter: {
     buffer: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'moog') {
-                effect.buffer = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'moog') {
-            effect.buffer = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'moog') {
+					effect.buffer = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'moog') {
+          effect.buffer = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     cutoff: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'moog') {
-                effect.cutoff = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'moog') {
-            effect.cutoff = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'moog') {
+					effect.cutoff = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'moog') {
+          effect.cutoff = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     res: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'moog') {
-                effect.res = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'moog') {
-            effect.res = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'moog') {
+					effect.res = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'moog') {
+          effect.res = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     order: function(value) {
       console.log("Moog FX Order verb: ", value);
@@ -968,85 +923,78 @@ const dispatches = {
   chorus: {
     feedback: function(value, component) {
 
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'chorus') {
-                effect.feedback = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'chorus') {
-            effect.feeback = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'chorus') {
+					effect.feedback = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'chorus') {
+          effect.feeback = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     delay: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'chorus') {
-                effect.delay = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'chorus') {
-            effect.delay = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'chorus') {
+					effect.delay = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'chorus') {
+          effect.delay = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     rate: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'chorus') {
-                effect.rate = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'chorus') {
-            effect.rate = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'chorus') {
+					effect.rate = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'chorus') {
+          effect.rate = value;
+        }
+      })
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     bypass: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'chorus') {
-                effect.bypass = value;
-                console.log(effect);
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'chorus') {
-            effect._bypass = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'chorus') {
+					effect.bypass = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'chorus') {
+          effect._bypass = value;
+        }
+      })
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     order: function(value) {
 
@@ -1054,44 +1002,40 @@ const dispatches = {
   },
   bitcrusher: {
     bits: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'bitcrusher') {
-                effect.bits = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'bitcrusher') {
-            effect.bits = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'bitcrusher') {
+					effect.bits = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'bitcrusher') {
+          effect.bits = value;
+        }
+      })
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     buffer: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'bitcrusher') {
-                effect.buffer = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'bitcrusher') {
-            effect.bufferSize = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'bitcrusher') {
+					effect.buffer = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'bitcrusher') {
+          effect.bufferSize = value;
+        }
+      })
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     norm_freq: function(value, component) {
       // let newSynths = [...component.state.synths]
@@ -1117,124 +1061,114 @@ const dispatches = {
   },
   delay: {
     time: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'delay') {
-                effect.time = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'delay') {
-            effect.delayTime = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'delay') {
+					effect.time = value;
+				}
+			});
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'delay') {
+          effect.delayTime = value;
+        }
+      });
+
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     feedback: function(value, component) {
-      let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'delay') {
-                effect.feedback = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'delay') {
-            effect.feedback = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'delay') {
+					effect.feedback = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'delay') {
+          effect.feedback = value;
+        }
+      })
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     cutoff: function(value, component) {
-  		let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'delay') {
-                effect.cutoff = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'delay') {
-            effect.cutoff = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'delay') {
+					effect.cutoff = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'delay') {
+          effect.cutoff = value;
+        }
+      })
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     dry: function(value, component) {
-  		let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'delay') {
-                effect.dry.gain.value = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'delay') {
-            effect.drylevel = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'delay') {
+					effect.dry.gain.value = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'delay') {
+          effect.drylevel = value;
+        }
+      })
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     bypass: function(value, component) {
-        		let newSynths = [...component.state.synths]
-          	  	newSynths.forEach(synth => {
-                  synth.effectBus.forEach(effect => {
-                    if (effect.type === 'delay') {
-                      effect.bypass = value;
-                    }
-                  })
-          	  })
-          	  let newPatch = {...component.state.patch}
-              newPatch.effectBus.forEach(effect => {
-                if (effect.type === 'delay') {
-                  effect.wetLevel = value;
-                }
-              })
-          	  component.setState({
-            		patch: newPatch,
-            		synths: newSynths
-            	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'delay') {
+					effect.bypass = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'delay') {
+          effect.wetLevel = value;
+        }
+      })
+  	  component.setState({
+    		patch: newPatch
+    	});
     },
     wet: function(value, component) {
-  		let newSynths = [...component.state.synths]
-    	  	newSynths.forEach(synth => {
-            synth.effectBus.forEach(effect => {
-              if (effect.type === 'delay') {
-                effect.wet.gain.value = value;
-              }
-            })
-    	  })
-    	  let newPatch = {...component.state.patch}
-        newPatch.effectBus.forEach(effect => {
-          if (effect.type === 'delay') {
-            effect.wetLevel = value;
-          }
-        })
-    	  component.setState({
-      		patch: newPatch,
-      		synths: newSynths
-      	});
+
+			KN_SYNTH.effectBus.forEach(effect => {
+				if (effect.type === 'delay') {
+					effect.wet.gain.value = value;
+				}
+			})
+
+  	  let newPatch = {...component.state.patch}
+      newPatch.effectBus.forEach(effect => {
+        if (effect.type === 'delay') {
+          effect.wetLevel = value;
+        }
+      })
+			
+  	  component.setState({
+    		patch: newPatch
+    	});
     }
   }
 }
