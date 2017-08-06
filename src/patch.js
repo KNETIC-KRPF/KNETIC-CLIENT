@@ -1,17 +1,20 @@
 const patch = {
   oscillators: [{
+    id: 1,
     type: 'sawtooth',
     detune: 0,
     octave: 3,
     gain: 0
   }, {
+    id: 2,
     type: 'sawtooth',
     detune: 0,
     octave: 3,
     gain: 0
   }, {
+    id: 3,
     type: 'sawtooth',
-    detune: -.1,
+    detune: 0,
     octave: 3,
     gain: 0
   }],
@@ -84,19 +87,19 @@ const patch = {
     // }
   ],
   compressor: {
-    threshold: -1, //-100 to 0
+    threshold: 0, //-100 to 0
     makeupGain: 1, //0 and up (in decibels)
-    attack: 1000, //0 to 1000
-    release: 3000, //0 to 3000
-    ratio: 20, //1 to 20
-    knee: 40, //0 to 40
+    attack: 20, //0 to 1000
+    release: 200, //0 to 3000
+    ratio: 3, //1 to 20
+    knee: 6, //0 to 40
     automakeup: true, //true/false
     bypass: 0
   },
   adsr: {
-    attack: 1000,
-    decay: 2000,
-    sustain: .4,
+    attack: 30,
+    decay: 750,
+    sustain: 0.5,
     release: 300
   },
   masterGain: 1

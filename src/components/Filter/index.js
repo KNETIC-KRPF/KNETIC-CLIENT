@@ -8,7 +8,7 @@ class Filter extends Component {
 			<div>
 				<label htmlFor="filter"><h2>Main Filter</h2></label>
 				<label htmlFor="filter-type">Filter Type: </label>
-				<select className="filter-type-selection" onChange={(event) => this.props.sendDispatch('filter', 'type', event.target.value)}>
+				<select className="filter-type-selection" defaultValue={this.props.patch.filter.type} onChange={(event) => this.props.sendDispatch('filter', 'type', event.target.value)}>
 					<option value="lowpass">Low Pass</option>
 					<option value="highpass">High Pass</option>
 					<option value="bandpass">Band Pass</option>

@@ -25,14 +25,14 @@ class Knob extends Component {
         value={this.state.value}
         onChange={this.handleChange}
         onChangeEnd={this.handleChangeEnd}
-        thickness={0.3}
+        thickness={0.5}
         width={50}
         height={50}
         stopper={true}
         angleArc={270}
         angleOffset={-135}
         disableMouseWheel={true}
-        displayInput={false}
+        displayInput={true}
         fgColor="#94E4C2"
         bgColor=""
         inputColor="#94E4C2"
