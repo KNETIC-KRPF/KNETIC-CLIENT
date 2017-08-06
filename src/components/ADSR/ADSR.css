@@ -1,0 +1,12 @@
+.adsr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 5px;
+  justify-content: center;
+  align-content: center;
+}
+
+.knob {
+  display: flex;
+  flex-direction: column;
+}

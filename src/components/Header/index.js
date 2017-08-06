@@ -8,10 +8,9 @@ class Header extends Component {
 		return(
 			<div className="header">
 				<h1>KNETIC</h1>
-				<label htmlFor="login-info">Login/Account Info</label>
-				<Account />
 				<label htmlFor="patch-collection">Patches</label>
 				<PatchCollection />
+				<Account />
 			</div>
 		);
 	}
