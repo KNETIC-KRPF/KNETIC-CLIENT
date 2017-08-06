@@ -1,18 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Rubik');
 
 .container {
-	background: #1F1C1B;
 	font-family: 'Rubik', sans-serif;
 }
 
 .grid {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 50px 1fr 1fr 1fr 50px;
 	grid-column-gap: 4px;
 }
 
 .grid-cell {
-	flex: 1;
+	background: #1F1C1B;
+	padding: 0 1em;
 }
 
 .middle-column {

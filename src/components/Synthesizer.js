@@ -398,7 +398,7 @@ const dispatches = {
     },
     makeUpGain(value, component) {
 
-			KN_SYNTH.compressor.makeupGaub.value = value;
+			KN_SYNTH.compressor.makeupGain.value = value;
 
   	  let newPatch = {...component.state.patch}
   	  newPatch.compressor.makeupGain = value;

@@ -4,13 +4,18 @@ import './Moog_Filter.css';
 
 class Moog_Filter extends Component {
 	render() {
+		const efxProp = this.props.patch.effectBus;
+		const findMoog = efx => efx.type === "moog";
+		const moog = efxProp.find(findMoog);
 		return(
       <div>
 				<h2>Moog Filter</h2>
 				<div className="moog-grid">
 
 					<div className="controller">
-						<Knob sendDispatch={this.props.sendDispatch}
+						<Knob
+							patchState={moog.buffer}
+							sendDispatch={this.props.sendDispatch}
 							type="moog_filter"
 							property="buffer"
 							min={256}
@@ -21,7 +26,9 @@ class Moog_Filter extends Component {
 					</div>
 
 					<div className="controller">
-						<Knob sendDispatch={this.props.sendDispatch}
+						<Knob
+							patchState={moog.cutoff}
+							sendDispatch={this.props.sendDispatch}
 							type="moog_filter"
 							property="cutoff"
 							min={0}
@@ -33,6 +40,7 @@ class Moog_Filter extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={moog.resonance}
 							sendDispatch={this.props.sendDispatch}
 							type="moog_filter"
 							property="res"
@@ -40,7 +48,7 @@ class Moog_Filter extends Component {
 							max={4}
 							step={0.5}
 							/>
-						<label htmlFor="moog-filter-control">RES</label>
+						<label htmlFor="moog-filter-control">RESONANCE</label>
 					</div>
 
 				</div>

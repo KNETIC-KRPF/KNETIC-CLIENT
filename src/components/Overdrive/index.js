@@ -4,6 +4,9 @@ import './Overdrive.css';
 
 class Overdrive extends Component {
 	render() {
+		const efxProp = this.props.patch.effectBus;
+		const findOverdrive = efx => efx.type === "overdrive";
+		const overdrive = efxProp.find(findOverdrive);
 		return(
 			<div>
 				<h2>Overdrive</h2>
@@ -11,6 +14,7 @@ class Overdrive extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={overdrive.drive}
 							sendDispatch={this.props.sendDispatch}
 							type="overdrive"
 							property="drive"
@@ -23,6 +27,7 @@ class Overdrive extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={overdrive.outputGain}
 							sendDispatch={this.props.sendDispatch}
 							type="overdrive"
 							property="output_gain"
@@ -35,6 +40,7 @@ class Overdrive extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={overdrive.curveAmount}
 							sendDispatch={this.props.sendDispatch}
 							type="overdrive"
 							property="curve_amount"
@@ -47,6 +53,7 @@ class Overdrive extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={overdrive.algorithmIndex}
 							sendDispatch={this.props.sendDispatch}
 							type="overdrive"
 							property="algorithm_index"
@@ -59,6 +66,7 @@ class Overdrive extends Component {
 
 					<div className="controller">
 						<Knob
+							patchState={overdrive.bypass}
 							sendDispatch={this.props.sendDispatch}
 							type="overdrive"
 							property="bypass"
