@@ -20,7 +20,6 @@ class Layout extends Component {
         <div className="container">
           <Header/>
           <div className="grid">
-
           <div className="left-column grid-cell">
             <label htmlFor="oscillator-one">Oscillator 1</label>
             <Oscillator
