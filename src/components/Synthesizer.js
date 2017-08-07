@@ -7,6 +7,7 @@ import patch from '../patch';
 
 const audioContext = new AudioContext();
 const analyser = audioContext.createAnalyser();
+analyser.maxDecibels = -0;
 
 const tuna = Tuna(audioContext);
 let KN_SYNTH;
@@ -19,7 +20,8 @@ class Synthesizer extends Component {
 		this.playSound = this.playSound.bind(this)
 		this.stopSound = this.stopSound.bind(this)
     this.state = {
-      		patch
+      		patch,
+					analyser: analyser
 		}
 		initQwertyKeyboardKeydown(this.playSound)
 		initQwertyKeyboardKeyup(this.stopSound)
@@ -83,7 +85,7 @@ class Synthesizer extends Component {
   render() {
     return (
       <div>
-        <Layout patch={this.state.patch} sendDispatch={this.receiveDispatch}/>
+        <Layout patch={this.state.patch} sendDispatch={this.receiveDispatch} analyser={this.state.analyser}/>
       </div>
     );
   }
@@ -123,7 +125,8 @@ function getConstructedSynthChain(component) {
 	synth.masterGain = audioContext.createGain();
 	synth.masterGain.gain.value = component.state.patch.masterGain
 	synth.compressor.connect(synth.masterGain);
-	synth.masterGain.connect(audioContext.destination);
+	synth.masterGain.connect(analyser);
+	analyser.connect(audioContext.destination);
 	return synth;
 }
 
