@@ -71,7 +71,12 @@ class RockerSwitch extends React.Component {
 
     return (
       <div className="bypass">
-        <SwitchButton name={this.props.name} label="BYPASS" theme="rsbc-switch-button-flat-square" defaultChecked={initialCondition} onChange={this.handleToggle}/>
+        <h6 className="label-bypass">BYPASS</h6>
+        <SwitchButton
+          name={this.props.name}
+          theme="rsbc-switch-button-flat-square"
+          defaultChecked={initialCondition}
+          onChange={this.handleToggle}/>
       </div>
     );
   }
