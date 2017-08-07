@@ -26,7 +26,7 @@ class Analyser extends Component {
     					const ctx = canvas.getContext("2d");
     					ctx.clearRect(0, 0, width, 100);
 
-    				  ctx.fillStyle = 'rgb(0, 0, 0)';
+    				  ctx.fillStyle = '#1F1C1B';
     				  ctx.fillRect(0, 0, width, 100);
 
     				  var barWidth = (width / bufferLength) * 2.5;
