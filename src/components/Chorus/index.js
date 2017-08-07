@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Knob from '../Knob';
+import RockerSwitch from '../RockerSwitch';
 import './Chorus.css';
 
 class Chorus extends Component {
@@ -9,7 +10,17 @@ class Chorus extends Component {
 		const chorus = efxProp.find(findChorus);
     return (
       <div>
-        <h4>CHROUS</h4>
+
+        <div className="bypass-container">
+          <h4>CHROUS</h4>
+          <RockerSwitch
+            patchState={chorus.bypass}
+            sendDispatch={this.props.sendDispatch}
+            type="chorus"
+            property="bypass"
+            />
+        </div>
+
         <div className="chorus-grid">
 
           <div className="controller">
@@ -49,19 +60,6 @@ class Chorus extends Component {
               step={0.5}
               />
             <label htmlFor="chorus-control">RATE</label>
-          </div>
-
-          <div className="controller">
-            <Knob
-              patchState={chorus.bypass}
-              sendDispatch={this.props.sendDispatch}
-              type="chorus"
-              property="bypass"
-              min={0}
-              max={1}
-              step={1}
-              />
-            <label htmlFor="chorus-control">BYPASS</label>
           </div>
 
         </div>

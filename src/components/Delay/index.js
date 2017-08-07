@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Knob from '../Knob';
+import RockerSwitch from '../RockerSwitch';
 import './Delay.css';
 
 class Delay extends Component {
@@ -9,7 +10,17 @@ class Delay extends Component {
 		const delay = efxProp.find(findDelay);
 		return(
 			<div>
-				<h4>DELAY</h4>
+
+				<div className="bypass-container">
+					<h4>DELAY</h4>
+					<RockerSwitch
+						patchState={delay.bypass}
+						sendDispatch={this.props.sendDispatch}
+						type="delay"
+						property="bypass"
+						/>
+				</div>
+
 				<div className="delay-grid">
 
 					<div className="controller">
@@ -75,19 +86,6 @@ class Delay extends Component {
 							step={0.1}
 							/>
 						<label htmlFor="delay-control">WET</label>
-					</div>
-
-					<div className="controller">
-						<Knob
-							patchState={delay.bypass}
-							sendDispatch={this.props.sendDispatch}
-							type="delay"
-							property="bypass"
-							min={0}
-							max={1}
-							step={1}
-							/>
-						<label htmlFor="delay-control">BYPASS</label>
 					</div>
 
 				</div>

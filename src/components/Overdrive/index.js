@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Knob from '../Knob';
+import RockerSwitch from '../RockerSwitch';
 import './Overdrive.css';
 
 class Overdrive extends Component {
@@ -9,9 +10,17 @@ class Overdrive extends Component {
 		const overdrive = efxProp.find(findOverdrive);
 		return(
 			<div>
-				<h4>OVERDRIVE</h4>
-				<div className="overdrive-grid">
+				<div className="bypass-container">
+					<h4>OVERDRIVE</h4>
+					<RockerSwitch
+						patchState={overdrive.bypass}
+						sendDispatch={this.props.sendDispatch}
+						type="overdrive"
+						property="bypass"
+						/>
+				</div>
 
+				<div className="overdrive-grid">
 					<div className="controller">
 						<Knob
 							patchState={overdrive.drive}
@@ -64,7 +73,7 @@ class Overdrive extends Component {
 						<label htmlFor="overdrive-control">ALGORITHM INDEX</label>
 					</div>
 
-					<div className="controller">
+					{/*<div className="controller">
 						<Knob
 							patchState={overdrive.bypass}
 							sendDispatch={this.props.sendDispatch}
@@ -75,7 +84,7 @@ class Overdrive extends Component {
 							step={1}
 							/>
 						<label htmlFor="overdrive-control">BYPASS</label>
-					</div>
+					</div>*/}
 
 				</div>
 				<hr/>

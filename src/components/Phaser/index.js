@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Knob from '../Knob';
+import RockerSwitch from '../RockerSwitch';
 import './Phaser.css';
 
 class Phaser extends Component {
@@ -9,9 +10,16 @@ class Phaser extends Component {
 		const phaser = efxProp.find(findPhaser);
 		return(
 			<div>
-				<h4>PHASER</h4>
+				<div className="bypass-container">
+					<h4>PHASER</h4>
+					<RockerSwitch
+						patchState={phaser.bypass}
+						sendDispatch={this.props.sendDispatch}
+						type="phaser"
+						property="bypass"
+						/>
+				</div>
 				<div className="phaser-grid">
-
 					<div className="controller">
 						<Knob
 							patchState={phaser.rate}
@@ -61,7 +69,7 @@ class Phaser extends Component {
 							max={180}
 							step={2}
 							/>
-						<label htmlFor="phaser-control">STEREO PHASE</label>
+						<label htmlFor="phaser-control">STEREO</label>
 					</div>
 
 					{/*<div className="controller">
@@ -77,7 +85,7 @@ class Phaser extends Component {
 					 <label htmlFor="phaser-control">BMF</label>
 					</div>*/}
 
-					<div className="controller">
+					{/*<div className="controller">
 						<Knob
 							patchState={phaser.bypass}
 							sendDispatch={this.props.sendDispatch}
@@ -88,7 +96,7 @@ class Phaser extends Component {
 							step={1}
 							/>
 						<label htmlFor="phaser-control">BYPASS</label>
-					</div>
+					</div>*/}
 
 				</div>
 				<hr/>
