@@ -11,7 +11,7 @@ import Phaser from '../Phaser';
 import Overdrive from '../Overdrive';
 import MoogFilter from '../Moog_Filter';
 import Chorus from '../Chorus';
-import Bitcrusher from '../Bitcrusher';
+// import Bitcrusher from '../Bitcrusher';
 import Delay from '../Delay';
 import Sidebar from '../Sidebar';
 import Analyser from '../Analyser/Analyser.js';
@@ -26,19 +26,18 @@ class Layout extends Component {
         <div className="grid">
           <Sidebar/>
           <div className="left-column grid-cell">
-            <label htmlFor="oscillator-one">OSC</label>
+
             <Oscillator
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               id={1}
             />
-            <label htmlFor="oscillator-two">OSC</label>
             <Oscillator
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
               id={2}
             />
-            <label htmlFor="oscillator-three">OSC</label>
+
             <Oscillator
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
@@ -76,10 +75,6 @@ class Layout extends Component {
               sendDispatch={this.props.sendDispatch}
             />
             <Chorus
-              patch={this.props.patch}
-              sendDispatch={this.props.sendDispatch}
-            />
-            <Bitcrusher
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
             />

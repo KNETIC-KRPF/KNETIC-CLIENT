@@ -3,14 +3,7 @@ import "./Analyser.css";
 
 
 class Analyser extends Component {
-  constructor(props) {
-    super(props);
-
-
-  }
-
 	componentDidMount() {
-	   //analyser logic
      this.makeAnalyser();
 	}
 
@@ -43,7 +36,7 @@ class Analyser extends Component {
   }
 
   render() {
-    const width = 1270;
+    const width = window.innerWidth;
 
     return (
 

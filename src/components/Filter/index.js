@@ -6,7 +6,7 @@ class Filter extends Component {
 	render() {
 		return(
 			<div>
-				<h3>FILTER</h3>
+				<h4>FILTER</h4>
 				<div className="filter-grid">
 
 				<div className="controller">
@@ -62,7 +62,7 @@ class Filter extends Component {
 					</div>
 
 				</div>
-
+				<hr />
 			</div>
 		);
 	}
