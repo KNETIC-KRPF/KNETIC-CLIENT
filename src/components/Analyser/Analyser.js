@@ -29,7 +29,7 @@ class Analyser extends Component {
     				    barHeight = dataArray[i];
 
     				    ctx.fillStyle = 'rgb(148, 228, 194)';
-    				    ctx.fillRect(x,100-barHeight/3,barWidth,barHeight/2);
+    				    ctx.fillRect(x, 100-barHeight/3,barWidth,barHeight/2);
     				    x += barWidth + 1;
     				  }
     				}, 1);
@@ -40,7 +40,7 @@ class Analyser extends Component {
 
     return (
 
-      <div className="analyser">
+      <div>
         <canvas id="canvas" width={width} height="100"></canvas>
       </div>
     );

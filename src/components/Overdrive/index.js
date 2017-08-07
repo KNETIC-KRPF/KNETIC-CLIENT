@@ -100,6 +100,7 @@ class Overdrive extends Component {
 						sendDispatch={this.props.sendDispatch}
 						type="overdrive"
 						property="bypass"
+						name={overdrive.type}
 						/>
 				</div>
 				{this.state.isToggleOn && overdriveComponent}

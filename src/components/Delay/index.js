@@ -101,6 +101,7 @@ class Delay extends Component {
 						sendDispatch={this.props.sendDispatch}
 						type="delay"
 						property="bypass"
+						name={delay.type}
 						/>
 				</div>
 				{this.state.isToggleOn && delayComponent}

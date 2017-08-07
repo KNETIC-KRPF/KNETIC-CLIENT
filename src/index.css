@@ -30,7 +30,6 @@ body {
   text-align: center;
 }
 
-
 .controller {
   margin: 0 auto;
   padding: 0;
@@ -89,6 +88,7 @@ select {
 
 div.bypass > h6 {
   margin: 0;
+  margin-right: 0.5em;
   padding: 0;
 }
 
@@ -100,4 +100,29 @@ div.bypass > h6 {
   color: #EFF5ED;
   box-shadow: 0 0 2px 0px #EFF5ED;
   margin: .5em;
+}
+
+.rsbc-switch-button.rsbc-switch-button-flat-square input[type="checkbox"] + label {
+  background-color: #EFF5ED;
+  font-size: 0.5em !important;
+}
+
+.rsbc-switch-button.rsbc-switch-button-flat-square input[type="checkbox"] + label:before {
+  background-color: #1F1C1B !important;
+}
+
+.rsbc-switch-button.rsbc-switch-button-flat-square input[type="checkbox"] + label:after {
+  background-color: #EFF5ED;
+}
+
+.rsbc-switch-button.rsbc-switch-button-flat-square input[type="checkbox"]:checked + label:after {
+  background-color: #94E4C2 !important;
+}
+
+.rsbc-switch-button.rsbc-switch-button-flat-square input[type="checkbox"]:checked + label {
+  background-color: #94E4C2 !important;
+}
+
+.rsbc-switch-button.rsbc-switch-button-flat-square input[type="checkbox"] + label:hover {
+  background-color: #94E4C2 !important;
 }
