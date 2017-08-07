@@ -8,9 +8,8 @@ class Account extends Component {
 				<form>
 					<input className="username" type="text" name="username" placeholder="username"/>
 					<input className="password" type="password" name="password" placeholder="password"/>
-					<button>LOGIN</button>
+					<button className="btn">LOGIN</button>
 				</form>
-				<button>SIGNUP</button>
 			</div>
 		);
 	}

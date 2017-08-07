@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import Account from '../Account';
+import Signup from '../Signup';
 import PatchCollection from '../PatchCollection';
+import Knetic from '../../images/knetic.png';
 import './Header.css';
 
 class Header extends Component {
 	render() {
 		return(
-			<div className="header">
-				<h1>KNETIC</h1>
+			<header className="header">
+				<img src={Knetic} alt="Knetic Logo" className="knetic-font"/>
 				<PatchCollection />
 				<Account />
-			</div>
+				<Signup />
+			</header>
 		);
 	}
 }
