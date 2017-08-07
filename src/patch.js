@@ -44,21 +44,14 @@ const patch = {
     },
     // {
     //   type: 'convolver',
-    //   highcut: 22050, //20 to 22050
+    //   highcut: 10000, //20 to 22050
     //   lowcut: 20, //20 to 22050
-    //   dryLevel: 0, //0 to 1+
-    //   wetLevel: 0, //0 to 1+
+    //   dryLevel: 1, //0 to 1+
+    //   wetLevel: 1, //0 to 1+
     //   level: 1, //0 to 1+, adjusts total output of both wet and dry
-    //   // impulse: "impulses/impulse_rev.wav", //the path to your impulse response
-    //   bypass: 1,
+    //   impulse: "./waveforms/impulse_rev.wav", //the path to your impulse response
+    //   bypass: 0,
     //   order: 5
-    // },
-    //  {
-    //   type: 'bitcrusher',
-    //   bits: 0, //1 to 16
-    //   normfreq: 0.1, //0 to 1
-    //   bufferSize: 256, //256 to 16384
-    //   order: 10
     // },
     {
       type: 'chorus',

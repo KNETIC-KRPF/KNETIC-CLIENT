@@ -6,7 +6,7 @@ class FilterADSR extends Component {
 	render() {
 		return(
 			<div>
-				<h3>FILTER ENV</h3>
+				<h4>FILTER ENVELOPE</h4>
 				<div className="filter-grid">
 					<div className="controller">
 						<Knob
@@ -28,7 +28,7 @@ class FilterADSR extends Component {
 							type="filter"
 							property="decay"
 							min={0}
-							max={1000}
+							max={5000}
 							step={10}
 							/>
 						<label htmlFor="filter-control">DECAY</label>
@@ -60,7 +60,7 @@ class FilterADSR extends Component {
 						<label htmlFor="filter-control">RELEASE</label>
 					</div>
 				</div>
-
+				<hr />
 			</div>
 		);
 	}

@@ -26,3 +26,8 @@ label {
   margin: 0;
   padding: 0;
 }
+
+hr {
+  margin: 1em;
+  padding: 0;
+}

@@ -9,12 +9,12 @@ class Moog_Filter extends Component {
 		const moog = efxProp.find(findMoog);
 		return(
       <div>
-				<h3>MOOG FILTER</h3>
+				<h4>MOOG FILTER</h4>
 				<div className="moog-grid">
 
 					<div className="controller">
 						<Knob
-							patchState={moog.buffer}
+							patchState={moog.bufferSize}
 							sendDispatch={this.props.sendDispatch}
 							type="moog_filter"
 							property="buffer"

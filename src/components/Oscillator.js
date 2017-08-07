@@ -8,8 +8,8 @@ class Oscillator extends Component {
 		const oscillator = oscillators.find(findOsc);
 		return (
       <div>
+				<h4>OSCILLATOR {this.props.id}</h4>
 				<div className="osc-grid">
-
 					<div className="osc-controller">
 						<select className="waveform" defaultValue={oscillator.type} onChange={(event) => this.props.sendDispatch('oscillator', 'waveform', event.target.value, this.props.id)}>
 							<option value="sine">Sine</option>
@@ -47,6 +47,7 @@ class Oscillator extends Component {
 						<label>DETUNE</label>
 					</div>
 				</div>
+				<hr/>
 			</div>
 		);
 	}

@@ -59,7 +59,6 @@ class Synthesizer extends Component {
 		let filterEnvelope = setFilterEnvelope(this.state.patch);
 
 		gainEnvelope.connect(filterEnvelope);
-		console.log(KN_SYNTH);
 		filterEnvelope.connect(KN_SYNTH.effectBus[0]);
 		oscillators.forEach(osc => {
 			osc.start();
@@ -1212,7 +1211,6 @@ function setGainEnvelope(patch) {
 	gain.gain.setValueAtTime(patch.adsr.sustain, decayTime)
 	// gain.gain.setTargetAtTime(0.0, attackTime, decayTime);
 	return gain;
-	console.log(gain);
 
 }
 
@@ -1226,7 +1224,6 @@ function setFilterEnvelope(patch) {
 	let now = audioContext.currentTime;
 	let attackTime = now + patch.filter.attack / 1000;
 	let decayTime = attackTime + patch.filter.decay / 1000;
-	console.log(filter);
 	filter.frequency.cancelScheduledValues(0)
 	filter.frequency.setValueAtTime(0.0, now);
 	filter.frequency.linearRampToValueAtTime(patch.filter.frequency, attackTime);
@@ -1248,8 +1245,7 @@ function initMidi(playNote, stopNote) {
 
 	function success(midi){
 		var inputs = midi.inputs.values();
-		console.log('We Got Fucking MIDI');
-
+		console.log('We Got MIDI');
 		for (var input = inputs.next();
 		input && !input.done;
 		input = inputs.next()) {
