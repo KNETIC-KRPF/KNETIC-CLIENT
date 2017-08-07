@@ -76,7 +76,7 @@ class Synthesizer extends Component {
 		// keysPressed[keyFreq].gainEnvelope.gain.cancelScheduledValues(0);
 		// keysPressed[keyFreq].gainEnvelope.gain.linearRampToValueAtTime(0, audioContext.currentTime + this.state.patch.adsr.release / 1000)
 		keysPressed[keyFreq].oscillators.forEach(osc => {
-			osc.stop(this.state.patch.adsr.release / 1000);
+			osc.stop();
 		})
 		delete keysPressed[keyFreq];
 	}

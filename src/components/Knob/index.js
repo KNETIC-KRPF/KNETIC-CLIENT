@@ -16,6 +16,10 @@ class Knob extends Component {
 		});
   };
 
+  shouldComponentUpdate(nextProps) {
+    return this.state.value !== nextProps.patchState;
+  }
+
   handleChangeEnd(event) {
   };
 
