@@ -11,6 +11,7 @@ import Phaser from '../Phaser';
 import Overdrive from '../Overdrive';
 import MoogFilter from '../Moog_Filter';
 import Chorus from '../Chorus';
+import Piano from '../Piano';
 
 import Delay from '../Delay';
 import Sidebar from '../Sidebar';
@@ -62,8 +63,10 @@ class Layout extends Component {
             <Sidebar/>
           </div>
 
+          <div className="piano">
+            <Piano />
+          </div>
         </div>
-
       </div>
     );
   }
