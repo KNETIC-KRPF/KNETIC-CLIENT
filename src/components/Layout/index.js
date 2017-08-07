@@ -54,10 +54,6 @@ class Layout extends Component {
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
             />
-            <Reverb
-              patch={this.props.patch}
-              sendDispatch={this.props.sendDispatch}
-            />
             <PingPongDelay
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
@@ -75,6 +71,10 @@ class Layout extends Component {
               sendDispatch={this.props.sendDispatch}
             />
             <Chorus
+              patch={this.props.patch}
+              sendDispatch={this.props.sendDispatch}
+            />
+            <Reverb
               patch={this.props.patch}
               sendDispatch={this.props.sendDispatch}
             />

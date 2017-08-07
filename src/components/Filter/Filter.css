@@ -6,17 +6,3 @@
   align-content: center;
   font-size: 0.75em;
 }
-
-.controller {
-  margin: 0 auto;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-}
-
-hr {
-  margin: 1em;
-  padding: 0;
-}

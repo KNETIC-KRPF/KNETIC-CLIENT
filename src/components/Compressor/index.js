@@ -86,18 +86,8 @@ class Compressor extends Component {
 							/>
 						<label htmlFor="compressor-control">GAIN</label>
 					</div>
-
-					{/*<label htmlFor="compressor-control">Auto Make Up Gain: </label>
-					<Knob
-						sendDispatch={this.props.sendDispatch}
-						type="compressor"
-						property="ratio"
-						min={0}
-						max={1}
-						step={0.1}
-						/>*/}
-
 				</div>
+				<hr/>
 			</div>
 		);
 	}

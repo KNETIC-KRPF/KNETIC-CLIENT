@@ -52,6 +52,7 @@ class Moog_Filter extends Component {
 					</div>
 
 				</div>
+				<hr/>
       </div>
 		);
 	}

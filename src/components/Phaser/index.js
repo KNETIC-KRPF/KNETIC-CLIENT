@@ -91,6 +91,7 @@ class Phaser extends Component {
 					</div>
 
 				</div>
+				<hr/>
 			</div>
 		);
 	}

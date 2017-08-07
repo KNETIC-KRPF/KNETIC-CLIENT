@@ -91,6 +91,7 @@ class Delay extends Component {
 					</div>
 
 				</div>
+				<hr />
 			</div>
 		);
 	}

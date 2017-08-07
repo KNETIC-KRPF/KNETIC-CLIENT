@@ -18,3 +18,9 @@
 .middle-column {
 	overflow-y:scroll;
 }
+
+div.controller > div {
+  margin: 0 auto;
+  margin-top: 0.75em;
+  padding: 0;
+}

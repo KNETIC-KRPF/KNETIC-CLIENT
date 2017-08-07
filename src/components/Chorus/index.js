@@ -65,6 +65,7 @@ class Chorus extends Component {
           </div>
 
         </div>
+        <hr/>
       </div>
     );
   }

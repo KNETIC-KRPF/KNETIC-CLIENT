@@ -65,6 +65,7 @@ class PingPongDelay extends Component {
 					</div>
 
 				</div>
+				<hr/>
 			</div>
 		);
 	}

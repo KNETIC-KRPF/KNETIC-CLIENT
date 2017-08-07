@@ -78,6 +78,7 @@ class Overdrive extends Component {
 					</div>
 
 				</div>
+				<hr/>
 			</div>
 		);
 	}
