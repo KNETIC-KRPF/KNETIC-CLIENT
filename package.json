@@ -7,6 +7,7 @@
     "react-canvas-knob": "^0.4.0",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.10",
+    "react-switch-button": "^2.2.2",
     "tunajs": "^1.0.0"
   },
   "scripts": {
