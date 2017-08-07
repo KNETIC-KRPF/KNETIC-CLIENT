@@ -1,3 +1,7 @@
+*, *:after, *:before {
+  box-sizing: border-box;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -9,7 +13,7 @@ body {
 
 .osc-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 1px;
   justify-content: center;
   align-content: center;
@@ -26,12 +30,74 @@ body {
   text-align: center;
 }
 
+
+.controller {
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+div.controller > div {
+  margin: 0 auto;
+  margin-top: 0.8em;
+  padding: 0;
+}
+
+label {
+  margin: 0;
+  padding: 0;
+}
+
+h4 {
+  margin-bottom: 1em;
+}
+
 hr {
   margin: 1em;
   padding: 0;
 }
 
 select {
+  outline: none;
+  appearance: none;
   padding: 1em;
-  background: #EFF5ED;
+  background: #1F1C1B;
+  color: #EFF5ED;
+  box-shadow: 0 0 5px 1px #EFF5ED;
+}
+
+.bypass-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bypass {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.expand-efx {
+  cursor: pointer;
+}
+
+div.bypass > h6 {
+  margin: 0;
+  padding: 0;
+}
+
+.btn, input {
+  outline: none;
+  appearance: none;
+  padding: 1em;
+  background: #1F1C1B;
+  color: #EFF5ED;
+  box-shadow: 0 0 2px 0px #EFF5ED;
+  margin: .5em;
 }

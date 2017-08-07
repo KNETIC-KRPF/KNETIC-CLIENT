@@ -40,7 +40,7 @@ class Analyser extends Component {
 
     return (
 
-      <div>
+      <div className="analyser">
         <canvas id="canvas" width={width} height="100"></canvas>
       </div>
     );

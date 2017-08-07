@@ -60,7 +60,7 @@ class ADSR extends Component {
 						<label htmlFor="adsr-control">RELEASE</label>
 					</div>
 				</div>
-
+				<hr/>
 			</div>
 		);
 	}

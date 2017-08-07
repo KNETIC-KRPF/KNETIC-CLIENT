@@ -19,7 +19,6 @@ class Filter extends Component {
 						<option value="highshelf">High Shelf</option>
 						<option value="notch">Notch</option>
 					</select>
-					<label htmlFor="filter-type">FILTER</label>
 				</div>
 
 				<div className="controller">
