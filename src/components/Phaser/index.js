@@ -115,6 +115,7 @@ class Phaser extends Component {
 						sendDispatch={this.props.sendDispatch}
 						type="phaser"
 						property="bypass"
+						name={phaser.type}
 						/>
 				</div>
 				{this.state.isToggleOn && phaserComponent}

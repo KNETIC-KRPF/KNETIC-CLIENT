@@ -75,7 +75,7 @@ class Chorus extends Component {
             sendDispatch={this.props.sendDispatch}
             type="chorus"
             property="bypass"
-
+            name={chorus.type}
             />
         </div>
           {this.state.isToggleOn && chorusComponent}
