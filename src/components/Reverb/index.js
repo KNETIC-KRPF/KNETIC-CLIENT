@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import Knob from '../Knob';
+// import Knob from '../Knob';
 import './Reverb.css';
 
 class Convolver extends Component {
 	render() {
-		const efxProp = this.props.patch.effectBus;
-		const findReverb = efx => efx.type === "convolver";
-		const reverb = efxProp.find(findReverb);
+		// const efxProp = this.props.patch.effectBus;
+		// const findReverb = efx => efx.type === "convolver";
+		// const reverb = efxProp.find(findReverb);
 		return(
 			<div>
-				<h3>CONVOLVER</h3>
-				{/*
-				<label htmlFor="reverb-control">High Cut: </label>
+				<h4>CONVOLVER</h4>
+
+				{/*<label htmlFor="reverb-control">High Cut: </label>
 				<Knob
 					sendDispatch={this.props.sendDispatch}
 					type="convolver"
@@ -69,8 +69,8 @@ class Convolver extends Component {
 					min={0}
 					max={1}
 					step={1}
-					/>
-					*/}
+					/>*/}
+
 			</div>
 		);
 	}

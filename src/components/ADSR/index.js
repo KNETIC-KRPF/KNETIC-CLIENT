@@ -6,7 +6,7 @@ class ADSR extends Component {
 	render() {
 		return(
 			<div>
-				<h3>ADSR</h3>
+				<h4>VOLUME ENVELOPE</h4>
 				<div className="adsr-grid">
 					<div className="controller">
 						<Knob

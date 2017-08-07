@@ -6,7 +6,7 @@ class Compressor extends Component {
 	render() {
 		return(
 			<div>
-				<h3>COMPRESSOR</h3>
+				<h4>COMPRESSOR</h4>
 				<div className="compressor-grid">
 
 					<div className="controller">

@@ -9,7 +9,7 @@ class PingPongDelay extends Component {
 		const pingPong = efxProp.find(findPingPong);
 		return(
 			<div>
-				<h3>PING PONG</h3>
+				<h4>PING PONG</h4>
 				<div className="pingpong-grid">
 
 					<div className="controller">
