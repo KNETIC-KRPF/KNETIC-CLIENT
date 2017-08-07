@@ -9,7 +9,7 @@ class Convolver extends Component {
 		const reverb = efxProp.find(findReverb);
 		return(
 			<div>
-				<h2>Convolver</h2>
+				<h3>CONVOLVER</h3>
 				{/*
 				<label htmlFor="reverb-control">High Cut: </label>
 				<Knob
