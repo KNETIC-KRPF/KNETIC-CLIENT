@@ -9,7 +9,7 @@ class Overdrive extends Component {
 		const overdrive = efxProp.find(findOverdrive);
 		return(
 			<div>
-				<h2>Overdrive</h2>
+				<h2>OVERDRIVE</h2>
 				<div className="overdrive-grid">
 
 					<div className="controller">

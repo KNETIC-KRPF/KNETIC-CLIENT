@@ -9,7 +9,7 @@ class Bitcrusher extends Component {
     const bitcrusher = efxProp.find(findBitcrusher);
     return (
       <div>
-        <h2>Bitcrusher</h2>
+        <h3>BITCRUSHER</h3>
         <div className="bitcrusher-grid">
 
           {/*<div className="controller">

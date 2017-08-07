@@ -9,7 +9,7 @@ class Chorus extends Component {
 		const chorus = efxProp.find(findChorus);
     return (
       <div>
-        <h2>Chorus</h2>
+        <h3>CHROUS</h3>
         <div className="chorus-grid">
 
           <div className="controller">

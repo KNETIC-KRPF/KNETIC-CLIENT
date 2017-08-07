@@ -9,7 +9,7 @@ class Moog_Filter extends Component {
 		const moog = efxProp.find(findMoog);
 		return(
       <div>
-				<h2>Moog Filter</h2>
+				<h3>MOOG FILTER</h3>
 				<div className="moog-grid">
 
 					<div className="controller">

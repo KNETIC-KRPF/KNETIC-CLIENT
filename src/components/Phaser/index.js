@@ -9,7 +9,7 @@ class Phaser extends Component {
 		const phaser = efxProp.find(findPhaser);
 		return(
 			<div>
-				<h2>Phaser</h2>
+				<h3>PHASER</h3>
 				<div className="phaser-grid">
 
 					<div className="controller">
