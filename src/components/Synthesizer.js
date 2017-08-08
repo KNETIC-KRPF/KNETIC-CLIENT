@@ -4,7 +4,7 @@ import Tuna from 'tunajs';
 import {KeyFreqs} from '../keyfreqs';
 import patch from '../patch';
 
-
+const keysPressed = {};
 const audioContext = new AudioContext();
 const analyser = audioContext.createAnalyser();
 analyser.maxDecibels = -0;
@@ -53,6 +53,8 @@ class Synthesizer extends Component {
 		this.stopSound(keyBoardClickedFreq)
 		window.removeEventListener('mouseup', this.stopCssKeyboard)
 	}
+
+
 	playSound(keyFreq) {
 		let oscillators = []
 		let gains = []
@@ -110,10 +112,6 @@ class Synthesizer extends Component {
       </div>
     );
   }
-}
-
-const keysPressed = {
-
 }
 
 
@@ -336,10 +334,10 @@ const dispatches = {
   adsr: {
     attack(value, component) {
 
-	  	  let newPatch = {...component.state.patch}
-	  	  newPatch.adsr.attack = value;
-	  	  component.setState({
-	  		patch: newPatch
+  	  let newPatch = {...component.state.patch}
+  	  newPatch.adsr.attack = value;
+  	  component.setState({
+  			patch: newPatch
 	  	})
     },
     decay(value, component) {
@@ -1228,21 +1226,20 @@ function getConstrucedEffect(type, data) {
 }
 
 function setGainEnvelope(patch) {
+	console.log(patch.adsr.attack);
 	let gain = audioContext.createGain();
 	let now = audioContext.currentTime;
 	let attackTime = now + patch.adsr.attack / 1000;
 	let decayTime = attackTime + patch.adsr.decay / 1000;
-
 	gain.gain.cancelScheduledValues(0)
-	gain.gain.setValueAtTime(0.0, now);
-	gain.gain.linearRampToValueAtTime(1.0, attackTime);
-	// gain.gain.setValueAtTime(1.0, attackTime)
+	gain.gain.setValueAtTime(0.001, now);
+	gain.gain.exponentialRampToValueAtTime(1.0, attackTime);
+	gain.gain.setValueAtTime(1.0, attackTime)
 	// gain.gain.setTargetAtTime(patch.masterGain, audioContext.currentTime, audioContext.currentTime + patch.adsr.attack)
-	gain.gain.linearRampToValueAtTime(patch.adsr.sustain, decayTime);
+	gain.gain.exponentialRampToValueAtTime(patch.adsr.sustain + .001, decayTime);
 	gain.gain.setValueAtTime(patch.adsr.sustain, decayTime)
 	// gain.gain.setTargetAtTime(0.0, attackTime, decayTime);
 	return gain;
-
 }
 
 function setFilterEnvelope(patch) {
@@ -1260,7 +1257,7 @@ function setFilterEnvelope(patch) {
 	filter.frequency.linearRampToValueAtTime(patch.filter.frequency, attackTime);
 	// gain.gain.setValueAtTime(1.0, attackTime)
 	// gain.gain.setTargetAtTime(patch.masterGain, audioContext.currentTime, audioContext.currentTime + patch.adsr.attack)
-	filter.frequency.linearRampToValueAtTime(patch.filter.sustain, decayTime);
+	filter.frequency.exponentialRampToValueAtTime(patch.filter.sustain + .001, decayTime);
 	filter.frequency.setValueAtTime(patch.filter.sustain, decayTime)
 	// gain.gain.setTargetAtTime(0.0, attackTime, decayTime);
 	return filter;
