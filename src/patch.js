@@ -1,4 +1,9 @@
 const patch = {
+  _id: 12345,
+  account_id: 12345,
+  name: 'Default',
+  author: 'Knetic',
+  type: 'Default',
   oscillators: [
 		{
 	    id: 1,
@@ -42,17 +47,6 @@ const patch = {
       bypass: 0,
       order: 6
     },
-    // {
-    //   type: 'convolver',
-    //   highcut: 10000, //20 to 22050
-    //   lowcut: 20, //20 to 22050
-    //   dryLevel: 1, //0 to 1+
-    //   wetLevel: 1, //0 to 1+
-    //   level: 1, //0 to 1+, adjusts total output of both wet and dry
-    //   impulse: "./waveforms/impulse_rev.wav", //the path to your impulse response
-    //   bypass: 0,
-    //   order: 5
-    // },
     {
       type: 'chorus',
       rate: 1.5,
@@ -114,6 +108,5 @@ const patch = {
   },
   masterGain: 1
 }
-
 
 export default patch;
