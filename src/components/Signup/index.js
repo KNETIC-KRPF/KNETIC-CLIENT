@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import './Signup.css';
 
-class Signup extends Component {
+
+
+
 	render() {
 		return (
 			<div className="signup">
