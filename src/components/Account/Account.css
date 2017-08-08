@@ -4,3 +4,17 @@
   padding: 0;
   align-items: center;
 }
+
+.modal {
+  margin-left: 0;
+  padding-left: 0;
+  width: 100%;
+}
+
+.signup {
+  padding: 2em;
+}
+
+.modal-input {
+  appearance: none;
+}
