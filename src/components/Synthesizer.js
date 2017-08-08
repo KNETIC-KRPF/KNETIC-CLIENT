@@ -96,12 +96,21 @@ class Synthesizer extends Component {
 
 	stopSound(keyFreq) {
 		keyFreq = Math.ceil(keyFreq * 1000);
-		// keysPressed[keyFreq].gainEnvelope.gain.cancelScheduledValues(0);
-		// keysPressed[keyFreq].gainEnvelope.gain.linearRampToValueAtTime(0, audioContext.currentTime + this.state.patch.adsr.release / 1000)
+		console.log(this.state.patch.filter);
+		keysPressed[keyFreq].gainEnvelope.gain.cancelScheduledValues(0);
+		keysPressed[keyFreq].gainEnvelope.gain.exponentialRampToValueAtTime(.000001, audioContext.currentTime + this.state.patch.adsr.release / 1000)
+		// keysPressed[keyFreq].filterEnvelope.frequency.cancelScheduledValues(0);
+		// keysPressed[keyFreq].filterEnvelope.frequency.exponentialRampToValueAtTime(.000001, audioContext.currentTime + this.state.patch.filter.release / 1000)
+		let oscDeleteTime = this.state.patch.adsr.release //> this.state.patch.filter.release ? this.state.patch.adsr.release : this.state.patch.filter.release;
+		console.log(oscDeleteTime);
 		keysPressed[keyFreq].oscillators.forEach(osc => {
-			osc.stop();
+			osc.stop(audioContext.currentTime + oscDeleteTime / 1000);
 		})
+		// setTimeout(() => {
+		//
+		// }, oscDeleteTime + 10)
 		delete keysPressed[keyFreq];
+
 	}
 
   render() {
