@@ -10,6 +10,8 @@ class PatchCollection extends Component {
 		this.state = {
 			patches: []
 		}
+
+		this.handleSelect = this.handleSelect.bind(this);
 	}
 
 	componentDidMount() {
@@ -20,20 +22,20 @@ class PatchCollection extends Component {
 			this.setState({
 				patches: newState
 			});
-			console.log(newState);
-			console.log(this.state.patches);
-			console.log(res);
 		});
 	}
 
+	handleSelect() {
+		
+	}
+
 	render() {
-		console.log(this.state.patches);
 		const options = this.state.patches.map((patch, index) => {
 			return (<option key={index} value={patch.name}>{patch.name} | {patch.type}</option>);
 		});
 		return(
 			<div>
-				<select className="patch-selection">
+				<select className="patch-selection" onChange={this.handleSelect}>
 					{options}
 				</select>
 			</div>
