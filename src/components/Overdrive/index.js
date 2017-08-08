@@ -22,6 +22,7 @@ class Overdrive extends Component {
 		const efxProp = this.props.patch.effectBus;
 		const findOverdrive = efx => efx.type === "overdrive";
 		const overdrive = efxProp.find(findOverdrive);
+		console.log(overdrive);
 		const overdriveComponent = (
 			<div className="overdrive-grid">
 				<div className="controller">

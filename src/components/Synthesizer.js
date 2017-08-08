@@ -876,7 +876,8 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'overdrive') {
-					effect.bypass= value;
+					console.log(effect.bypass);
+					effect.bypass = value;
 				}
 			})
 
