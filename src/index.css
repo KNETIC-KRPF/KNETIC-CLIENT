@@ -61,6 +61,7 @@ hr {
 }
 
 select {
+  border-style: none;
   outline: none;
   appearance: none;
   padding: 1em;
@@ -101,6 +102,7 @@ div.bypass > h6 {
   color: #EFF5ED;
   box-shadow: 0 0 2px 0px #EFF5ED;
   margin: .5em;
+  border-style: none;
 }
 
 .rsbc-switch-button.rsbc-switch-button-flat-square input[type="checkbox"] + label {
