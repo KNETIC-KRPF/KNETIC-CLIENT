@@ -2,6 +2,61 @@ import React, {Component} from 'react';
 import Modal from 'react-modal';
 import './Account.css';
 
+import {ROOT_URL} from '../../RootURL';
+
+function fetchRequest(request, callback) {
+  return fetch(request)
+    .then(res => res.json())
+    .then(json => {
+      callback(json);
+    })
+    .catch()
+}
+
+function setIdRedirect(response) {
+  localStorage.account_id = response.id;
+  window.location = `/account/${response.id}`
+}
+
+// document.addEventListener("DOMContentLoaded", function(event) {
+//   redirectIfLoggedIn();
+//   const LOGIN_URL = BASE_URL + `/auth/login`;
+//
+//   function getUserLoginInfo() {
+//     return {
+//       email: document.getElementById('login-email').value.toLowerCase(),
+//       password: document.getElementById('login-password').value
+//     }
+//   }
+//
+//   function submitLoginForm() {
+//     const loginButton = document.getElementById('login-button');
+//     loginButton.addEventListener('click', event => {
+//       event.preventDefault();
+//       const userInfo = getUserLoginInfo();
+//       if (validPassword(userInfo.password) === true && validEmailAddress(userInfo.email) === true) {
+//         const request = postRequest(LOGIN_URL, userInfo, "omit");
+//         fetchRequest(request, setJWTLogin)
+//       } else {
+//         alert("Invalid Email and/or Password")
+//       }
+//     });
+//   }
+//
+//   function setJWTLogin(response) {
+//     localStorage.token = response.token;
+//     localStorage.account_id = response.id;
+//     if (response.error) {
+//       alert(response.message)
+//     } else if (response.token) {
+//       setIdRedirect(response);
+//     }
+//   }
+//
+//   submitLoginForm();
+//
+// });
+
 const signupStyle = {
   content: {
     top: '50%',
@@ -24,13 +79,23 @@ class Account extends Component {
     super(props);
 
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      login: {
+        email: '',
+        password: ''
+      },
+      signup: {
+        email: '',
+        username: '',
+        password: ''
+      }
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-		this.submitLogin = this.submitLogin.bind(this);
+		this.onLoginSubmit = this.onLoginSubmit.bind(this);
 		this.submitSignup = this.submitSignup.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   openModal() {
@@ -45,9 +110,37 @@ class Account extends Component {
     this.setState({modalIsOpen: false});
   }
 
-	submitLogin() {
+  handleInputChange(event) {
+  const name = event.target.name;
+  const value = event.target.value;
+  this.setState({
+    [name]: value
+  });
+}
 
+	onLoginSubmit(event) {
+    event.preventDefault();
+    const accountLogin = {
+      email: this.state.login.email,
+      password: this.state.login.password
+    }
+    // const request = 1;
+    // fetchRequest(request, this.setJWTLogin);
 	}
+
+  setJWTLogin(response) {
+    localStorage.token = response.token;
+    localStorage.account_id = response.id;
+    if (response.error) {
+      alert(response.message)
+    } else if (response.token) {
+      setIdRedirect(response);
+    }
+  }
+
+  setIdRedirect() {
+
+  }
 
   submitSignup() {
 
@@ -60,16 +153,24 @@ class Account extends Component {
 				<form className="login" onSubmit={this.submitLogin}>
 
 					<input
+            id="login-email"
 						className="login-input"
 						type="text"
-						name="username"
-						placeholder="username"/>
+						name="email"
+						placeholder="email"
+            onChange={this.handleInputChange}
+            value={this.state.login.email}
+            />
 
 					<input
+            id="login-password"
 						className="login-input"
 						type="password"
 						name="password"
-						placeholder="password"/>
+						placeholder="password"
+            onChange={this.handleInputChange}
+            value={this.state.login.password}
+            />
 
 					<button type="submit" className="btn">LOGIN</button>
 
@@ -87,22 +188,32 @@ class Account extends Component {
 						<form
 							onSubmit={this.submitSignup}>
 							<input
+                id="signup-email"
 								className="modal"
 								type="text"
 								name="email"
-								placeholder="email"/>
+								placeholder="email"
+                value={this.state.signup.email}
+                />
 							<br/>
 							<input
+                id="signup-username"
 								className="modal"
 								type="text"
 								name="username"
-								placeholder="username"/>
+								placeholder="username"
+                value={this.state.signup.username}
+                />
 							<br/>
 							<input
+                id="signup-password"
 								className="modal"
 								type="password"
 								name="password"
-								placeholder="password"/>
+								placeholder="password"
+
+                value={this.state.signup.password}
+                />
 							<br/>
 							<button className="btn modal" type="submit">SUBMIT</button>
 						</form>
