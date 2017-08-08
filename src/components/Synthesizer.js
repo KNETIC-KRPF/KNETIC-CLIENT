@@ -33,6 +33,10 @@ class Synthesizer extends Component {
 		KN_SYNTH = getConstructedSynthChain(this)
   }
 
+  setPatchFromCollection() {
+    
+  }
+
   receiveDispatch(type, property, value, id) {
 		if(id) {
 			dispatches[type][property](value, this, id)

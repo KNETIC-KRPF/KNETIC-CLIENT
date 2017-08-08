@@ -4,3 +4,25 @@
   padding: 0;
   align-items: center;
 }
+
+.modal {
+  margin-left: 0;
+  width: 100%;
+  padding: 1em;
+  margin: 0.5em 0;
+  box-shadow: 0 0 2px 0px #EFF5ED;
+}
+
+.signup {
+  padding: 2em;
+}
+
+.modal-btn {
+  outline: none;
+  appearance: none;
+  padding: 1em;
+  background: #1F1C1B;
+  color: #EFF5ED;
+  box-shadow: 0 0 2px 0px #EFF5ED;
+  margin: .5em;
+}
