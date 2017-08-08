@@ -9,6 +9,7 @@ body {
   padding: 0;
   font-family: sans-serif;
   color: #EFF5ED;
+  background: #848382;
 }
 
 .osc-grid {
@@ -103,8 +104,7 @@ div.bypass > h6 {
 }
 
 .rsbc-switch-button.rsbc-switch-button-flat-square input[type="checkbox"] + label {
-  background-color: #EFF5ED;
-  font-size: 0.5em !important;
+  background-color: #EFF5ED !important;
 }
 
 .rsbc-switch-button.rsbc-switch-button-flat-square input[type="checkbox"] + label:before {
