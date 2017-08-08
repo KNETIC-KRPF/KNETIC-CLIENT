@@ -13,6 +13,7 @@ class Header extends Component {
 					<PatchCollection />
 				</div>
 				<Account />
+				<button className="btn">ABOUT</button>
 			</header>
 		);
 	}
