@@ -26,7 +26,7 @@ class PatchCollection extends Component {
 
 	renderOptions() {
 		this.state.patches.map((patch, i) => {
-			return <option value={}></option>
+			return <option value={this.state.patches.name}></option>
 		});
 	}
 
