@@ -64,7 +64,7 @@ class Layout extends Component {
           </div>
 
           <div className="piano">
-            <Piano />
+            <Piano handleKeyboardClick={this.props.handleKeyboardClick}/>
           </div>
         </div>
       </div>
