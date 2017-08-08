@@ -29,7 +29,7 @@ class Layout extends Component {
           </div>
 
           <div className="center-header">
-            <Header/>
+            <Header setPatchFromCollection={this.props.setPatchFromCollection} selectValues={this.props.selectValues}/>
           </div>
 
           <div className="center-analyser">
