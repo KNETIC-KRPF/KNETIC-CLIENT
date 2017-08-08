@@ -10,7 +10,7 @@ class Header extends Component {
 			<header className="header">
 				<img src={Knetic} alt="Knetic Logo" className="knetic-font"/>
 				<div className="patch-select">
-					<PatchCollection />
+					<PatchCollection setPatchFromCollection={this.props.setPatchFromCollection} selectValues={this.props.selectValues}/>
 				</div>
 				<Account />
 				<button className="btn">ABOUT</button>
