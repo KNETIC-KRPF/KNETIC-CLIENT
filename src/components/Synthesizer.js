@@ -8,6 +8,7 @@ import patch from '../patch';
 const audioContext = new AudioContext();
 const analyser = audioContext.createAnalyser();
 analyser.maxDecibels = -0;
+let keyBoardClickedFreq;
 
 const tuna = Tuna(audioContext);
 let KN_SYNTH;
@@ -17,8 +18,10 @@ class Synthesizer extends Component {
   constructor(props) {
     super(props);
     this.receiveDispatch = this.receiveDispatch.bind(this);
-		this.playSound = this.playSound.bind(this)
-		this.stopSound = this.stopSound.bind(this)
+		this.playSound = this.playSound.bind(this);
+		this.stopSound = this.stopSound.bind(this);
+		this.handleKeyboardClick = this.handleKeyboardClick.bind(this);
+		this.stopCssKeyboard = this.stopCssKeyboard.bind(this);
     this.state = {
       		patch,
 					analyser: analyser
@@ -26,6 +29,7 @@ class Synthesizer extends Component {
 		initQwertyKeyboardKeydown(this.playSound)
 		initQwertyKeyboardKeyup(this.stopSound)
 		initMidi(this.playSound, this.stopSound);
+
 		KN_SYNTH = getConstructedSynthChain(this)
   }
 
@@ -37,6 +41,18 @@ class Synthesizer extends Component {
 		}
   }
 
+
+	handleKeyboardClick(note) {
+		keyBoardClickedFreq = note;
+		this.playSound(note);
+		window.addEventListener('mouseup', this.stopCssKeyboard);
+	}
+
+
+	stopCssKeyboard() {
+		this.stopSound(keyBoardClickedFreq)
+		window.removeEventListener('mouseup', this.stopCssKeyboard)
+	}
 	playSound(keyFreq) {
 		let oscillators = []
 		let gains = []
@@ -67,7 +83,8 @@ class Synthesizer extends Component {
 		keyFreq = Math.ceil(keyFreq * 1000);
 	  keysPressed[keyFreq] = {
 			oscillators,
-			gainEnvelope
+			gainEnvelope,
+			filterEnvelope
 		}
 	}
 
@@ -84,7 +101,12 @@ class Synthesizer extends Component {
   render() {
     return (
       <div>
-        <Layout patch={this.state.patch} sendDispatch={this.receiveDispatch} analyser={this.state.analyser}/>
+        <Layout
+					patch={this.state.patch}
+					sendDispatch={this.receiveDispatch}
+					analyser={this.state.analyser}
+					handleKeyboardClick={this.handleKeyboardClick}
+				/>
       </div>
     );
   }
@@ -201,6 +223,10 @@ function initQwertyKeyboardKeydown(playSound) {
 		}
 	})
 }
+
+
+
+
 
 function initQwertyKeyboardKeyup(stopSound) {
 	window.addEventListener('keyup', event => {
@@ -346,6 +372,7 @@ const dispatches = {
 
 			// KN_SYNTH.filter.type = value
 
+
   	  let newPatch = {...component.state.patch}
   	  newPatch.filter = {...newPatch.filter}
   	  newPatch.filter.type = value;
@@ -354,8 +381,12 @@ const dispatches = {
   		})
     },
     frequency(value, component) {
-			console.log(KN_SYNTH.filter);
 
+			Object.keys(keysPressed).forEach(key => {
+				// console.log(key);
+				console.log(keysPressed[key].filterEnvelope);
+				keysPressed[key].filterEnvelope.frequency.value = value;
+			})
 			// KN_SYNTH.filter.frequency.cancelScheduledValues(audioContext.currentTime)
 			// KN_SYNTH.filter.frequency.setValueAtTime(value, audioContext.currentTime)
 
