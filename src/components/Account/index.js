@@ -160,7 +160,7 @@ class Account extends Component {
 						placeholder="email"
             onChange={this.handleInputChange}
             value={this.state.login.email}
-            />
+     />
 
 					<input
             id="login-password"
@@ -170,7 +170,7 @@ class Account extends Component {
 						placeholder="password"
             onChange={this.handleInputChange}
             value={this.state.login.password}
-            />
+     />
 
 					<button type="submit" className="btn">LOGIN</button>
 
@@ -178,12 +178,12 @@ class Account extends Component {
 
 				<button type="button" className="btn" onClick={this.openModal}>SIGNUP</button>
 
-			<Modal
+        <Modal
 					isOpen={this.state.modalIsOpen}
 					onAfterOpen={this.afterOpenModal}
 					onRequestClose={this.closeModal}
 					style={signupStyle}
-					contentLabel="Example Modal">
+        contentLabel="Example Modal">
 					<div className="signup">
 						<form
 							onSubmit={this.submitSignup}>
@@ -194,7 +194,7 @@ class Account extends Component {
 								name="email"
 								placeholder="email"
                 value={this.state.signup.email}
-                />
+       />
 							<br/>
 							<input
                 id="signup-username"
@@ -203,7 +203,7 @@ class Account extends Component {
 								name="username"
 								placeholder="username"
                 value={this.state.signup.username}
-                />
+       />
 							<br/>
 							<input
                 id="signup-password"
@@ -213,7 +213,7 @@ class Account extends Component {
 								placeholder="password"
 
                 value={this.state.signup.password}
-                />
+       />
 							<br/>
 							<button className="btn modal" type="submit">SUBMIT</button>
 						</form>

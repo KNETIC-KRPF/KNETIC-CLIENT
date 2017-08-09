@@ -55,17 +55,18 @@ class PatchCollection extends Component {
 		let newSettings = {...this.props.patch};
 		newSettings.type = typeInput.value;
     newSettings.name = nameInput.value;
-		this.setState({
-			newPatch: newSettings
-		});
+
+    console.log(this.state.newPatch);
 
 		fetch(`${ROOT_URL}/patches`, {
-      method: "post",
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-        body: JSON.stringify(this.state.newPatch)
+        body: JSON.stringify(newSettings),
+        mode: "cors",
+        credentials: "omit"
     })
 		.then(res => {
       console.log(res);
@@ -115,7 +116,7 @@ class PatchCollection extends Component {
 						<button
 							className="btn modal"
 							onClick={this.closeModal}>CLOSE</button>
-							</div>
+          </div>
 				</Modal>
 				<button className="btn save-patch" onClick={this.openModal}>Save Patch</button>
 			</div>
