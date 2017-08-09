@@ -57,8 +57,6 @@ class PatchCollection extends Component {
     newSettings.name = nameInput.value;
     delete newSettings['_id'];
 
-    console.log(this.state.newPatch);
-
 		fetch(`${ROOT_URL}/patches`, {
       method: "POST",
       headers: {
@@ -70,7 +68,8 @@ class PatchCollection extends Component {
         credentials: "omit"
     })
 		.then(res => {
-      console.log(res);
+      this.closeModal();
+      this.props.getPatchesFromDb();
     })
 	}
 
@@ -113,9 +112,6 @@ class PatchCollection extends Component {
 							<br/>
 							<button className="btn modal" type="submit">SUBMIT</button>
 						</form>
-						<button
-							className="btn modal"
-							onClick={this.closeModal}>CLOSE</button>
           </div>
 				</Modal>
 				<button className="btn save-patch" onClick={this.openModal}>Save Patch</button>

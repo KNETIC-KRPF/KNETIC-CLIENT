@@ -25,6 +25,7 @@ class Synthesizer extends Component {
 		this.stopCssKeyboard = this.stopCssKeyboard.bind(this);
 		this.setPatchFromCollection = this.setPatchFromCollection.bind(this);
     this.handleTextFieldFocus = this.handleTextFieldFocus.bind(this);
+    this.getPatchesFromDb = this.getPatchesFromDb.bind(this);
     this.state = {
       		patch,
 					patches: [],
@@ -38,8 +39,7 @@ class Synthesizer extends Component {
 		KN_SYNTH = getConstructedSynthChain(this)
   }
 
-
-	componentDidMount() {
+  getPatchesFromDb() {
 		fetch(`${ROOT_URL}/patches`)
 		.then(res => res.json())
 		.then(res => {
@@ -50,6 +50,11 @@ class Synthesizer extends Component {
 				selectValues
 			});
 		});
+  }
+
+
+	componentDidMount() {
+    this.getPatchesFromDb();
 	}
 
   setPatchFromCollection(patchId) {
@@ -161,6 +166,7 @@ class Synthesizer extends Component {
 					analyser={this.state.analyser}
 					handleKeyboardClick={this.handleKeyboardClick}
 					setPatchFromCollection={this.setPatchFromCollection}
+          getPatchesFromDb={this.getPatchesFromDb}
 				/>
       </div>
     );
