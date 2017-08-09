@@ -23,6 +23,7 @@ class Filter extends Component {
 
 				<div className="controller">
 					<Knob
+						id="filterFreq"
 						patchState={this.props.patch.filter.frequency}
 						sendDispatch={this.props.sendDispatch}
 						type="filter"
@@ -36,6 +37,7 @@ class Filter extends Component {
 
 				<div className="controller">
 					<Knob
+						id="filterQ"
 						patchState={this.props.patch.filter.Q}
 						sendDispatch={this.props.sendDispatch}
 						type="filter"
@@ -49,6 +51,7 @@ class Filter extends Component {
 
 					<div className="controller">
 						<Knob
+							id="filterGain"
 							patchState={this.props.patch.filter.gain}
 							sendDispatch={this.props.sendDispatch}
 							type="filter"

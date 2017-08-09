@@ -72,7 +72,8 @@ class Synthesizer extends Component {
   }
 
   receiveDispatch(type, property, value, id) {
-		if(id) {
+    console.log("dispatch");
+    if(id) {
 			dispatches[type][property](value, this, id)
 		} else {
 			dispatches[type][property](value, this)
@@ -424,7 +425,6 @@ const dispatches = {
     type: (value, component) => {
 
 			// KN_SYNTH.filter.type = value
-
 
   	  let newPatch = {...component.state.patch}
   	  newPatch.filter = {...newPatch.filter}
@@ -918,7 +918,6 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'overdrive') {
-					console.log(effect.bypass);
 					effect.bypass = value;
 				}
 			})
@@ -927,6 +926,7 @@ const dispatches = {
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'overdrive') {
           effect.bypass = value;
+          console.log(value);
         }
       })
 
