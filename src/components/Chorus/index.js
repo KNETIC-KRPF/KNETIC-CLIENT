@@ -69,7 +69,7 @@ class Chorus extends Component {
     return (
       <div>
         <div className="bypass-container">
-          <h4 className="expand-efx" onClick={this.handleClick}>CHORUS</h4>
+          <h4 className="expand-efx" onClick={this.handleClick}>CHORUS<span className="arrow-down"></span></h4>
           <RockerSwitch
             patchState={chorus.bypass}
             sendDispatch={this.props.sendDispatch}
