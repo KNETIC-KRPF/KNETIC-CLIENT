@@ -5,7 +5,7 @@ import Filter from '../Filter';
 import ADSR from '../ADSR';
 import FilterADSR from '../FilterADSR';
 import Compressor from '../Compressor';
-import Reverb from '../Reverb';
+// import Reverb from '../Reverb';
 import PingPongDelay from '../PingPongDelay';
 import Phaser from '../Phaser';
 import Overdrive from '../Overdrive';
@@ -44,7 +44,7 @@ class Layout extends Component {
           </div>
 
           <div className="center-header">
-            <Header setPatchFromCollection={this.props.setPatchFromCollection} selectValues={this.props.selectValues} patch={this.props.patch}/>
+            <Header handleTextFieldFocus={this.props.handleTextFieldFocus} setPatchFromCollection={this.props.setPatchFromCollection} selectValues={this.props.selectValues} patch={this.props.patch}/>
           </div>
 
           <div className="center-analyser">
@@ -65,7 +65,6 @@ class Layout extends Component {
             <Overdrive patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <Phaser patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <PingPongDelay patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
-            <Reverb patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
           </div>
 
           <div className="right-column grid-cell">

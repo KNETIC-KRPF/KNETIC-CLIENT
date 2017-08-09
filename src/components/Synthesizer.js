@@ -15,7 +15,6 @@ let keyBoardClickedFreq;
 const tuna = Tuna(audioContext);
 let KN_SYNTH;
 
-
 class Synthesizer extends Component {
   constructor(props) {
     super(props);
@@ -25,13 +24,14 @@ class Synthesizer extends Component {
 		this.handleKeyboardClick = this.handleKeyboardClick.bind(this);
 		this.stopCssKeyboard = this.stopCssKeyboard.bind(this);
 		this.setPatchFromCollection = this.setPatchFromCollection.bind(this);
+    this.handleTextFieldFocus = this.handleTextFieldFocus.bind(this);
     this.state = {
       		patch,
 					patches: [],
 					analyser: analyser,
-          test: ''
+          textFocus: false
 		}
-		initQwertyKeyboardKeydown(this.playSound)
+		initQwertyKeyboardKeydown(this.playSound, this)
 		initQwertyKeyboardKeyup(this.stopSound)
 		initMidi(this.playSound, this.stopSound);
 
@@ -53,30 +53,36 @@ class Synthesizer extends Component {
 	}
 
   setPatchFromCollection(patchId) {
-    console.log(patchId);
+    // console.log(patchId);
 		let newPatch
 		this.state.patches.forEach(preset => {
 			if(preset._id === patchId) {
 				newPatch = preset;
-        console.log(preset);
+        // console.log(preset);
 				return;
 			}
 		})
 
 		this.setState({
-      test: 'sadhjfgahjsdfg',
 			patch: newPatch
 		}, () => {
-      console.log(this.state);
+      // console.log(this.state);
     })
   }
 
   receiveDispatch(type, property, value, id) {
-		if(id) {
+    console.log("dispatch");
+    if(id) {
 			dispatches[type][property](value, this, id)
 		} else {
 			dispatches[type][property](value, this)
 		}
+  }
+
+  handleTextFieldFocus(boolean) {
+    this.setState({
+      textFocus: boolean
+    });
   }
 
 	handleKeyboardClick(note) {
@@ -127,13 +133,13 @@ class Synthesizer extends Component {
 
 	stopSound(keyFreq) {
 		keyFreq = Math.ceil(keyFreq * 1000);
-		console.log(this.state.patch.filter);
+		// console.log(this.state.patch.filter);
 		keysPressed[keyFreq].gainEnvelope.gain.cancelScheduledValues(0);
 		keysPressed[keyFreq].gainEnvelope.gain.exponentialRampToValueAtTime(.000001, audioContext.currentTime + this.state.patch.adsr.release / 1000)
 		// keysPressed[keyFreq].filterEnvelope.frequency.cancelScheduledValues(0);
 		// keysPressed[keyFreq].filterEnvelope.frequency.exponentialRampToValueAtTime(.000001, audioContext.currentTime + this.state.patch.filter.release / 1000)
 		let oscDeleteTime = this.state.patch.adsr.release //> this.state.patch.filter.release ? this.state.patch.adsr.release : this.state.patch.filter.release;
-		console.log(oscDeleteTime);
+		// console.log(oscDeleteTime);
 		keysPressed[keyFreq].oscillators.forEach(osc => {
 			osc.stop(audioContext.currentTime + oscDeleteTime / 1000);
 		})
@@ -148,6 +154,7 @@ class Synthesizer extends Component {
     return (
       <div>
         <Layout
+          handleTextFieldFocus={this.handleTextFieldFocus}
 					selectValues={this.state.selectValues}
 					patch={this.state.patch}
 					sendDispatch={this.receiveDispatch}
@@ -204,76 +211,78 @@ function getConstructedSynthChain(component) {
 	return synth;
 }
 
-function initQwertyKeyboardKeydown(playSound) {
+function initQwertyKeyboardKeydown(playSound, component) {
 	window.addEventListener('keydown', event => {
-		switch (event.code) {
-			case 'KeyA':
-				if(!keysPressed[Math.ceil(KeyFreqs.C3 * 1000)]) {
-					playSound(KeyFreqs.C3);
-				}
-				break;
-			case 'KeyW':
-				if(!keysPressed[Math.ceil(KeyFreqs.C3Sharp * 1000)]) {
-					playSound(KeyFreqs.C3Sharp);
-				}
-				break;
-			case 'KeyS':
-				if(!keysPressed[Math.ceil(KeyFreqs.D3 * 1000)]) {
-					playSound(KeyFreqs.D3);
-				}
-				break;
-			case 'KeyE':
-				if(!keysPressed[Math.ceil(KeyFreqs.D3Sharp * 1000)]) {
-					playSound(KeyFreqs.D3Sharp);
-				}
-				break;
-			case 'KeyD':
-				if(!keysPressed[Math.ceil(KeyFreqs.E3 * 1000)]) {
-					playSound(KeyFreqs.E3);
-				}
-				break;
-			case 'KeyF':
-				if(!keysPressed[Math.ceil(KeyFreqs.F3 * 1000)]) {
-					playSound(KeyFreqs.F3);
-				}
-				break;
-			case 'KeyT':
-				if(!keysPressed[Math.ceil(KeyFreqs.F3Sharp * 1000)]) {
-					playSound(KeyFreqs.F3Sharp);
-				}
-				break;
-			case 'KeyG':
-				if(!keysPressed[Math.ceil(KeyFreqs.G3 * 1000)]) {
-					playSound(KeyFreqs.G3);
-				}
-				break;
-			case 'KeyY':
-				if(!keysPressed[Math.ceil(KeyFreqs.G3Sharp * 1000)]) {
-					playSound(KeyFreqs.G3Sharp);
-				}
-				break;
-			case 'KeyH':
-				if(!keysPressed[Math.ceil(KeyFreqs.A3 * 1000)]) {
-					playSound(KeyFreqs.A3);
-				}
-				break;
-			case 'KeyU':
-				if(!keysPressed[Math.ceil(KeyFreqs.A3Sharp * 1000)]) {
-					playSound(KeyFreqs.A3Sharp);
-				}
-				break;
-			case 'KeyJ':
-				if(!keysPressed[Math.ceil(KeyFreqs.B3 * 1000)]) {
-					playSound(KeyFreqs.B3);
-				}
-				break;
-			case 'KeyK':
-				if(!keysPressed[Math.ceil(KeyFreqs.C4 * 1000)]) {
-					playSound(KeyFreqs.C4);
-				}
-				break;
-			default:
-		}
+    if(!component.state.textFocus) {
+      switch (event.code) {
+        case 'KeyA':
+        if(!keysPressed[Math.ceil(KeyFreqs.C3 * 1000)]) {
+          playSound(KeyFreqs.C3);
+        }
+        break;
+        case 'KeyW':
+        if(!keysPressed[Math.ceil(KeyFreqs.C3Sharp * 1000)]) {
+          playSound(KeyFreqs.C3Sharp);
+        }
+        break;
+        case 'KeyS':
+        if(!keysPressed[Math.ceil(KeyFreqs.D3 * 1000)]) {
+          playSound(KeyFreqs.D3);
+        }
+        break;
+        case 'KeyE':
+        if(!keysPressed[Math.ceil(KeyFreqs.D3Sharp * 1000)]) {
+          playSound(KeyFreqs.D3Sharp);
+        }
+        break;
+        case 'KeyD':
+        if(!keysPressed[Math.ceil(KeyFreqs.E3 * 1000)]) {
+          playSound(KeyFreqs.E3);
+        }
+        break;
+        case 'KeyF':
+        if(!keysPressed[Math.ceil(KeyFreqs.F3 * 1000)]) {
+          playSound(KeyFreqs.F3);
+        }
+        break;
+        case 'KeyT':
+        if(!keysPressed[Math.ceil(KeyFreqs.F3Sharp * 1000)]) {
+          playSound(KeyFreqs.F3Sharp);
+        }
+        break;
+        case 'KeyG':
+        if(!keysPressed[Math.ceil(KeyFreqs.G3 * 1000)]) {
+          playSound(KeyFreqs.G3);
+        }
+        break;
+        case 'KeyY':
+        if(!keysPressed[Math.ceil(KeyFreqs.G3Sharp * 1000)]) {
+          playSound(KeyFreqs.G3Sharp);
+        }
+        break;
+        case 'KeyH':
+        if(!keysPressed[Math.ceil(KeyFreqs.A3 * 1000)]) {
+          playSound(KeyFreqs.A3);
+        }
+        break;
+        case 'KeyU':
+        if(!keysPressed[Math.ceil(KeyFreqs.A3Sharp * 1000)]) {
+          playSound(KeyFreqs.A3Sharp);
+        }
+        break;
+        case 'KeyJ':
+        if(!keysPressed[Math.ceil(KeyFreqs.B3 * 1000)]) {
+          playSound(KeyFreqs.B3);
+        }
+        break;
+        case 'KeyK':
+        if(!keysPressed[Math.ceil(KeyFreqs.C4 * 1000)]) {
+          playSound(KeyFreqs.C4);
+        }
+        break;
+        default:
+      }
+    }
 	})
 }
 
@@ -425,7 +434,6 @@ const dispatches = {
 
 			// KN_SYNTH.filter.type = value
 
-
   	  let newPatch = {...component.state.patch}
   	  newPatch.filter = {...newPatch.filter}
   	  newPatch.filter.type = value;
@@ -437,7 +445,7 @@ const dispatches = {
 
 			Object.keys(keysPressed).forEach(key => {
 				// console.log(key);
-				console.log(keysPressed[key].filterEnvelope);
+				// console.log(keysPressed[key].filterEnvelope);
 				keysPressed[key].filterEnvelope.frequency.value = value;
 			})
 			// KN_SYNTH.filter.frequency.cancelScheduledValues(audioContext.currentTime)
@@ -669,7 +677,7 @@ const dispatches = {
     	  let newPatch = {...component.state.patch}
         newPatch.effectBus.forEach(effect => {
           if (effect.type === 'ping_pong') {
-            effect.feedback = value;
+            effect.wetLevel = value;
           }
         })
     	  component.setState({
@@ -705,7 +713,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'ping_pong') {
-          effect.delayTimRight = value;
+          effect.delayTimeRight = value;
         }
       })
 
@@ -918,7 +926,6 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'overdrive') {
-					console.log(effect.bypass);
 					effect.bypass = value;
 				}
 			})
@@ -927,6 +934,7 @@ const dispatches = {
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'overdrive') {
           effect.bypass = value;
+          // console.log(value);
         }
       })
 
@@ -939,18 +947,18 @@ const dispatches = {
     }
   },
   moog_filter: {
-    buffer: function(value, component) {
+    bufferSize: function(value, component) {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'moog') {
-					effect.buffer = value;
+					effect.bufferSize = value;
 				}
 			})
 
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'moog') {
-          effect.buffer = value;
+          effect.bufferSize = value;
         }
       })
 
@@ -981,14 +989,14 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'moog') {
-					effect.res = value;
+					effect.resonance = value;
 				}
 			})
 
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'moog') {
-          effect.res = value;
+          effect.resonance = value;
         }
       })
 
@@ -1012,7 +1020,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'chorus') {
-          effect.feeback = value;
+          effect.feedback = value;
         }
       })
 
@@ -1207,7 +1215,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'delay') {
-          effect.drylevel = value;
+          effect.dryLevel = value;
         }
       })
   	  component.setState({
@@ -1225,7 +1233,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'delay') {
-          effect.wetLevel = value;
+          effect.bypass = value;
         }
       })
   	  component.setState({
@@ -1282,7 +1290,7 @@ function getConstrucedEffect(type, data) {
 }
 
 function setGainEnvelope(patch) {
-	console.log(patch.adsr.attack);
+	// console.log(patch.adsr.attack);
 	let gain = audioContext.createGain();
 	let now = audioContext.currentTime;
 	let attackTime = now + patch.adsr.attack / 1000;

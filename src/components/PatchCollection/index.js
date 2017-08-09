@@ -75,7 +75,6 @@ class PatchCollection extends Component {
 
 	render() {
 		let options = false
-
 		if(this.props.selectValues !== undefined) {
 			options = this.props.selectValues.map((patch, index) => {
 				return (<option key={index} value={patch.id}>{patch.name} | {patch.type}</option>);

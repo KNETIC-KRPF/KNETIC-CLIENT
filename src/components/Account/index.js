@@ -153,6 +153,8 @@ class Account extends Component {
 				<form className="login" onSubmit={this.submitLogin}>
 
 					<input
+            onFocus={() => this.props.handleTextFieldFocus(true)}
+            onBlur={() => this.props.handleTextFieldFocus(false)}
             id="login-email"
 						className="login-input"
 						type="text"
@@ -163,6 +165,8 @@ class Account extends Component {
      />
 
 					<input
+            onFocus={() => this.props.handleTextFieldFocus(true)}
+            onBlur={() => this.props.handleTextFieldFocus(false)}
             id="login-password"
 						className="login-input"
 						type="password"
@@ -188,6 +192,8 @@ class Account extends Component {
 						<form
 							onSubmit={this.submitSignup}>
 							<input
+                onFocus={() => this.props.handleTextFieldFocus(true)}
+                onBlur={() => this.props.handleTextFieldFocus(false)}
                 id="signup-email"
 								className="modal"
 								type="text"
@@ -197,6 +203,8 @@ class Account extends Component {
        />
 							<br/>
 							<input
+                onFocus={() => this.props.handleTextFieldFocus(true)}
+                onBlur={() => this.props.handleTextFieldFocus(false)}
                 id="signup-username"
 								className="modal"
 								type="text"
@@ -206,6 +214,8 @@ class Account extends Component {
        />
 							<br/>
 							<input
+                onFocus={() => this.props.handleTextFieldFocus(true)}
+                onBlur={() => this.props.handleTextFieldFocus(false)}
                 id="signup-password"
 								className="modal"
 								type="password"
