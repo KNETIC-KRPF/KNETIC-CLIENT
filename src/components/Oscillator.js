@@ -6,6 +6,7 @@ class Oscillator extends Component {
 		const oscillators = this.props.patch.oscillators;
 		const findOsc = osc => osc.id === this.props.id;
 		const oscillator = oscillators.find(findOsc);
+
 		return (
       <div>
 				<h4>OSCILLATOR {this.props.id}</h4>

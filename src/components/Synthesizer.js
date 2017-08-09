@@ -28,7 +28,8 @@ class Synthesizer extends Component {
     this.state = {
       		patch,
 					patches: [],
-					analyser: analyser
+					analyser: analyser,
+          test: ''
 		}
 		initQwertyKeyboardKeydown(this.playSound)
 		initQwertyKeyboardKeyup(this.stopSound)
@@ -63,9 +64,11 @@ class Synthesizer extends Component {
 		})
 
 		this.setState({
+      test: 'sadhjfgahjsdfg',
 			patch: newPatch
-		})
-    console.log(this.state);
+		}, () => {
+      console.log(this.state);
+    })
   }
 
   receiveDispatch(type, property, value, id) {
@@ -156,8 +159,6 @@ class Synthesizer extends Component {
     );
   }
 }
-
-
 
 function getSelectValues(newPatches) {
 	return newPatches.map(patch => {
