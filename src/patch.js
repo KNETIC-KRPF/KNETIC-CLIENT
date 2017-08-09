@@ -93,8 +93,8 @@ const patch = {
   compressor: {
     threshold: 0, //-100 to 0
     makeupGain: 0, //0 and up (in decibels)
-    attack: 20, //0 to 1000
-    release: 200, //0 to 3000
+    attack: 0.1, //0 to 1000
+    release: 0.3, //0 to 3000
     ratio: 3, //1 to 20
     knee: 6, //0 to 40
     automakeup: true, //true/false
