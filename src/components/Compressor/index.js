@@ -16,8 +16,8 @@ class Compressor extends Component {
 							type="compressor"
 							property="attack"
 							min={0}
-							max={1000}
-							step={10}
+							max={1}
+							step={0.1}
 							/>
 						<label htmlFor="compressor-control">ATTACK</label>
 					</div>
@@ -29,8 +29,8 @@ class Compressor extends Component {
 							type="compressor"
 							property="release"
 							min={0}
-							max={3000}
-							step={10}
+							max={1}
+							step={0.1}
 							/>
 						<label htmlFor="compressor-control">RELEASE</label>
 					</div>

@@ -48,16 +48,14 @@ class PatchCollection extends Component {
     this.setState({modalIsOpen: false});
   }
 
-	savePatch(e) {
-		e.preventDefault();
+	savePatch(event) {
+		event.preventDefault();
 		const typeInput = document.querySelector('#patch-type')
     const nameInput = document.querySelector('#patch-name')
 		let newSettings = {...this.props.patch};
 		newSettings.type = typeInput.value;
     newSettings.name = nameInput.value;
     delete newSettings['_id'];
-
-    console.log(this.state.newPatch);
 
 		fetch(`${ROOT_URL}/patches`, {
       method: "POST",
@@ -82,44 +80,69 @@ class PatchCollection extends Component {
 			});
 		}
 		return(
-			<div>
-				<select className="patch-selection" onChange={(event) => this.props.setPatchFromCollection(event.target.value)}>
-					{options && options}
-				</select>
-				<Modal
-					isOpen={this.state.modalIsOpen}
-					onAfterOpen={this.afterOpenModal}
-					onRequestClose={this.closeModal}
-					style={signupStyle}
-    contentLabel="Example Modal">
-					<div className="signup">
-						<form
-							onSubmit={this.savePatch}>
-							<input
-								id="patch-name"
-								className="modal"
-								type="text"
-								name="patch-name"
-								placeholder="Patch Name"
-       />
-							<br/>
-							<input
-								id="patch-type"
-								className="modal"
-								type="text"
-								name="patch-type"
-								placeholder="type"
-       />
-							<br/>
-							<button className="btn modal" type="submit">SUBMIT</button>
-						</form>
-						<button
-							className="btn modal"
-							onClick={this.closeModal}>CLOSE</button>
+      <div>
+
+        <select
+          className="patch-selection"
+          onChange={(event) => this.props.setPatchFromCollection(event.target.value)}>
+          {options && options}
+
+        </select>
+
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={signupStyle}
+          contentLabel="Example Modal">
+
+          <div className="signup">
+
+            <form
+              onSubmit={this.savePatch}>
+
+              <input
+                onFocus={() => this.props.handleTextFieldFocus(true)}
+                onBlur={() => this.props.handleTextFieldFocus(false)}
+                id="patch-name"
+                className="modal"
+                type="text"
+                name="patch-name"
+                placeholder="Patch Name"
+                />
+
+              <br/>
+
+              <input
+                onFocus={() => this.props.handleTextFieldFocus(true)}
+                onBlur={() => this.props.handleTextFieldFocus(false)}
+                id="patch-type"
+                className="modal"
+                type="text"
+                name="patch-type"
+                placeholder="type"
+                />
+
+              <br/>
+
+              <button className="btn modal" type="submit">SUBMIT</button>
+
+            </form>
+
+            <button
+              className="btn modal"
+              onClick={this.closeModal}>CLOSE</button>
           </div>
-				</Modal>
-				<button className="btn save-patch" onClick={this.openModal}>Save Patch</button>
-			</div>
+
+        </Modal>
+
+        <button
+          className="btn save-patch"
+          onClick={this.openModal}>
+          SAVE
+        </button>
+
+      </div>
 		);
 	}
 }

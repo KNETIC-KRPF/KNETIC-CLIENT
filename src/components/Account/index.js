@@ -5,12 +5,9 @@ import './Account.css';
 import {ROOT_URL} from '../../RootURL';
 
 function fetchRequest(request, callback) {
-  return fetch(request)
-    .then(res => res.json())
-    .then(json => {
-      callback(json);
-    })
-    .catch()
+  return fetch(request).then(res => res.json()).then(json => {
+    callback(json);
+  }).catch()
 }
 
 function setIdRedirect(response) {
@@ -93,8 +90,8 @@ class Account extends Component {
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-		this.onLoginSubmit = this.onLoginSubmit.bind(this);
-		this.submitSignup = this.submitSignup.bind(this);
+    this.onLoginSubmit = this.onLoginSubmit.bind(this);
+    this.submitSignup = this.submitSignup.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
@@ -111,14 +108,12 @@ class Account extends Component {
   }
 
   handleInputChange(event) {
-  const name = event.target.name;
-  const value = event.target.value;
-  this.setState({
-    [name]: value
-  });
-}
+    const name = event.target.name;
+    const value = event.target.value;
+    this.setState({[name]: value});
+  }
 
-	onLoginSubmit(event) {
+  onLoginSubmit(event) {
     event.preventDefault();
     const accountLogin = {
       email: this.state.login.email,
@@ -126,7 +121,7 @@ class Account extends Component {
     }
     // const request = 1;
     // fetchRequest(request, this.setJWTLogin);
-	}
+  }
 
   setJWTLogin(response) {
     localStorage.token = response.token;
@@ -138,102 +133,96 @@ class Account extends Component {
     }
   }
 
-  setIdRedirect() {
+  setIdRedirect() {}
 
-  }
-
-  submitSignup() {
-
-	}
+  submitSignup() {}
 
   render() {
     return (
-			<div className="account">
+      <div className="account">
 
-				<form className="login" onSubmit={this.submitLogin}>
+        <form
+          className="login"
+          onSubmit={this.onLoginSubmit}>
 
-					<input
+          <input
             onFocus={() => this.props.handleTextFieldFocus(true)}
             onBlur={() => this.props.handleTextFieldFocus(false)}
             id="login-email"
-						className="login-input"
-						type="text"
-						name="email"
-						placeholder="email"
+            className="login-input"
+            type="text"
+            name="email"
+            placeholder="email"
             onChange={this.handleInputChange}
-            value={this.state.login.email}
-     />
+            value={this.state.login.email}/>
 
-					<input
+          <input
             onFocus={() => this.props.handleTextFieldFocus(true)}
             onBlur={() => this.props.handleTextFieldFocus(false)}
             id="login-password"
-						className="login-input"
-						type="password"
-						name="password"
-						placeholder="password"
+            className="login-input"
+            type="password"
+            name="password"
+            placeholder="password"
             onChange={this.handleInputChange}
-            value={this.state.login.password}
-     />
+            value={this.state.login.password}/>
 
-					<button type="submit" className="btn">LOGIN</button>
+          <button type="submit" className="btn">LOGIN</button>
 
-				</form>
+        </form>
 
-				<button type="button" className="btn" onClick={this.openModal}>SIGNUP</button>
+        <button
+          type="button"
+          className="btn"
+          onClick={this.openModal}>SIGNUP</button>
 
         <Modal
-					isOpen={this.state.modalIsOpen}
-					onAfterOpen={this.afterOpenModal}
-					onRequestClose={this.closeModal}
-					style={signupStyle}
-        contentLabel="Example Modal">
-					<div className="signup">
-						<form
-							onSubmit={this.submitSignup}>
-							<input
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={signupStyle}
+          contentLabel="Example Modal">
+          <div className="signup">
+            <form onSubmit={this.submitSignup}>
+              <input
                 onFocus={() => this.props.handleTextFieldFocus(true)}
                 onBlur={() => this.props.handleTextFieldFocus(false)}
                 id="signup-email"
-								className="modal"
-								type="text"
-								name="email"
-								placeholder="email"
-                value={this.state.signup.email}
-       />
-							<br/>
-							<input
+                className="modal"
+                type="text"
+                name="email"
+                placeholder="email"
+                value={this.state.signup.email}/>
+              <br/>
+              <input
                 onFocus={() => this.props.handleTextFieldFocus(true)}
                 onBlur={() => this.props.handleTextFieldFocus(false)}
                 id="signup-username"
-								className="modal"
-								type="text"
-								name="username"
-								placeholder="username"
-                value={this.state.signup.username}
-       />
-							<br/>
-							<input
+                className="modal"
+                type="text"
+                name="username"
+                placeholder="username"
+                value={this.state.signup.username}/>
+              <br/>
+              <input
                 onFocus={() => this.props.handleTextFieldFocus(true)}
                 onBlur={() => this.props.handleTextFieldFocus(false)}
                 id="signup-password"
-								className="modal"
-								type="password"
-								name="password"
-								placeholder="password"
+                className="modal"
+                type="password"
+                name="password"
+                placeholder="password"
+                value={this.state.signup.password}/>
+              <br/>
+              <button className="btn modal" type="submit">SUBMIT</button>
+            </form>
+            <button
+              className="btn modal"
+              onClick={this.closeModal}>CLOSE</button>
+          </div>
+        </Modal>
 
-                value={this.state.signup.password}
-       />
-							<br/>
-							<button className="btn modal" type="submit">SUBMIT</button>
-						</form>
-						<button
-							className="btn modal"
-							onClick={this.closeModal}>CLOSE</button>
-					</div>
-				</Modal>
-
-			</div>
+      </div>
     );
   }
 }

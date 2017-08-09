@@ -32,8 +32,8 @@ class Delay extends Component {
 						type="delay"
 						property="time"
 						min={1}
-						max={2000}
-						step={25}
+						max={500}
+						step={10}
 						/>
 					<label htmlFor="delay-control">TIME</label>
 				</div>
