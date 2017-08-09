@@ -30,6 +30,7 @@ class Knob extends Component {
   render() {
     return (
       <KnobComp
+        id={this.props.id}
         value={this.props.patchState}
         onChange={this.handleChange}
         onChangeEnd={this.handleChangeEnd}

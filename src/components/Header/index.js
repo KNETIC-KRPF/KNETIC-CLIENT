@@ -12,7 +12,7 @@ class Header extends Component {
 				<div className="patch-select">
 					<PatchCollection setPatchFromCollection={this.props.setPatchFromCollection} selectValues={this.props.selectValues}/>
 				</div>
-				<Account />
+				<Account handleTextFieldFocus={this.props.handleTextFieldFocus}/>
 				<button className="btn">ABOUT</button>
 			</header>
 		);
