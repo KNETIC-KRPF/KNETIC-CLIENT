@@ -9,15 +9,12 @@ class PatchCollection extends Component {
 		// console.log(this.props);
 	}
 
-
-
-
-
 	render() {
 		let options = false
+
 		if(this.props.selectValues !== undefined) {
 			options = this.props.selectValues.map((patch, index) => {
-				return (<option key={index} value={patch._id}>{patch.name} | {patch.type}</option>);
+				return (<option key={index} value={patch.id}>{patch.name} | {patch.type}</option>);
 			});
 		}
 		console.log(this.props);

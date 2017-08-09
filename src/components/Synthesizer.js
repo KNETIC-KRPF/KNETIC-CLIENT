@@ -28,7 +28,8 @@ class Synthesizer extends Component {
     this.state = {
       		patch,
 					patches: [],
-					analyser: analyser
+					analyser: analyser,
+          test: ''
 		}
 		initQwertyKeyboardKeydown(this.playSound)
 		initQwertyKeyboardKeyup(this.stopSound)
@@ -48,23 +49,26 @@ class Synthesizer extends Component {
 				patches: newPatches,
 				selectValues
 			});
-			console.log(this.state);
-			this.forceUpdate();
 		});
 	}
 
   setPatchFromCollection(patchId) {
-		console.log(patch);
+    console.log(patchId);
 		let newPatch
-		this.state.patches.forEach(patch => {
-			if(patch._id === patchId) {
-				newPatch = patch;
+		this.state.patches.forEach(preset => {
+			if(preset._id === patchId) {
+				newPatch = preset;
+        console.log(preset);
 				return;
 			}
 		})
+
 		this.setState({
+      test: 'sadhjfgahjsdfg',
 			patch: newPatch
-		})
+		}, () => {
+      console.log(this.state);
+    })
   }
 
   receiveDispatch(type, property, value, id) {
@@ -75,19 +79,16 @@ class Synthesizer extends Component {
 		}
   }
 
-
 	handleKeyboardClick(note) {
 		keyBoardClickedFreq = note;
 		this.playSound(note);
 		window.addEventListener('mouseup', this.stopCssKeyboard);
 	}
 
-
 	stopCssKeyboard() {
 		this.stopSound(keyBoardClickedFreq)
 		window.removeEventListener('mouseup', this.stopCssKeyboard)
 	}
-
 
 	playSound(keyFreq) {
 		let oscillators = []
@@ -158,8 +159,6 @@ class Synthesizer extends Component {
     );
   }
 }
-
-
 
 function getSelectValues(newPatches) {
 	return newPatches.map(patch => {

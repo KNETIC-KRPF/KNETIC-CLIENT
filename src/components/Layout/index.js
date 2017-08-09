@@ -19,6 +19,21 @@ import Analyser from '../Analyser/Analyser.js';
 import './Layout.css';
 
 class Layout extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isToggleOn: true
+    }
+    this.handleClick = this.handleClick.bind(this)
+	}
+
+	handleClick() {
+		this.setState(prevState => ({
+			isToggleOn: !prevState.isToggleOn
+		}));
+	}
+
   render() {
     return (
       <div className="container">
@@ -57,6 +72,7 @@ class Layout extends Component {
             <Filter patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <FilterADSR patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <Compressor patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
+            
           </div>
 
           <div className="wood-grain-right">
@@ -64,7 +80,7 @@ class Layout extends Component {
           </div>
 
           <div className="piano">
-            <Piano handleKeyboardClick={this.props.handleKeyboardClick}/>
+            {this.state.isToggleOn && <Piano handleKeyboardClick={this.props.handleKeyboardClick}/>}
           </div>
         </div>
       </div>

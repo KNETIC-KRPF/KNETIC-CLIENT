@@ -6,12 +6,13 @@ class Oscillator extends Component {
 		const oscillators = this.props.patch.oscillators;
 		const findOsc = osc => osc.id === this.props.id;
 		const oscillator = oscillators.find(findOsc);
+
 		return (
       <div>
 				<h4>OSCILLATOR {this.props.id}</h4>
 				<div className="osc-grid">
 					<div className="osc-controller">
-						<select className="waveform" defaultValue={oscillator.type} onChange={(event) => this.props.sendDispatch('oscillator', 'waveform', event.target.value, this.props.id)}>
+						<select className="waveform" value={oscillator.type} onChange={(event) => this.props.sendDispatch('oscillator', 'waveform', event.target.value, this.props.id)}>
 							<option value="sine">Sine</option>
 							<option value="triangle">Triangle</option>
 							<option value="square">Square</option>
