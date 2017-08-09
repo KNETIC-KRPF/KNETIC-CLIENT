@@ -20,7 +20,8 @@ class Header extends Component {
 						handleTextFieldFocus={this.props.handleTextFieldFocus}
 						setPatchFromCollection={this.props.setPatchFromCollection}
 						selectValues={this.props.selectValues}
-						patch={this.props.patch}/>
+						patch={this.props.patch}
+						getPatchesFromDb={this.props.getPatchesFromDb}/>
 
 				</div>
 

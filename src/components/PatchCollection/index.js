@@ -68,7 +68,8 @@ class PatchCollection extends Component {
         credentials: "omit"
     })
 		.then(res => {
-      console.log(res);
+      this.closeModal();
+      this.props.getPatchesFromDb();
     })
 	}
 
@@ -93,8 +94,7 @@ class PatchCollection extends Component {
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
-          style={signupStyle}
-          contentLabel="Example Modal">
+          style={signupStyle}>
 
           <div className="signup">
 
