@@ -29,7 +29,7 @@ class Moog_Filter extends Component {
 						patchState={moog.bufferSize}
 						sendDispatch={this.props.sendDispatch}
 						type="moog_filter"
-						property="buffer"
+						property="bufferSize"
 						min={256}
 						max={16384}
 						step={256}

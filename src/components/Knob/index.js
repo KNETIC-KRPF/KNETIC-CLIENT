@@ -35,7 +35,6 @@ class Knob extends Component {
     console.log(this.props.patchState);
     return (
       <KnobComp
-        id={this.props.id}
         value={this.props.patchState}
         onChange={this.handleChange}
         onChangeEnd={this.handleChangeEnd}

@@ -669,7 +669,7 @@ const dispatches = {
     	  let newPatch = {...component.state.patch}
         newPatch.effectBus.forEach(effect => {
           if (effect.type === 'ping_pong') {
-            effect.feedback = value;
+            effect.wetLevel = value;
           }
         })
     	  component.setState({
@@ -705,7 +705,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'ping_pong') {
-          effect.delayTimRight = value;
+          effect.delayTimeRight = value;
         }
       })
 
@@ -939,18 +939,18 @@ const dispatches = {
     }
   },
   moog_filter: {
-    buffer: function(value, component) {
+    bufferSize: function(value, component) {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'moog') {
-					effect.buffer = value;
+					effect.bufferSize = value;
 				}
 			})
 
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'moog') {
-          effect.buffer = value;
+          effect.bufferSize = value;
         }
       })
 
@@ -981,14 +981,14 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'moog') {
-					effect.res = value;
+					effect.resonance = value;
 				}
 			})
 
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'moog') {
-          effect.res = value;
+          effect.resonance = value;
         }
       })
 
@@ -1012,7 +1012,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'chorus') {
-          effect.feeback = value;
+          effect.feedback = value;
         }
       })
 
@@ -1207,7 +1207,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'delay') {
-          effect.drylevel = value;
+          effect.dryLevel = value;
         }
       })
   	  component.setState({
@@ -1225,7 +1225,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'delay') {
-          effect.wetLevel = value;
+          effect.bypass = value;
         }
       })
   	  component.setState({
