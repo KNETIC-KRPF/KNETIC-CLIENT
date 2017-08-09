@@ -55,6 +55,7 @@ class PatchCollection extends Component {
 		let newSettings = {...this.props.patch};
 		newSettings.type = typeInput.value;
     newSettings.name = nameInput.value;
+    delete newSettings['_id'];
 
     console.log(this.state.newPatch);
 
