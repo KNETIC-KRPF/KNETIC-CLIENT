@@ -94,7 +94,8 @@ class PatchCollection extends Component {
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
-          style={signupStyle}>
+          style={signupStyle}
+          contentLabel="Add New Patch">
 
           <div className="signup">
 

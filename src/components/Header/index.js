@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Account from '../Account';
+import About from '../About';
 import PatchCollection from '../PatchCollection';
 import Knetic from '../../images/knetic.png';
 import './Header.css';
@@ -27,7 +28,7 @@ class Header extends Component {
 
 				<Account handleTextFieldFocus={this.props.handleTextFieldFocus}/>
 
-				<button className="btn">ABOUT</button>
+				<About />
 
 			</header>
 		);
