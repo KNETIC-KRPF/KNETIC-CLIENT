@@ -72,7 +72,8 @@ class Synthesizer extends Component {
   }
 
   receiveDispatch(type, property, value, id) {
-		if(id) {
+    console.log("dispatch");
+    if(id) {
 			dispatches[type][property](value, this, id)
 		} else {
 			dispatches[type][property](value, this)
@@ -425,7 +426,6 @@ const dispatches = {
 
 			// KN_SYNTH.filter.type = value
 
-
   	  let newPatch = {...component.state.patch}
   	  newPatch.filter = {...newPatch.filter}
   	  newPatch.filter.type = value;
@@ -669,7 +669,7 @@ const dispatches = {
     	  let newPatch = {...component.state.patch}
         newPatch.effectBus.forEach(effect => {
           if (effect.type === 'ping_pong') {
-            effect.feedback = value;
+            effect.wetLevel = value;
           }
         })
     	  component.setState({
@@ -705,7 +705,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'ping_pong') {
-          effect.delayTimRight = value;
+          effect.delayTimeRight = value;
         }
       })
 
@@ -918,7 +918,6 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'overdrive') {
-					console.log(effect.bypass);
 					effect.bypass = value;
 				}
 			})
@@ -927,6 +926,7 @@ const dispatches = {
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'overdrive') {
           effect.bypass = value;
+          console.log(value);
         }
       })
 
@@ -939,18 +939,18 @@ const dispatches = {
     }
   },
   moog_filter: {
-    buffer: function(value, component) {
+    bufferSize: function(value, component) {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'moog') {
-					effect.buffer = value;
+					effect.bufferSize = value;
 				}
 			})
 
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'moog') {
-          effect.buffer = value;
+          effect.bufferSize = value;
         }
       })
 
@@ -981,14 +981,14 @@ const dispatches = {
 
 			KN_SYNTH.effectBus.forEach(effect => {
 				if (effect.type === 'moog') {
-					effect.res = value;
+					effect.resonance = value;
 				}
 			})
 
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'moog') {
-          effect.res = value;
+          effect.resonance = value;
         }
       })
 
@@ -1012,7 +1012,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'chorus') {
-          effect.feeback = value;
+          effect.feedback = value;
         }
       })
 
@@ -1207,7 +1207,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'delay') {
-          effect.drylevel = value;
+          effect.dryLevel = value;
         }
       })
   	  component.setState({
@@ -1225,7 +1225,7 @@ const dispatches = {
   	  let newPatch = {...component.state.patch}
       newPatch.effectBus.forEach(effect => {
         if (effect.type === 'delay') {
-          effect.wetLevel = value;
+          effect.bypass = value;
         }
       })
   	  component.setState({

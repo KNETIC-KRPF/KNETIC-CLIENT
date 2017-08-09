@@ -4,14 +4,24 @@ import KnobComp from 'react-canvas-knob';
 class Knob extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      value: this.props.patchState
+    }
 		this.handleChange = this.handleChange.bind(this);
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      value: nextProps.patchState
+    });
+  }
+
   handleChange = (newValue) => {
 		this.props.sendDispatch(this.props.type, this.props.property, newValue, this.props.id);
   };
 
   shouldComponentUpdate(nextProps) {
-    return this.props.patchState !== nextProps.patchState;
+    return this.state.value !== nextProps.patchState;
   }
 
   handleChangeEnd(event) {

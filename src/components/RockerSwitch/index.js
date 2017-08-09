@@ -16,35 +16,25 @@ class RockerSwitch extends React.Component {
   }
 
   handleToggle() {
-		// this.setState(prevState => ({
-		// 	isToggleOn: !prevState.isToggleOn
-		// }));
-    // if (this.state.isToggleOn) {
-    //   this.setState({value: 0});
-    // } else {
-    //   this.setState({value: 1});
-    // }
-
 		this.setState({
 			isToggleOn: !this.state.isToggleOn,
 		})
-		this.setState({
-			value: this.state.isToggleOn ? 1 : 0
-		})
+
+    // 	value: this.state.isToggleOn ? 0 : 1
+    let value = this.props.patchState === 1 ? 0 : 1
     console.log(this.state.isToggleOn);
-		console.log(this.state.value);
-    this.props.sendDispatch(this.props.type, this.props.property, this.state.value);
+    this.props.sendDispatch(this.props.type, this.props.property, value);
   }
 
   render() {
-		// console.log(this.state.isToggleOn);
+    const isToggled = this.props.patchState === 1 ? false : true
     return (
       <div className="bypass">
         <h6 className="label-bypass">BYPASS</h6>
         <SwitchButton
           name={this.props.name}
           theme="rsbc-switch-button-flat-square"
-          defaultChecked={this.state.isToggleOn}
+          defaultChecked={isToggled}
           onChange={this.handleToggle}/>
       </div>
     );
