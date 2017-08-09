@@ -44,7 +44,7 @@ class Layout extends Component {
           </div>
 
           <div className="center-header">
-            <Header handleTextFieldFocus={this.props.handleTextFieldFocus} setPatchFromCollection={this.props.setPatchFromCollection} selectValues={this.props.selectValues}/>
+            <Header handleTextFieldFocus={this.props.handleTextFieldFocus} setPatchFromCollection={this.props.setPatchFromCollection} selectValues={this.props.selectValues} patch={this.props.patch}/>
           </div>
 
           <div className="center-analyser">
