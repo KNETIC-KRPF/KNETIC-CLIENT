@@ -32,7 +32,7 @@ class Knob extends Component {
   };
 
   render() {
-    console.log(this.props.patchState);
+    // console.log(this.props.patchState);
     return (
       <KnobComp
         value={this.props.patchState}
