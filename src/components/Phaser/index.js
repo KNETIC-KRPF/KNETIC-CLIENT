@@ -109,7 +109,7 @@ class Phaser extends Component {
 		return(
 			<div>
 				<div className="bypass-container">
-					<h4 className="expand-efx" onClick={this.handleClick}>PHASER</h4>
+					<h4 className="expand-efx" onClick={this.handleClick}>PHASER<span className="arrow-down"></span></h4>
 					<RockerSwitch
 						patchState={phaser.bypass}
 						sendDispatch={this.props.sendDispatch}

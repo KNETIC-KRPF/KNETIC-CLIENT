@@ -67,7 +67,7 @@ class Moog_Filter extends Component {
 
 		return(
       <div>
-				<h4 className="expand-efx" onClick={this.handleClick}>MOOG FILTER</h4>
+				<h4 className="expand-efx" onClick={this.handleClick}>MOOG FILTER<span className="arrow-down"></span></h4>
 					{this.state.isToggleOn && moogComponent}
 				<hr/>
       </div>

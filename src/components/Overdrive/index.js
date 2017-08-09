@@ -94,7 +94,7 @@ class Overdrive extends Component {
 		return(
 			<div>
 				<div className="bypass-container">
-					<h4 className="expand-efx" onClick={this.handleClick}>OVERDRIVE</h4>
+					<h4 className="expand-efx" onClick={this.handleClick}>OVERDRIVE<span className="arrow-down"></span></h4>
 					<RockerSwitch
 						patchState={overdrive.bypass}
 						sendDispatch={this.props.sendDispatch}

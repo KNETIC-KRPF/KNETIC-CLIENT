@@ -80,7 +80,7 @@ class PingPongDelay extends Component {
 
 		return(
 			<div>
-				<h4 className="expand-efx" onClick={this.handleClick}>PING PONG</h4>
+				<h4 className="expand-efx" onClick={this.handleClick}>PING PONG<span className="arrow-down"></span></h4>
 				{this.state.isToggleOn && pingPongComponent}
 				<hr/>
 			</div>

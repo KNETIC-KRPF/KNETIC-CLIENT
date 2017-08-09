@@ -65,9 +65,9 @@ class Layout extends Component {
           <div className="middle-column grid-cell">
             <Chorus patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <Delay patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
-            <MoogFilter patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <Overdrive patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <Phaser patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
+            <MoogFilter patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <PingPongDelay patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
           </div>
 
