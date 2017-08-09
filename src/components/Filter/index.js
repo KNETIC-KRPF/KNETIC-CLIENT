@@ -10,7 +10,7 @@ class Filter extends Component {
 				<div className="filter-grid">
 
 				<div className="controller">
-					<select className="" defaultValue={this.props.patch.filter.type} onChange={(event) => this.props.sendDispatch('filter', 'type', event.target.value)}>
+					<select className="" value={this.props.patch.filter.type} onChange={(event) => this.props.sendDispatch('filter', 'type', event.target.value)}>
 						<option value="lowpass">Low Pass</option>
 						<option value="highpass">High Pass</option>
 						<option value="bandpass">Band Pass</option>
