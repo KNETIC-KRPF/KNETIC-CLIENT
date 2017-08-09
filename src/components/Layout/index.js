@@ -44,7 +44,7 @@ class Layout extends Component {
           </div>
 
           <div className="center-header">
-            <Header setPatchFromCollection={this.props.setPatchFromCollection} selectValues={this.props.selectValues}/>
+            <Header setPatchFromCollection={this.props.setPatchFromCollection} selectValues={this.props.selectValues} patch={this.props.patch}/>
           </div>
 
           <div className="center-analyser">
@@ -72,7 +72,7 @@ class Layout extends Component {
             <Filter patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <FilterADSR patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
             <Compressor patch={this.props.patch} sendDispatch={this.props.sendDispatch}/>
-            
+
           </div>
 
           <div className="wood-grain-right">
