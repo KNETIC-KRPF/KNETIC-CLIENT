@@ -3,6 +3,8 @@ import Layout from './Layout';
 import Tuna from 'tunajs';
 import {KeyFreqs} from '../keyfreqs';
 import patch from '../patch';
+import {ROOT_URL} from '../RootURL';
+
 
 const keysPressed = {};
 const audioContext = new AudioContext();
@@ -22,9 +24,12 @@ class Synthesizer extends Component {
 		this.stopSound = this.stopSound.bind(this);
 		this.handleKeyboardClick = this.handleKeyboardClick.bind(this);
 		this.stopCssKeyboard = this.stopCssKeyboard.bind(this);
+		this.setPatchFromCollection = this.setPatchFromCollection.bind(this);
     this.state = {
       		patch,
-					analyser: analyser
+					patches: [],
+					analyser: analyser,
+          test: ''
 		}
 		initQwertyKeyboardKeydown(this.playSound)
 		initQwertyKeyboardKeyup(this.stopSound)
@@ -33,8 +38,37 @@ class Synthesizer extends Component {
 		KN_SYNTH = getConstructedSynthChain(this)
   }
 
-  setPatchFromCollection() {
-    
+
+	componentDidMount() {
+		fetch(`${ROOT_URL}/patches`)
+		.then(res => res.json())
+		.then(res => {
+			const newPatches = res;
+			const selectValues = getSelectValues(newPatches)
+			this.setState({
+				patches: newPatches,
+				selectValues
+			});
+		});
+	}
+
+  setPatchFromCollection(patchId) {
+    console.log(patchId);
+		let newPatch
+		this.state.patches.forEach(preset => {
+			if(preset._id === patchId) {
+				newPatch = preset;
+        console.log(preset);
+				return;
+			}
+		})
+
+		this.setState({
+      test: 'sadhjfgahjsdfg',
+			patch: newPatch
+		}, () => {
+      console.log(this.state);
+    })
   }
 
   receiveDispatch(type, property, value, id) {
@@ -45,19 +79,16 @@ class Synthesizer extends Component {
 		}
   }
 
-
 	handleKeyboardClick(note) {
 		keyBoardClickedFreq = note;
 		this.playSound(note);
 		window.addEventListener('mouseup', this.stopCssKeyboard);
 	}
 
-
 	stopCssKeyboard() {
 		this.stopSound(keyBoardClickedFreq)
 		window.removeEventListener('mouseup', this.stopCssKeyboard)
 	}
-
 
 	playSound(keyFreq) {
 		let oscillators = []
@@ -117,16 +148,27 @@ class Synthesizer extends Component {
     return (
       <div>
         <Layout
+					selectValues={this.state.selectValues}
 					patch={this.state.patch}
 					sendDispatch={this.receiveDispatch}
 					analyser={this.state.analyser}
 					handleKeyboardClick={this.handleKeyboardClick}
+					setPatchFromCollection={this.setPatchFromCollection}
 				/>
       </div>
     );
   }
 }
 
+function getSelectValues(newPatches) {
+	return newPatches.map(patch => {
+		return {
+			id: patch._id,
+			name: patch.name,
+			type: patch.type
+		}
+	})
+}
 
 function getConstructedSynthChain(component) {
 	let synth = {
