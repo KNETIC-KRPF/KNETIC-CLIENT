@@ -28,12 +28,10 @@ class PatchCollection extends Component {
       modalIsOpen: false,
 			newPatch: {}
     };
-
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
 		this.savePatch = this.savePatch.bind(this);
-
 	}
 
 	openModal() {
